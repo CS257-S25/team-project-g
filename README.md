@@ -1,2 +1,1 @@
-# CS257-F23-TeamTemplate
-Template for long-term team projects
+Joe Borncamp, Cooper Evans, Devin Gulliver, Marco Pina

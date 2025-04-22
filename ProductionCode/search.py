@@ -61,7 +61,7 @@ def search_title(title):
 
 def search_author(author):
     """High level author search, to be called by the CLI."""
-    entries = query_data(goodreads_data, "authors", author)
+    entries = query_data(goodreads_data, "authors", author, True)
     # for this query, only print short info
     entries = map(print_book_short, entries)
     return entries

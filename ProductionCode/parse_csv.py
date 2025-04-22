@@ -65,8 +65,7 @@ def lastfirst_to_firstlast(name):
     words = name.split(", ")
     if len(words) > 1:
         return words[1] + " " + words[0]
-    else:
-        return name
+    return name
 
 
 def main():

@@ -1,4 +1,4 @@
-""" "Methods for generating a list of categories with the most banned books"""
+"""Methods for generating a list of categories with the most banned books"""
 
 from ProductionCode.data import bookban_data
 

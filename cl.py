@@ -87,7 +87,6 @@ def main():
         metavar="LIMIT",
     )
     args = parser.parse_args()
-    
     dispatch = {
         "search_title": search_title,
         "search_author": search_author,
@@ -97,7 +96,6 @@ def main():
         "most_banned_states": most_banned_states,
         "most_banned_titles": most_banned_titles,
     }
-    
     for attr, func in dispatch.items():
         if getattr(args, attr) is not None:
             search_results = func(getattr(args, attr))

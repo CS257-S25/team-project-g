@@ -22,7 +22,6 @@ class TestApp(unittest.TestCase):
         Return value: None
         This function tests the homepage of the Flask application.
         '''
-        pass
 
     def test_valid_states_route(self):
         '''
@@ -32,7 +31,8 @@ class TestApp(unittest.TestCase):
         '''
         response = self.app.get('/most-banned/states/5')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Florida: 6533Iowa: 3685Texas: 1964Pennsylvania: 664Wisconsin: 480',
+        self.assertIn(b'Florida: 6533Iowa: 3685Texas: 1964'
+                      b'Pennsylvania: 664Wisconsin: 480',
                       response.data)
 
     def test_valid_titles_route(self):
@@ -43,7 +43,8 @@ class TestApp(unittest.TestCase):
         '''
         response = self.app.get('/most-banned/titles/5')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Looking for Alaska: 135Nineteen Minutes: 126The Perks of Being a Wallflower: 118'
+        self.assertIn(b'Looking for Alaska: 135Nineteen Minutes: 126'
+                      b'The Perks of Being a Wallflower: 118'
                       b'Sold: 116Thirteen Reasons Why: 112',
                       response.data)
 
@@ -55,8 +56,10 @@ class TestApp(unittest.TestCase):
         '''
         response = self.app.get('/most-banned/districts/5')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Escambia County Public Schools: 1787Clay County School District: 864'
-                      b'Orange County Public Schools: 734North East Independent School District: 606'
+        self.assertIn(b'Escambia County Public Schools: 1787'
+                      b'Clay County School District: 864'
+                      b'Orange County Public Schools: 734'
+                      b'North East Independent School District: 606'
                       b'Central York School District: 443',
                       response.data)
 
@@ -68,7 +71,8 @@ class TestApp(unittest.TestCase):
         '''
         response = self.app.get('/most-banned/authors/5')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Ellen Hopkins: 791Sarah J. Maas: 657Jodi Picoult: 213John Green: 203Toni Morrison: 197',
+        self.assertIn(b'Ellen Hopkins: 791Sarah J. Maas: 657'
+                      b'Jodi Picoult: 213John Green: 203Toni Morrison: 197',
                       response.data)
 
     def test_invalid_limit(self):

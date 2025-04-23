@@ -14,9 +14,6 @@ most_banned_map = {
     "titles": most_banned_titles
 }
 
-@app.route("/")
-def homepage():
-    pass
 
 
 @app.route("/details/<isbn>")

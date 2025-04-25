@@ -26,7 +26,6 @@ def details(_isbn):
     '''
     The endpoint for the details of a book
     '''
-    pass
 
 
 @app.route("/search/<field>/<query>", strict_slashes=False)

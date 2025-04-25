@@ -1,3 +1,6 @@
+'''
+This is the main file for the Flask application.
+'''
 from flask import Flask, abort
 from ProductionCode.most_banned import (
     most_banned_districts,
@@ -19,7 +22,10 @@ most_banned_map = {
 
 
 @app.route("/details/<isbn>")
-def details(isbn):
+def details(_isbn):
+    '''
+    The endpoint for the details of a book
+    '''
     pass
 
 

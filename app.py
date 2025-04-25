@@ -6,6 +6,8 @@ from ProductionCode.most_banned import (
     most_banned_titles,
 )
 
+from ProductionCode.search import search_author, search_genre, search_title
+
 app = Flask(__name__)
 
 most_banned_map = {
@@ -21,9 +23,22 @@ def details(isbn):
     pass
 
 
-@app.route("/search/<field>/<query>")
+@app.route("/search/<field>/<query>", strict_slashes=False)
 def search(field, query):
-    pass
+    """
+    The endpoint for searching for a field
+    """
+    output = ""
+    match field:
+        case "title":
+            output = search_title(query)
+        case "author":
+            output = search_author(query)
+        case "genre":
+            output = search_genre(query)
+        case _:
+            abort(400)
+    return output
 
 
 @app.route("/most-banned/<field>/<limit>", strict_slashes=False)

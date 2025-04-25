@@ -25,4 +25,3 @@ def most_banned(field, limit):
 
 if __name__ == "./main__":
     app.run()
-

@@ -18,9 +18,12 @@ def search(field, query):
     pass
 
 
-@app.route("/most-banned/<field>/<query>")
-def most_banned(field, limit):
-    pass
+@app.route("/most-banned-titles/<limit>", strict_slashes=False)
+def most_banned_titles_page(limit):
+    # add error handling
+    most_banned = most_banned_titles(int(limit))
+    # most_banned = map(lambda x: x + "\n", most_banned)
+    return most_banned
 
 
 if __name__ == "./main__":

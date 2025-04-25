@@ -54,9 +54,9 @@ def most_banned(field, limit):
 
 
 @app.errorhandler(500)
-def python_bug(e):
+def python_bug(_error):
     """
-    The endpoint for the most banned titles
+    The endpoint for the 500 error
     """
     return "500: Bad Request", 500
 

@@ -36,7 +36,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(
             b"Florida: 6533Iowa: 3685Texas: 1964" b"Pennsylvania: 664Wisconsin: 480",
-            response.data,
+            response.data
         )
 
     def test_valid_titles_route(self):
@@ -51,7 +51,7 @@ class TestApp(unittest.TestCase):
             b"Looking for Alaska: 135Nineteen Minutes: 126"
             b"The Perks of Being a Wallflower: 118"
             b"Sold: 116Thirteen Reasons Why: 112",
-            response.data,
+            response.data
         )
 
     def test_valid_districts_route(self):
@@ -68,7 +68,7 @@ class TestApp(unittest.TestCase):
             b"Orange County Public Schools: 734"
             b"North East Independent School District: 606"
             b"Central York School District: 443",
-            response.data,
+            response.data
         )
 
     def test_valid_authors_route(self):
@@ -82,7 +82,7 @@ class TestApp(unittest.TestCase):
         self.assertIn(
             b"Ellen Hopkins: 791Sarah J. Maas: 657"
             b"Jodi Picoult: 213John Green: 203Toni Morrison: 197",
-            response.data,
+            response.data
         )
 
     def test_invalid_limit(self):
@@ -125,8 +125,11 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/author/dan")
         self.assertEqual(
-            b"Kaleidoscope by Danielle Steel (ISBN: 0440236924)Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana Wong-Kalu, Dean Hamer (ISBN: 0593530063)Knock Knock: My Dad's Dream for Me by Daniel Beaty, Bryan Collier (ISBN: 0316209171)",
-            response.data,
+            b"Kaleidoscope by Danielle Steel (ISBN: 0440236924)"
+            b"Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana Wong-Kalu"
+            b", Dean Hamer (ISBN: 0593530063)Knock Knock: My Dad's Dream for Me "
+            b"by Daniel Beaty, Bryan Collier (ISBN: 0316209171)",
+            response.data
         )
 
     def test_search_title(self):
@@ -136,8 +139,11 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/title/to")
         self.assertEqual(
-            b"Keep It Together, Keiko Carter by Debbi Michiko Florence (ISBN: 1338607529)Keys to the Repository by Melissa de la Cruz (ISBN: 1423134540)Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)Kaffir Boy: An Autobiography by Mark Mathabane (ISBN: 0684848287)",
-            response.data,
+            b"Keep It Together, Keiko Carter by Debbi Michiko Florence ",
+            b"(ISBN: 1338607529)Keys to the Repository by Melissa de la Cruz (ISBN: ",
+            b"1423134540)Killing Jesus: A History by Martin Dugard, Bill O'Reilly ",
+            b"(ISBN: 1250142202)Kaffir Boy: An Autobiography by Mark Mathabane (ISBN: 0684848287)",
+            response.data
         )
 
     def test_search_genre(self):
@@ -147,8 +153,10 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/title/to")
         self.assertEqual(
-            "Killer Spirit by Jennifer Lynn Barnes (ISBN: 0385734557)Kill Game by Francine Pascal (ISBN: 0689878214)Karakuridôji Ultimo, #1 by Hiroyuki Takei, Stan Lee (ISBN: 1421531321)",
-            response.data,
+            b"Killer Spirit by Jennifer Lynn Barnes (ISBN: 0385734557)",
+            b"Kill Game by Francine Pascal (ISBN: 0689878214)Karakuridôji Ultimo",
+            b", #1 by Hiroyuki Takei, Stan Lee (ISBN: 1421531321)",
+            response.data
         )
 
 

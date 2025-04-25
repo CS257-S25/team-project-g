@@ -25,63 +25,49 @@ def main():
     )
     parser.add_argument(
         # Search for a title in the database
-        "--search-title",
-        "--st",
-        "-st",
+        "--search-title", "--st",
         help="Search for a title in the database",
         type=str,
         metavar="TITLE",
     )
     parser.add_argument(
         # Search for an author in the database
-        "--search-author",
-        "--sa",
-        "-sa",
+        "--search-author", "--sa",
         help="Search for an author in the database",
         type=str,
         metavar="AUTHOR",
     )
     parser.add_argument(
         # Search for a genre in the database
-        "--search-genre",
-        "--sg",
-        "-sg",
+        "--search-genre", "--sg",
         help="Search for a genre in the database",
         type=str,
         metavar="GENRE",
     )
     parser.add_argument(
         # Get the most banned districts in the database
-        "--most-banned-districts",
-        "--mbd",
-        "-mbd",
+        "--most-banned-districts", "--mbd",
         help="Get the most banned districts in the database",
         type=int,
         metavar="LIMIT",
     )
     parser.add_argument(
         # Get the most banned authors in the database
-        "--most-banned-authors",
-        "--mba",
-        "-mba",
+        "--most-banned-authors", "--mba",
         help="Get the most banned authors in the database",
         type=int,
         metavar="LIMIT",
     )
     parser.add_argument(
         # Get the most banned states in the database
-        "--most-banned-states",
-        "--mbs",
-        "-mbs",
+        "--most-banned-states", "--mbs",
         help="Get the most banned states in the database",
         type=int,
         metavar="LIMIT",
     )
     parser.add_argument(
         # Get the most banned titles in the database
-        "--most-banned-titles",
-        "--mbt",
-        "-mbt",
+        "--most-banned-titles", "--mbt",
         help="Get the most banned titles in the database",
         type=int,
         metavar="LIMIT",

@@ -92,8 +92,8 @@ class TestApp(unittest.TestCase):
         This test is for invalid limit.
         """
         response = self.app.get("/most-banned/states/five")
-        self.assertEqual(response.status_code, 400)
-        self.assertIn(b"400: Bad Request", response.data)
+        self.assertEqual(response.status_code, 500)
+        self.assertIn(b"500: Bad Request", response.data)
 
     def test_invalid_category(self):
         """
@@ -102,8 +102,8 @@ class TestApp(unittest.TestCase):
         This test is for invalid category.
         """
         response = self.app.get("/most-banned/notareal/5")
-        self.assertEqual(response.status_code, 400)
-        self.assertIn(b"400: Bad Request", response.data)
+        self.assertEqual(response.status_code, 500)
+        self.assertIn(b"500: Bad Request", response.data)
 
 
 class TestAppSearch(unittest.TestCase):

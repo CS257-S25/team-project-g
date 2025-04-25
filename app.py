@@ -37,7 +37,7 @@ def search(field, query):
         case "genre":
             output = search_genre(query)
         case _:
-            abort(400)
+            abort(500)
     return output
 
 
@@ -47,18 +47,18 @@ def most_banned(field, limit):
     The endpoint for the most banned titles
     """
     if not limit.isdigit() or field not in most_banned_map:
-        abort(400)
+        abort(500)
 
     function = most_banned_map[field]
     return function(int(limit))
 
 
-@app.errorhandler(400)
+@app.errorhandler(500)
 def python_bug(e):
     """
     The endpoint for the most banned titles
     """
-    return "400: Bad Request", 400
+    return "500: Bad Request", 500
 
 
 if __name__ == "__main__":

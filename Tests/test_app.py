@@ -147,7 +147,7 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/title/to")
         self.assertEqual(
-            b"Killer Spirit by Jennifer Lynn Barnes (ISBN: 0385734557)Kill Game by Francine Pascal (ISBN: 0689878214)Karakuridôji Ultimo, #1 by Hiroyuki Takei, Stan Lee (ISBN: 1421531321)",
+            "Killer Spirit by Jennifer Lynn Barnes (ISBN: 0385734557)Kill Game by Francine Pascal (ISBN: 0689878214)Karakuridôji Ultimo, #1 by Hiroyuki Takei, Stan Lee (ISBN: 1421531321)",
             response.data,
         )
 

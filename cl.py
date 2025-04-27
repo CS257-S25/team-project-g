@@ -82,9 +82,11 @@ def main():
         "most_banned_states": most_banned_states,
         "most_banned_titles": most_banned_titles,
     }
+
     for user_option, corresponding_function in cl_map.items():
-        if getattr(args, user_option) is not None:
-            search_results = corresponding_function(getattr(args, user_option))
+        user_input = getattr(args, user_option)
+        if user_input is not None:
+            search_results = corresponding_function(user_input)
             for result in search_results:
                 print(result)
             break

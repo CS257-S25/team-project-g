@@ -3,7 +3,7 @@
 import csv
 
 
-def parse_bookban_csv(database_file):
+def parse_bookban_csv(filename):
     """Creates a list of book bans from a csv file
     Args:
         database_file (str): the path to the database file
@@ -23,7 +23,7 @@ def parse_bookban_csv(database_file):
         }
     """
     bookban_list = []
-    with open(database_file, newline="", encoding="utf8") as csv_file:
+    with open(filename, newline="", encoding="utf8") as csv_file:
         reader = csv.reader(csv_file)
         next(reader, None)  # Skips header
         for (

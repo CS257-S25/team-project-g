@@ -30,12 +30,12 @@ class TestApp(unittest.TestCase):
 
         expected_strings = [
             b"The following addresses can be used to see information about banned books:",
-            b"To search for banned books, go to '/search/<field>/<query>'.",
-            b"<field> can be title, author, or genre<query> is the search term",
-            b"To see a list of categories with the most banned books, ",
-            b"go to '/most-banned/<field>/<max_results>'",
-            b"<field> can be states, districts, authors, or titles",
-            b"<max_results> is the number of results you want to display",
+            b'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".',
+            b"&lt;field&gt; can be title, author, or genre",
+            b"&lt;query&gt; is the search term",
+            b"To see a list of categories with the most banned books, go to \"/most-banned/&lt;field&gt;/&lt;max_results&gt;\".",
+            b"&lt;field&gt; can be states, districts, authors, or titles",
+            b"&lt;max_results&gt; is the number of results you want to display",
         ]
 
         for expected in expected_strings:

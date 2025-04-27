@@ -49,24 +49,22 @@ def search(field, query):
             output = search_genre(query)
         case _:
             abort(
-                400, # bad request
+                400,
                 "Invalid search field, options for field are title, author, or genre.",
             )
-    if len(output) == 0:
-        return "No books matched the search query."
     return format_list_with_linebreak(output)
 
 
-@app.route("/most-banned/<field>/<limit>", strict_slashes=False)
-def most_banned(field, limit):
+@app.route("/most-banned/<field>/<max-results>", strict_slashes=False)
+def most_banned(field, max_results):
     """
     The endpoint for the most banned titles
     """
-    if not limit.isdigit() or field not in most_banned_map:
+    if not max_results.isdigit() or field not in most_banned_map:
         abort(500)
 
     function = most_banned_map[field]
-    return function(int(limit))
+    return function(int(max_results))
 
 
 @app.errorhandler(500)
@@ -84,7 +82,7 @@ def format_list_with_linebreak(list_of_strings):
     Returns:
         (str): a string composed of each element of the list joined by line breaks
     """
-    return "<br /><br />".join(list_of_strings)
+    return "<br>".join(list_of_strings)
 
 
 if __name__ == "__main__":

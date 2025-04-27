@@ -49,9 +49,11 @@ def search(field, query):
             output = search_genre(query)
         case _:
             abort(
-                400,
+                400, # bad request
                 "Invalid search field, options for field are title, author, or genre.",
             )
+    if len(output) == 0:
+        return "No books matched the search query."
     return format_list_with_linebreak(output)
 
 
@@ -82,7 +84,7 @@ def format_list_with_linebreak(list_of_strings):
     Returns:
         (str): a string composed of each element of the list joined by line breaks
     """
-    return "<br>".join(list_of_strings)
+    return "<br /><br />".join(list_of_strings)
 
 
 if __name__ == "__main__":

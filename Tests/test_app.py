@@ -27,15 +27,19 @@ class TestApp(unittest.TestCase):
         """
         response = self.app.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("The following addresses can be used to see information about banned books:",
-                      b"To search for banned books, go to '/search/<field>/<query>'.",
-                      b"<field> can be title, author, or genre<query> is the search term",
-                      b"To see a list of categories with the most banned books, ",
-                      b"go to '/most-banned/<field>/<max_results>'",
-                      b"<field> can be states, districts, authors, or titles",
-                      b"<max_results> is the number of results you want to display",
-                      response.data,
-                      )
+
+        expected_strings = [
+            b"The following addresses can be used to see information about banned books:",
+            b"To search for banned books, go to '/search/<field>/<query>'.",
+            b"<field> can be title, author, or genre<query> is the search term",
+            b"To see a list of categories with the most banned books, ",
+            b"go to '/most-banned/<field>/<max_results>'",
+            b"<field> can be states, districts, authors, or titles",
+            b"<max_results> is the number of results you want to display",
+        ]
+
+        for expected in expected_strings:
+            self.assertIn(expected, response.data)
 
     def test_valid_states_route(self):
         """

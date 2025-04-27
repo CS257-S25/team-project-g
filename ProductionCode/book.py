@@ -1,3 +1,7 @@
+from datetime import datetime
+from statistics import fmean
+
+
 class Book:
     def __init__(
         self,
@@ -6,18 +10,18 @@ class Book:
         summary: str,
         cover_url: str,
         genres: list[str],
-        isbn: int,
+        isbn: str,
         publish_date: int,
-        rating_histogram: float,
-    ) -> None:
+        rating_histogram: list[int],
+    ):
         self.title = title
         self.authors = authors
         self.summary = summary
         self.cover_url = cover_url
         self.genres = genres
-        self.isbn = isbn
-        self.publish_date = publish_date
-        self.rating_histogram = rating_histogram
+        self.isbn = int(isbn)
+        self.publish_year = datetime.fromtimestamp(publish_date / 1000).year
+        self.rating = round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
 
     def __str__(self) -> str:
         return f"{self.title} by {self.authors_to_string()} (ISBN: {self.isbn})"
@@ -37,9 +41,9 @@ def main() -> None:
             "fiction",
             "historical fiction",
         ],
-        12481841,
+        "12481841",
         84189471,
-        3.5,
+        [10, 0, 1, 10, 50],
     )
     print(book)
 

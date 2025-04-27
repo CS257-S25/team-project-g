@@ -73,7 +73,7 @@ def main():
         metavar="LIMIT",
     )
     args = parser.parse_args()
-    dispatch = {
+    cl_map = {
         "search_title": search_title,
         "search_author": search_author,
         "search_genre": search_genre,
@@ -82,9 +82,9 @@ def main():
         "most_banned_states": most_banned_states,
         "most_banned_titles": most_banned_titles,
     }
-    for attr, func in dispatch.items():
-        if getattr(args, attr) is not None:
-            search_results = func(getattr(args, attr))
+    for user_option, corresponding_function in cl_map.items():
+        if getattr(args, user_option) is not None:
+            search_results = corresponding_function(getattr(args, user_option))
             for result in search_results:
                 print(result)
             break

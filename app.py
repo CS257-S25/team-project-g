@@ -102,7 +102,7 @@ def format_list_with_linebreak(list_of_strings):
     Returns:
         (str): a string composed of each element of the list joined by line breaks
     """
-    return "<br>".join(list_of_strings)
+    return "</br>".join(list_of_strings)
 
 
 @app.errorhandler(404)

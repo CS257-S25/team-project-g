@@ -27,15 +27,16 @@ class TestApp(unittest.TestCase):
         """
         response = self.app.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("The following addresses can be used to see information about banned books:",
-                      b"To search for banned books, go to '/search/<field>/<query>'.",
-                      b"<field> can be title, author, or genre<query> is the search term",
-                      b"To see a list of categories with the most banned books, ",
-                      b"go to '/most-banned/<field>/<max_results>'",
-                      b"<field> can be states, districts, authors, or titles",
-                      b"<max_results> is the number of results you want to display",
-                      response.data,
-                      )
+        self.assertIn(
+            "The following addresses can be used to see information about banned books:",
+            b"To search for banned books, go to '/search/<field>/<query>'.",
+            b"<field> can be title, author, or genre<query> is the search term",
+            b"To see a list of categories with the most banned books, ",
+            b"go to '/most-banned/<field>/<max_results>'",
+            b"<field> can be states, districts, authors, or titles",
+            b"<max_results> is the number of results you want to display",
+            response.data,
+        )
 
     def test_valid_states_route(self):
         """
@@ -46,7 +47,8 @@ class TestApp(unittest.TestCase):
         response = self.app.get("/most-banned/states/5")
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            b"Florida: 6533Iowa: 3685Texas: 1964" b"Pennsylvania: 664Wisconsin: 480",
+            b"Florida: 6533</br>Iowa: 3685</br>Texas: 1964</br>"
+            b"Pennsylvania: 664</br>Wisconsin: 480",
             response.data,
         )
 
@@ -59,9 +61,9 @@ class TestApp(unittest.TestCase):
         response = self.app.get("/most-banned/titles/5")
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            b"Looking for Alaska: 135Nineteen Minutes: 126"
-            b"The Perks of Being a Wallflower: 118"
-            b"Sold: 116Thirteen Reasons Why: 112",
+            b"Looking for Alaska: 135</br>Nineteen Minutes: 126</br>"
+            b"The Perks of Being a Wallflower: 118</br>"
+            b"Sold: 116</br>Thirteen Reasons Why: 112",
             response.data,
         )
 
@@ -74,10 +76,10 @@ class TestApp(unittest.TestCase):
         response = self.app.get("/most-banned/districts/5")
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            b"Escambia County Public Schools: 1787"
-            b"Clay County School District: 864"
-            b"Orange County Public Schools: 734"
-            b"North East Independent School District: 606"
+            b"Escambia County Public Schools: 1787</br>"
+            b"Clay County School District: 864</br>"
+            b"Orange County Public Schools: 734</br>"
+            b"North East Independent School District: 606</br>"
             b"Central York School District: 443",
             response.data,
         )
@@ -91,8 +93,8 @@ class TestApp(unittest.TestCase):
         response = self.app.get("/most-banned/authors/5")
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            b"Ellen Hopkins: 791Sarah J. Maas: 657"
-            b"Jodi Picoult: 213John Green: 203Toni Morrison: 197",
+            b"Ellen Hopkins: 791</br>Sarah J. Maas: 657</br>"
+            b"Jodi Picoult: 213</br>John Green: 203</br>Toni Morrison: 197",
             response.data,
         )
 
@@ -140,7 +142,7 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/author/Kristin Cast")
         self.assertEqual(
-            b"Kalona's Fall by Kristin Cast, P.C. Cast (ISBN not found)<br>"
+            b"Kalona's Fall by Kristin Cast, P.C. Cast (ISBN not found)</br>"
             b"Kisses from Hell by Francesca Lia Block, Kristin Cast, Alyson Noel"
             b", Richelle Mead, Kelley Armstrong (ISBN: 0061956961)",
             response.data,
@@ -155,7 +157,7 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/title/kaleidoscope")
         self.assertEqual(
-            b"Kaleidoscope by Danielle Steel (ISBN: 0440236924)<br>"
+            b"Kaleidoscope by Danielle Steel (ISBN: 0440236924)</br>"
             b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)",
             response.data,
         )
@@ -170,19 +172,19 @@ class TestAppSearch(unittest.TestCase):
         response = self.app.get("/search/genre/lgbt")
         self.assertEqual(
             b"Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana Wong-Kalu, Dean Hamer "
-            b"(ISBN: 0593530063)<br>"
-            b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)<br>"
-            b"Kate in Waiting by Becky Albertalli (ISBN: 0062643835)<br>"
-            b"Keeping You a Secret by Julie Anne Peters (ISBN: 0316009857)<br>"
-            b"King and the Dragonflies by Kacen Callender (ISBN: 1338129333)<br>"
-            b"King of the Screwups by K.L. Going (ISBN: 0152062580)<br>"
-            b"King of Scars by Leigh Bardugo (ISBN: 125014227X)<br>"
-            b"Kingsbane by Claire Legrand (ISBN: 1492656666)<br>"
-            b"Kings of B'more by R. Eric Thomas (ISBN: 0593326180)<br>"
-            b"Kings, Queens, and In-Betweens by Tanya Boteju (ISBN: 1534430652)<br>"
-            b"Kiss & Tell by Adib Khorram (ISBN: 0593325265)<br>"
-            b"Kings Rising by C.S. Pacat (ISBN: 174348495X)<br>"
-            b"Kiss Number 8 by Ellen T. Crenshaw, Colleen A.F. Venable (ISBN: 1250196930)<br>"
+            b"(ISBN: 0593530063)</br>"
+            b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)</br>"
+            b"Kate in Waiting by Becky Albertalli (ISBN: 0062643835)</br>"
+            b"Keeping You a Secret by Julie Anne Peters (ISBN: 0316009857)</br>"
+            b"King and the Dragonflies by Kacen Callender (ISBN: 1338129333)</br>"
+            b"King of the Screwups by K.L. Going (ISBN: 0152062580)</br>"
+            b"King of Scars by Leigh Bardugo (ISBN: 125014227X)</br>"
+            b"Kingsbane by Claire Legrand (ISBN: 1492656666)</br>"
+            b"Kings of B'more by R. Eric Thomas (ISBN: 0593326180)</br>"
+            b"Kings, Queens, and In-Betweens by Tanya Boteju (ISBN: 1534430652)</br>"
+            b"Kiss & Tell by Adib Khorram (ISBN: 0593325265)</br>"
+            b"Kings Rising by C.S. Pacat (ISBN: 174348495X)</br>"
+            b"Kiss Number 8 by Ellen T. Crenshaw, Colleen A.F. Venable (ISBN: 1250196930)</br>"
             b"Kissing Kate by Lauren Myracle (ISBN: 0142408697)",
             response.data,
         )

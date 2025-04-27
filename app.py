@@ -25,8 +25,13 @@ def details(isbn):
 
 @app.route("/search/<field>/<query>", strict_slashes=False)
 def search(field, query):
-    """
-    The endpoint for searching for a field
+    """The endpoint for searching for a field
+
+    Args:
+        field (str): the category the search query is for; title, author, or genre
+        query (str): the search term
+    Returns:
+        (str): a string of search results, separated by line breaks
     """
     output = ""
     match field:
@@ -37,8 +42,11 @@ def search(field, query):
         case "genre":
             output = search_genre(query)
         case _:
-            abort(400)
-    return output
+            abort(
+                400,
+                "Invalid search field, options for field are title, author, or genre.",
+            )
+    return format_list_with_linebreak(output)
 
 
 @app.route("/most-banned/<field>/<limit>", strict_slashes=False)
@@ -59,6 +67,16 @@ def python_bug(e):
     The endpoint for the most banned titles
     """
     return "400: Bad Request", 400
+
+
+def format_list_with_linebreak(list_of_strings):
+    """Helper method for joining a list of strings with line breaks
+    Args:
+        list_of_strings (str[]): a list of strings
+    Returns:
+        (str): a string composed of each element of the list joined by line breaks
+    """
+    return "<br>".join(list_of_strings)
 
 
 if __name__ == "__main__":

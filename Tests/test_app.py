@@ -113,43 +113,65 @@ class TestAppSearch(unittest.TestCase):
 
     def setUp(self):
         """This function sets up the test client for the Flask application.
-        Arguments: None
-        Return value: None
+        Args:
+            None
+        Returns:
+            None
         """
         self.app = app.test_client()
 
     def test_search_author(self):
-        """Test for a valid author search with multiple results
-        Arguments: None
-        Return value: Return true if the test passes.
+        """Test for a valid author search
+        Args:
+            None
+        Return:
+            None
         """
-        response = self.app.get("/search/author/dan")
+        response = self.app.get("/search/author/Kristin Cast")
         self.assertEqual(
-            b"Kaleidoscope by Danielle Steel (ISBN: 0440236924)Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana Wong-Kalu, Dean Hamer (ISBN: 0593530063)Knock Knock: My Dad's Dream for Me by Daniel Beaty, Bryan Collier (ISBN: 0316209171)",
+            b"Kalona's Fall by Kristin Cast, P.C. Cast (ISBN not found)",
             response.data,
         )
 
     def test_search_title(self):
-        """Test for valid title search with multiple results
-        Arguments: None
-        Return value: Return true if the test passes.
+        """Test for valid title search
+        Args:
+            None
+        Return:
+            None
         """
-        response = self.app.get("/search/title/to")
+        response = self.app.get("/search/title/kaleidoscope")
         self.assertEqual(
-            b"Keep It Together, Keiko Carter by Debbi Michiko Florence (ISBN: 1338607529)Keys to the Repository by Melissa de la Cruz (ISBN: 1423134540)Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)Kaffir Boy: An Autobiography by Mark Mathabane (ISBN: 0684848287)",
+            b"Kaleidoscope by Danielle Steel (ISBN: 0440236924)<br>"
+            b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)",
             response.data,
         )
 
     def test_search_genre(self):
-        """Test for valid title search with multiple results
-        Arguments: None
-        Return value: Return true if the test passes.
+        """Test for valid genre search
+        Args:
+            None
+        Return:
+            None
         """
-        response = self.app.get("/search/title/to")
+        response = self.app.get("/search/genre/lgbt")
         self.assertEqual(
-            b"Killer Spirit by Jennifer Lynn Barnes (ISBN: 0385734557)Kill Game by Francine Pascal (ISBN: 0689878214)Karakuridôji Ultimo, #1 by Hiroyuki Takei, Stan Lee (ISBN: 1421531321)",
+            b"Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana "
+            b"Wong-Kalu, Dean Hamer (ISBN: 0593530063)<br>"
+            b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)<br>"
+            b"Kate in Waiting by Becky Albertalli (ISBN: 0062643835)",
             response.data,
         )
+
+    def test_search_invalid_field(self):
+        """Test for invalid field search
+        Args:
+            None
+        Return:
+            None
+        """
+        response = self.app.get("/search/bad-field/search")
+        self.assertEqual(400, response.status_code)
 
 
 if __name__ == "__main__":

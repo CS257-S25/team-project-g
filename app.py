@@ -1,3 +1,7 @@
+"""
+This is the main file for the Flask application.
+"""
+
 from flask import Flask, abort
 from ProductionCode.most_banned import (
     most_banned_districts,
@@ -19,8 +23,10 @@ most_banned_map = {
 
 
 @app.route("/details/<isbn>")
-def details(isbn):
-    pass
+def details(_isbn):
+    """
+    The endpoint for the details of a book
+    """
 
 
 @app.route("/search/<field>/<query>", strict_slashes=False)
@@ -55,18 +61,18 @@ def most_banned(field, limit):
     The endpoint for the most banned titles
     """
     if not limit.isdigit() or field not in most_banned_map:
-        abort(400)
+        abort(500)
 
     function = most_banned_map[field]
     return function(int(limit))
 
 
-@app.errorhandler(400)
-def python_bug(e):
+@app.errorhandler(500)
+def python_bug(_error):
     """
-    The endpoint for the most banned titles
+    The endpoint for the 500 error
     """
-    return "400: Bad Request", 400
+    return "500: Bad Request", 500
 
 
 def format_list_with_linebreak(list_of_strings):

@@ -99,12 +99,15 @@ def format_list_with_linebreak(list_of_strings):
     """
     return "<br>".join(list_of_strings)
 
+
 @app.errorhandler(404)
 def page_not_found(_error):
-    return ("400: Sorry page not found"
-            "<br>Input correct route like this"
-            "<br>/search/OPTION/OPTION_NAME"
-            "<br>/most-banned/OPTION/MAX_INT")
+    return (
+        "400: Sorry page not found"
+        "<br>Input correct route like this"
+        "<br>/search/OPTION/OPTION_NAME"
+        "<br>/most-banned/OPTION/MAX_INT"
+    )
 
 
 if __name__ == "__main__":

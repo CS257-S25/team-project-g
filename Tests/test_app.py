@@ -129,7 +129,9 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/author/Kristin Cast")
         self.assertEqual(
-            b"Kalona's Fall by Kristin Cast, P.C. Cast (ISBN not found)",
+            b"Kalona's Fall by Kristin Cast, P.C. Cast (ISBN not found)<br>"
+            b"Kisses from Hell by Francesca Lia Block, Kristin Cast, Alyson Noel"
+            b", Richelle Mead, Kelley Armstrong (ISBN: 0061956961)",
             response.data,
         )
 
@@ -156,10 +158,21 @@ class TestAppSearch(unittest.TestCase):
         """
         response = self.app.get("/search/genre/lgbt")
         self.assertEqual(
-            b"Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana "
-            b"Wong-Kalu, Dean Hamer (ISBN: 0593530063)<br>"
+            b"Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana Wong-Kalu, Dean Hamer "
+            b"(ISBN: 0593530063)<br>"
             b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)<br>"
-            b"Kate in Waiting by Becky Albertalli (ISBN: 0062643835)",
+            b"Kate in Waiting by Becky Albertalli (ISBN: 0062643835)<br>"
+            b"Keeping You a Secret by Julie Anne Peters (ISBN: 0316009857)<br>"
+            b"King and the Dragonflies by Kacen Callender (ISBN: 1338129333)<br>"
+            b"King of the Screwups by K.L. Going (ISBN: 0152062580)<br>"
+            b"King of Scars by Leigh Bardugo (ISBN: 125014227X)<br>"
+            b"Kingsbane by Claire Legrand (ISBN: 1492656666)<br>"
+            b"Kings of B'more by R. Eric Thomas (ISBN: 0593326180)<br>"
+            b"Kings, Queens, and In-Betweens by Tanya Boteju (ISBN: 1534430652)<br>"
+            b"Kiss & Tell by Adib Khorram (ISBN: 0593325265)<br>"
+            b"Kings Rising by C.S. Pacat (ISBN: 174348495X)<br>"
+            b"Kiss Number 8 by Ellen T. Crenshaw, Colleen A.F. Venable (ISBN: 1250196930)<br>"
+            b"Kissing Kate by Lauren Myracle (ISBN: 0142408697)",
             response.data,
         )
 

@@ -21,20 +21,21 @@ most_banned_map = {
     "titles": most_banned_titles,
 }
 
+USAGE = (
+    'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".</br>'
+    "&lt;field&gt; can be title, author, or genre</br>"
+    "&lt;query&gt; is the search term</br></br>"
+    'To see a list of categories with the most banned books, go to "/most-banned/&lt;field&gt;/&lt;max_results&gt;".</br>'
+    "&lt;field&gt; can be states, districts, authors, or titles</br>"
+    "&lt;max_results&gt; is the number of results you want to display"
+)
+
 
 @app.route("/")
 def homepage():
     """The homepage for the Flask app"""
 
-    return (
-        "The following addresses can be used to see information about banned books:</br></br>"
-        'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".</br>'
-        "&lt;field&gt; can be title, author, or genre</br>"
-        "&lt;query&gt; is the search term</br></br>"
-        'To see a list of categories with the most banned books, go to "/most-banned/&lt;field&gt;/&lt;max_results&gt;".</br>'
-        "&lt;field&gt; can be states, districts, authors, or titles"
-        "&lt;max_results&gt; is the number of results you want to display"
-    )
+    return f"The following addresses can be used to see information about banned books:</br></br>{USAGE}"
 
 
 @app.route("/details/<isbn>")
@@ -102,15 +103,11 @@ def format_list_with_linebreak(list_of_strings):
 
 @app.errorhandler(404)
 def page_not_found(_error):
-    '''
+    """
     The endpoint for the 404 error
-    '''
-    return (
-        "400: Sorry page not found"
-        "<br>Input correct route like this"
-        "<br>/search/OPTION/OPTION_NAME"
-        "<br>/most-banned/OPTION/MAX_INT"
-    )
+    """
+    return f"404: Sorry page not found</br></br>{USAGE}"
+
 
 if __name__ == "__main__":
     app.run()

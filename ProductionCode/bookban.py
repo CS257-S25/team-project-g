@@ -11,9 +11,9 @@ class Bookban:
         ban_status: str,
         origin: str,
     ):
-        self.book = book
-        self.state = state
-        self.district = district
-        self.ban_date = ban_date
-        self.ban_status = ban_status
-        self.origin = origin
+        self.book: Book = book
+        self.state: str = state
+        self.district: str = district
+        self.ban_date: str = ban_date
+        self.ban_status: str = ban_status
+        self.origin: str = origin

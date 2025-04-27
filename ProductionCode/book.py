@@ -14,14 +14,14 @@ class Book:
         publish_date: int,
         rating_histogram: list[int],
     ):
-        self.title = title
-        self.authors = authors
-        self.summary = summary
-        self.cover_url = cover_url
-        self.genres = genres
-        self.isbn = int(isbn)
-        self.publish_year = datetime.fromtimestamp(publish_date / 1000).year
-        self.rating = round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
+        self.title: str = title
+        self.authors: list[str] = authors
+        self.summary: str = summary
+        self.cover_url: str = cover_url
+        self.genres: list[str] = genres
+        self.isbn: int = int(isbn)
+        self.publish_year: int = datetime.fromtimestamp(publish_date / 1000).year
+        self.rating: float = round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
 
     def __str__(self) -> str:
         return f"{self.title} by {self.authors_to_string()} (ISBN: {self.isbn})"

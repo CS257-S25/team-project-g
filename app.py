@@ -22,6 +22,21 @@ most_banned_map = {
 }
 
 
+@app.route("/")
+def homepage():
+    """The homepage for the Flask app"""
+
+    return (
+        "The following addresses can be used to see information about banned books:</br></br>"
+        'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".</br>'
+        "&lt;field&gt; can be title, author, or genre</br>"
+        "&lt;query&gt; is the search term</br></br>"
+        'To see a list of categories with the most banned books, go to "/most-banned/&lt;field&gt;/&lt;max_results&gt;".</br>'
+        "&lt;field&gt; can be states, districts, authors, or titles"
+        "&lt;max_results&gt; is the number of results you want to display"
+    )
+
+
 @app.route("/details/<isbn>")
 def details(_isbn):
     """
@@ -55,7 +70,7 @@ def search(field, query):
     return format_list_with_linebreak(output)
 
 
-@app.route("/most-banned/<field>/<max-results>", strict_slashes=False)
+@app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
 def most_banned(field, max_results):
     """
     The endpoint for the most banned titles

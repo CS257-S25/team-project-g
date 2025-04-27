@@ -14,51 +14,51 @@ def print_item(item):
     return output
 
 
-def most_banned_districts(limit: int):
+def most_banned_districts(max_results: int):
     """generates a formatted list of districts with the most bans
     Args:
-        limit (int): number of districts
+        max_results (int): number of districts
     Returns:
         a formatted list of districts with the most banned books
     """
     most_banned = count_bans(bookban_data, "district")
-    most_banned = most_banned[0:limit]
+    most_banned = most_banned[0:max_results]
     return map(print_item, most_banned)
 
 
-def most_banned_states(limit: int):
+def most_banned_states(max_results: int):
     """generates a formatted list of states with the most bans
     Args:
-        limit (int): number of states
+        max_results (int): number of states
     Returns:
         a formatted list of states with the most banned books
     """
     most_banned = count_bans(bookban_data, "state")
-    most_banned = most_banned[0:limit]
+    most_banned = most_banned[0:max_results]
     return map(print_item, most_banned)
 
 
-def most_banned_authors(limit: int):
+def most_banned_authors(max_results: int):
     """generates a formatted list of authors with the most bans
     Args:
-        limit (int): number of authors
+        max_results (int): number of authors
     Returns:
         a formatted list of authors with the most banned books
     """
     most_banned = count_bans(bookban_data, "author")
-    most_banned = most_banned[0:limit]
+    most_banned = most_banned[0:max_results]
     return map(print_item, most_banned)
 
 
-def most_banned_titles(limit: int):
+def most_banned_titles(max_results: int):
     """generates a formatted list of titles with the most bans
     Args:
-        limit (int): number of titles
+        max_results (int): number of titles
     Returns:
         a formatted list of authors with the most banned titles
     """
     most_banned = count_bans(bookban_data, "title")
-    most_banned = most_banned[0:limit]
+    most_banned = most_banned[0:max_results]
     return map(print_item, most_banned)
 
 

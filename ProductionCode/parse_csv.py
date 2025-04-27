@@ -42,9 +42,9 @@ def parse_bookban_csv(database_file):
                 {
                     "title": title,
                     "author": lastfirst_to_firstlast(author),
-                    "secondary_author": secondary_author,
-                    "illustrator": illustrator,
-                    "translator": translator,
+                    "secondary_author": lastfirst_to_firstlast(secondary_author),
+                    "illustrator": lastfirst_to_firstlast(illustrator),
+                    "translator": lastfirst_to_firstlast(translator),
                     "state": state,
                     "district": district,
                     "ban_date": ban_date,

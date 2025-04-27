@@ -55,7 +55,7 @@ def search(field, query):
     return format_list_with_linebreak(output)
 
 
-@app.route("/most-banned/<field>/<max-results>", strict_slashes=False)
+@app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
 def most_banned(field, max_results):
     """
     The endpoint for the most banned titles
@@ -83,6 +83,13 @@ def format_list_with_linebreak(list_of_strings):
         (str): a string composed of each element of the list joined by line breaks
     """
     return "<br>".join(list_of_strings)
+
+@app.errorhandler(404)
+def page_not_found(_error):
+    return ("400: Sorry page not found"
+            "<br>Input correct route like this"
+            "<br>/search/OPTION/OPTION_NAME"
+            "<br>/most-banned/OPTION/MAX_INT")
 
 
 if __name__ == "__main__":

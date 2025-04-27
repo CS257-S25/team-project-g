@@ -85,11 +85,11 @@ class TestApp(unittest.TestCase):
             response.data,
         )
 
-    def test_invalid_limit(self):
+    def test_invalid_max_results(self):
         """
         Arguments: None
         Return value: Return true if the test passes.
-        This test is for invalid limit.
+        This test is for invalid max_results.
         """
         response = self.app.get("/most-banned/states/five")
         self.assertEqual(response.status_code, 500)

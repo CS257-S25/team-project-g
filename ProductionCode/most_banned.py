@@ -1,4 +1,4 @@
-""" "Methods for generating a list of categories with the most banned books"""
+"""Methods for generating a list of categories with the most banned books"""
 
 from ProductionCode.data import bookban_data
 
@@ -14,52 +14,52 @@ def print_item(item):
     return output
 
 
-def most_banned_districts(limit: int):
+def most_banned_districts(max_results: int):
     """generates a formatted list of districts with the most bans
     Args:
-        limit (int): number of districts
+        max_results (int): number of districts
     Returns:
         a formatted list of districts with the most banned books
     """
-    most_banned_districts = count_bans(bookban_data, "district")
-    most_banned_districts = most_banned_districts[0:limit]
-    return map(print_item, most_banned_districts)
+    most_banned = count_bans(bookban_data, "district")
+    most_banned = most_banned[0:max_results]
+    return map(print_item, most_banned)
 
 
-def most_banned_states(limit: int):
+def most_banned_states(max_results: int):
     """generates a formatted list of states with the most bans
     Args:
-        limit (int): number of states
+        max_results (int): number of states
     Returns:
         a formatted list of states with the most banned books
     """
-    most_banned_states = count_bans(bookban_data, "state")
-    most_banned_states = most_banned_states[0:limit]
-    return map(print_item, most_banned_states)
+    most_banned = count_bans(bookban_data, "state")
+    most_banned = most_banned[0:max_results]
+    return map(print_item, most_banned)
 
 
-def most_banned_authors(limit: int):
+def most_banned_authors(max_results: int):
     """generates a formatted list of authors with the most bans
     Args:
-        limit (int): number of authors
+        max_results (int): number of authors
     Returns:
         a formatted list of authors with the most banned books
     """
-    most_banned_authors = count_bans(bookban_data, "author")
-    most_banned_authors = most_banned_authors[0:limit]
-    return map(print_item, most_banned_authors)
+    most_banned = count_bans(bookban_data, "author")
+    most_banned = most_banned[0:max_results]
+    return map(print_item, most_banned)
 
 
-def most_banned_titles(limit: int):
+def most_banned_titles(max_results: int):
     """generates a formatted list of titles with the most bans
     Args:
-        limit (int): number of titles
+        max_results (int): number of titles
     Returns:
         a formatted list of authors with the most banned titles
     """
-    most_banned_titles = count_bans(bookban_data, "title")
-    most_banned_titles = most_banned_titles[0:limit]
-    return map(print_item, most_banned_titles)
+    most_banned = count_bans(bookban_data, "title")
+    most_banned = most_banned[0:max_results]
+    return map(print_item, most_banned)
 
 
 def count_bans(ban_data, field):
@@ -68,7 +68,8 @@ def count_bans(ban_data, field):
         ban_data: a list of book bans
         field: the field of ban_data
     Returns:
-        a list of objects of the form {"field": str, "bans": int}, showing the number of bans for each category
+        a list of objects of the form {"field": str, "bans": int},
+        showing the number of bans for each category
     """
     total_bans = {}
     for ban in ban_data:
@@ -81,11 +82,13 @@ def count_bans(ban_data, field):
 
 
 def top_bans_from_dict(total_bans):
-    """converts a dict with the number of values per key into a sorted decsending list bassed on value.
+    """converts a dict with the number of values per key into a sorted decsending list based on
+    value.
     Args:
         total_bans: a dict with keys of categories and values of numbers of bans
     Returns:
-        a sorted list of objects of the form {"field": str, "bans": int}, showing the number of bans for each category
+        a sorted list of objects of the form {"field": str, "bans": int}
+        showing the number of bans for each category
     """
     sorted_bans = []
     for key in sorted(total_bans, key=total_bans.get, reverse=True):
@@ -93,13 +96,12 @@ def top_bans_from_dict(total_bans):
 
     return sorted_bans
 
+# def main():
+#     """Main function for informal testing"""
+#     top_bans = most_banned_titles(10)
+#     for field in top_bans:
+#         print(field)
 
-def main():
-    """Main function for informal testing"""
-    top_bans = most_banned_titles(10)
-    for field in top_bans:
-        print(field)
 
-
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

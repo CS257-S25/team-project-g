@@ -1,3 +1,5 @@
+"""Methods for searching the goodreads database by field."""
+
 from ProductionCode.data import goodreads_data
 
 def print_book_short(book):
@@ -8,7 +10,7 @@ def print_book_short(book):
     """
     output = book["title"] + " by "
     output += ", ".join(book["authors"])
-    if book["isbn"] != None:
+    if book["isbn"] is not None:
         output += f" (ISBN: {book["isbn"]})"
     else:
         output += " (ISBN not found)"
@@ -23,8 +25,7 @@ def fuzzy_match(data, query, partial):
     Returns: boolean"""
     if partial:
         return query.lower().strip() in data.lower().strip()
-    else:
-        return query.lower().strip() == data.lower().strip()
+    return query.lower().strip() == data.lower().strip()
 
 def query_data(data, key, value, partial=False):
     """Queries key from the data for matching a specific value.
@@ -38,14 +39,14 @@ def query_data(data, key, value, partial=False):
     matches = []
     for entry in data:
         # if field is null, skip it
-        if entry[key] == None:
+        if entry[key] is None:
             continue
         # for fields that are lists, match if any value is the same
-        elif type(entry[key]) is list:
+        if isinstance(entry[key], list):
             if any(fuzzy_match(item, value, partial) for item in entry[key]):
                 matches.append(entry)
         # for fields that are strings, just match the string
-        elif type(entry[key] is str):
+        elif isinstance(entry[key], str):
             if fuzzy_match(entry[key], value, partial):
                 matches.append(entry)
     return matches
@@ -60,7 +61,7 @@ def search_title(title):
 
 def search_author(author):
     """High level author search, to be called by the CLI."""
-    entries = query_data(goodreads_data, "authors", author)
+    entries = query_data(goodreads_data, "authors", author, True)
     # for this query, only print short info
     entries = map(print_book_short, entries)
     return entries
@@ -72,15 +73,15 @@ def search_genre(genre):
     entries = map(print_book_short, entries)
     return entries
 
-def main():
-    """Main function for informal testing."""
-    search_results = search_title("kingdom of the")
-    for result in search_results:
-        print(result)
-    print("----------")
-    search_results = search_author("dori hillestad butler")
-    for result in search_results:
-        print(result)
+# def main():
+#     """Main function for informal testing."""
+#     search_results = search_title("kingdom of the")
+#     for result in search_results:
+#         print(result)
+#     print("----------")
+#     search_results = search_author("dori hillestad butler")
+#     for result in search_results:
+#         print(result)
 
-if __name__  == "__main__":
-    main()
+# if __name__  == "__main__":
+#     main()

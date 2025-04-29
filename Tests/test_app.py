@@ -215,7 +215,7 @@ class TestAppDetails(unittest.TestCase):
             None
         """
         self.app = app.test_client()
-        
+
     def test_valid_details_route(self):
         """Details for ISBN 1250142202 should include all the expected fields."""
         response = self.app.get("/details/1250142202")
@@ -250,7 +250,7 @@ class TestAppDetails(unittest.TestCase):
         )
 
         self.assertIn(b"<br /><br />", data)
-    
+
     def test_invalid_details_route(self):
         """An unknown ISBN should return a 400 with the correct error message."""
         response = self.app.get("/details/0000000000")

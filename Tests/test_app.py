@@ -33,7 +33,8 @@ class TestApp(unittest.TestCase):
             b'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".',
             b"&lt;field&gt; can be title, author, or genre",
             b"&lt;query&gt; is the search term",
-            b"To see a list of categories with the most banned books, go to \"/most-banned/&lt;field&gt;/&lt;max_results&gt;\".",
+            b"To see a list of categories with the most banned books, go to "
+            b'"/most-banned/&lt;field&gt;/&lt;max_results&gt;".',
             b"&lt;field&gt; can be states, districts, authors, or titles",
             b"&lt;max_results&gt; is the number of results you want to display",
         ]

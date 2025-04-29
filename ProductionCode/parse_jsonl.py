@@ -16,12 +16,11 @@ def parse_goodreads_jsonl(filename):
             data.append(json.loads(line))
     return data
 
+# def main():
+#     """Main function for informal testing."""
+#     goodreads_data = parse_goodreads_jsonl("Data/goodreads_subset_k.jsonl")
+#     print(goodreads_data[0])
 
-def main():
-    """Main function for informal testing."""
-    goodreads_data = parse_goodreads_jsonl("Data/goodreads_subset_k.jsonl")
-    print(goodreads_data[0])
 
-
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

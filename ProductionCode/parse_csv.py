@@ -67,12 +67,11 @@ def lastfirst_to_firstlast(name):
         return words[1] + " " + words[0]
     return name
 
+# def main():
+#     """Main function for informal testing"""
+#     book_banlist = parse_bookban_csv("Data/bookbans-merged.csv")
+#     print(book_banlist[0])
 
-def main():
-    """Main function for informal testing"""
-    book_banlist = parse_bookban_csv("Data/bookbans-merged.csv")
-    print(book_banlist[0])
 
-
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

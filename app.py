@@ -55,7 +55,7 @@ def details(isbn):
         output = get_details(isbn)
     except ValueError:
         abort(400, "No book with that ISBN found!")
-    
+
     # variation on format_list_with_linebreak
     return output.replace('\n', '<br /><br />')
 

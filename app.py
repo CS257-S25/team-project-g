@@ -1,6 +1,4 @@
-"""
-This is the main file for the Flask application.
-"""
+"""This is the main file for the Flask application."""
 
 from flask import Flask, abort
 from ProductionCode.most_banned import (
@@ -9,8 +7,8 @@ from ProductionCode.most_banned import (
     most_banned_states,
     most_banned_titles,
 )
-
 from ProductionCode.search import search_author, search_genre, search_title
+from ProductionCode.details import get_details
 
 app = Flask(__name__)
 
@@ -22,13 +20,15 @@ most_banned_map = {
 }
 
 USAGE = (
-    'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".</br>'
-    "&lt;field&gt; can be title, author, or genre</br>"
-    "&lt;query&gt; is the search term</br></br>"
+    'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".<br />'
+    "&lt;field&gt; can be title, author, or genre<br />"
+    "&lt;query&gt; is the search term<br /><br />"
     "To see a list of categories with the most banned books, go to "
-    '"/most-banned/&lt;field&gt;/&lt;max_results&gt;".</br>'
-    "&lt;field&gt; can be states, districts, authors, or titles</br>"
-    "&lt;max_results&gt; is the number of results you want to display"
+    '"/most-banned/&lt;field&gt;/&lt;max_results&gt;".<br />'
+    "&lt;field&gt; can be states, districts, authors, or titles<br />"
+    "&lt;max_results&gt; is the number of results you want to display<br /><br />"
+    'To get the details about a specific book, go to "/details/&lt;isbn&gt;".<br />'
+    "&lt;isbn&gt; is the ISBN number of the book, which can be found using /search"
 )
 
 
@@ -37,16 +37,27 @@ def homepage():
     """The homepage for the Flask app"""
 
     return (
-        "The following addresses can be used to see information about banned books:</br></br>"
+        "The following addresses can be used to see information about banned books:<br /><br />"
         f"{USAGE}"
     )
 
 
 @app.route("/details/<isbn>")
-def details(_isbn):
+def details(isbn):
+    """The endpoint for the details of a book.
+
+    Args:
+        isbn (str): the ISBN number of the book
+    Returns:
+        (str): a string of details with line breaks between fields
     """
-    The endpoint for the details of a book
-    """
+    try:
+        output = get_details(isbn)
+    except ValueError:
+        abort(400, "No book with that ISBN found!")
+    
+    # variation on format_list_with_linebreak
+    return output.replace('\n', '<br /><br />')
 
 
 @app.route("/search/<field>/<query>", strict_slashes=False)
@@ -110,7 +121,7 @@ def page_not_found(_error):
     """
     The endpoint for the 404 error
     """
-    return f"404: Sorry page not found</br></br>{USAGE}"
+    return f"404: Sorry page not found<br /><br />{USAGE}"
 
 
 if __name__ == "__main__":

@@ -202,6 +202,61 @@ class TestAppSearch(unittest.TestCase):
         response = self.app.get("/search/bad-field/search")
         self.assertEqual(400, response.status_code)
 
+class TestAppDetails(unittest.TestCase):
+    """
+    Tests for details methods for Flask app
+    """
+    def setUp(self):
+        """This function sets up the test client for the Flask application.
+        Args:
+            None
+        Returns:
+            None
+        """
+        self.app = app.test_client()
+        
+    def test_valid_details_route(self):
+        """Details for ISBN 1250142202 should include all the expected fields."""
+        response = self.app.get("/details/1250142202")
+        self.assertEqual(response.status_code, 200)
+
+        data = response.data
+        # Check the header line
+        self.assertIn(
+            b"Details for Killing Jesus: A History by ",
+            b"Martin Dugard, Bill O'Reilly (2017, ISBN: 1250142202)",
+            data
+        )
+        # Check the summary
+        self.assertIn(
+            b"Book details from Goodreads: Millions of readers have thrilled ",
+            b"to bestselling authors Bill O'Reilly and historian Martin Dugard's ",
+            b"Killing Kennedy and Killing Lincoln",
+            data
+        )
+        # Check genres list
+        self.assertIn(
+            b"Genres: Historical, Christianity, Faith, Biography, Book Club, ",
+            b"Nonfiction, History, Religion, Christian, Audiobook",
+            data
+        )
+        # Check the average review
+        self.assertIn(b"Average review: 4.0 stars", data)
+        # Check the ban entry and date
+        self.assertIn(
+            b"Banned in Escambia County Public Schools, Florida in August 2023",
+            data
+        )
+        # And make sure newlines were replaced with HTML breaks
+        self.assertIn(b"<br /><br />", data)
+        
+    def test_invalid_details_route(self):
+        """An Unknwon ISBN should return a 400 with the correct error message"""
+        response = self.app.get("/details/0000000000")
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"No book with that ISBN found!", response.data)
+
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -96,3 +96,12 @@ def top_bans_from_dict(total_bans):
 
     return sorted_bans
 
+# def main():
+#     """Main function for informal testing"""
+#     top_bans = most_banned_titles(10)
+#     for field in top_bans:
+#         print(field)
+
+
+# if __name__ == "__main__":
+#     main()

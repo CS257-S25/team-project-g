@@ -73,15 +73,15 @@ def search_genre(genre):
     entries = map(print_book_short, entries)
     return entries
 
-def main():
-    """Main function for informal testing."""
-    search_results = search_title("kingdom of the")
-    for result in search_results:
-        print(result)
-    print("----------")
-    search_results = search_author("dori hillestad butler")
-    for result in search_results:
-        print(result)
+# def main():
+#     """Main function for informal testing."""
+#     search_results = search_title("kingdom of the")
+#     for result in search_results:
+#         print(result)
+#     print("----------")
+#     search_results = search_author("dori hillestad butler")
+#     for result in search_results:
+#         print(result)
 
-if __name__  == "__main__":
-    main()
+# if __name__  == "__main__":
+#     main()

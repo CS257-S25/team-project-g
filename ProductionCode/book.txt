@@ -21,13 +21,16 @@ class Book:
         self.genres: list[str] = genres
         self.isbn: int = int(isbn)
         self.publish_year: int = datetime.fromtimestamp(publish_date / 1000).year
-        self.rating: float = round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
+        self.rating: float = self.average_rating_histogram(rating_histogram)
 
     def __str__(self) -> str:
         return f"{self.title} by {self.authors_to_string()} (ISBN: {self.isbn})"
 
     def authors_to_string(self) -> str:
         return ", ".join(self.authors)
+
+    def average_rating_histogram(self, rating_histogram):
+        return round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
 
 
 def main() -> None:

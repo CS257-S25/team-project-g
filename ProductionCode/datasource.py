@@ -72,20 +72,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
-    def search_author_like(self, search_term):
-        """Searches booksbans database for authors containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where author contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE author LIKE %s"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
 
-        results = cursor.fetchall()
-        return results
 
     def get_bans_per_year(self):
         """Returns the number of bans per year from 2020 to 2025."""

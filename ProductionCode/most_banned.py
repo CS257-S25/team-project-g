@@ -3,8 +3,8 @@
 from ProductionCode.data import bookban_data
 
 
-def print_item(item):
-    """Helper method for pretty printing items
+def format_item(item):
+    """Helper method for pretty formatting items
     Args:
         item ({"field": str, "bans": int}): an item with a field value and number of total bans
     Returns:
@@ -12,6 +12,28 @@ def print_item(item):
     """
     output = item["field"] + ": " + str(item["bans"])
     return output
+
+
+def format_list(list):
+    """Helper method for pretty formatting lists
+    Args:
+        item (list[{"field":str, "bans": int}]): a list of items with a field value
+        and number of total bans
+    Returns:
+        a list of strings with the name of the item and the number of bans
+    """
+    return map(format_item, list)
+
+
+def limit_results(list, max_results):
+    """Returns the first {max_results} elements of a list
+    Args:
+        list (list): list to be limited
+        max_results (int): number of results
+    Returns:
+        the first {max_results} elements of a list
+    """
+    return list[0:max_results]
 
 
 def most_banned_districts(max_results: int):
@@ -22,8 +44,10 @@ def most_banned_districts(max_results: int):
         a formatted list of districts with the most banned books
     """
     most_banned = count_bans(bookban_data, "district")
-    most_banned = most_banned[0:max_results]
-    return map(print_item, most_banned)
+    limit_bans = limit_results(most_banned, max_results)
+    format_results = format_list(limit_bans)
+
+    return format_results
 
 
 def most_banned_states(max_results: int):
@@ -34,8 +58,10 @@ def most_banned_states(max_results: int):
         a formatted list of states with the most banned books
     """
     most_banned = count_bans(bookban_data, "state")
-    most_banned = most_banned[0:max_results]
-    return map(print_item, most_banned)
+    limit_bans = limit_results(most_banned, max_results)
+    format_results = format_list(limit_bans)
+
+    return format_results
 
 
 def most_banned_authors(max_results: int):
@@ -46,8 +72,10 @@ def most_banned_authors(max_results: int):
         a formatted list of authors with the most banned books
     """
     most_banned = count_bans(bookban_data, "author")
-    most_banned = most_banned[0:max_results]
-    return map(print_item, most_banned)
+    limit_bans = limit_results(most_banned, max_results)
+    format_results = format_list(limit_bans)
+
+    return format_results
 
 
 def most_banned_titles(max_results: int):
@@ -58,8 +86,10 @@ def most_banned_titles(max_results: int):
         a formatted list of authors with the most banned titles
     """
     most_banned = count_bans(bookban_data, "title")
-    most_banned = most_banned[0:max_results]
-    return map(print_item, most_banned)
+    limit_bans = limit_results(most_banned, max_results)
+    format_results = format_list(limit_bans)
+
+    return format_results
 
 
 def count_bans(ban_data, field):
@@ -95,6 +125,7 @@ def top_bans_from_dict(total_bans):
         sorted_bans.append({"field": key, "bans": total_bans[key]})
 
     return sorted_bans
+
 
 # def main():
 #     """Main function for informal testing"""

@@ -58,6 +58,64 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
+    
+    def get_bans_per_year(self):
+        """Returns the number of bans per year from 2020 to 2025."""
+        query = (
+            "SELECT year_banned, COUNT(*) AS bans_in_year "
+            "FROM bookbans "
+            "WHERE year_banned BETWEEN 2020 AND 2025 "
+            "GROUP BY year_banned "
+            "ORDER BY year_banned;"
+        )
+        self.print_results(query)
+
+    def get_most_common_words(self):
+        """Returns the 5 most common words in the titles of banned books."""
+        query = (
+            "SELECT word, COUNT(*) AS occurrences "
+            "FROM ("
+            "  SELECT regexp_split_to_table(lower(title), E'\\W+') AS word "
+            "  FROM bookbans"
+            ") AS words "
+            "WHERE word <> '' "
+            "GROUP BY word "
+            "ORDER BY occurrences DESC "
+            "LIMIT 5;"
+        )
+        self.print_results(query)
+
+    def get_most_banned_authors(self):
+        """Returns the 5 authors with the most bans."""
+        query = (
+            "SELECT author, COUNT(*) AS ban_count "
+            "FROM bookbans "
+            "GROUP BY author "
+            "ORDER BY ban_count DESC "
+            "LIMIT 5;"
+        )
+        self.print_results(query)
+
+    def get_keyword(self, keyword):
+        """Returns all books that contain the given keyword in their title."""
+        query = (
+            "SELECT title, author, year_banned "
+            "FROM bookbans "
+            f"WHERE title ILIKE '%{keyword}%' "
+            "ORDER BY title;"
+        )
+        self.print_results(query)
+
+    def get_most_banned_districts(self):
+        """Returns the 5 districts with the most bans."""
+        query = (
+            "SELECT district, COUNT(*) AS ban_count "
+            "FROM bookbans "
+            "GROUP BY district "
+            "ORDER BY ban_count DESC "
+            "LIMIT 5;"
+        )
+        self.print_results(query)
 
 
 # if __name__ == "__main__":

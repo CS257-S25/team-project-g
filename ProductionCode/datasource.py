@@ -39,7 +39,7 @@ class DataSource:
         query = "SELECT * FROM bookbans WHERE author=%s"
 
         cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
+        cursor.execute(query, (search_term,))
 
         results = cursor.fetchall()
         return results

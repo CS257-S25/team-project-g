@@ -51,7 +51,7 @@ class DataSource:
         Returns:
             list of bans where title contains the search term
         """
-        query = "SELECT * FROM bookbans WHERE title LIKE %s"
+        query = "SELECT * FROM bookbans WHERE title ILIKE %s"
         # search_term = "Angel"
         cursor = self.connection.cursor()
         cursor.execute(query, ("%" + search_term + "%",))
@@ -66,7 +66,7 @@ class DataSource:
         Returns:
             list of bans where genre contains the search term
         """
-        query = "SELECT * FROM bookbans WHERE genre LIKE %s"
+        query = "SELECT * FROM bookbans WHERE genre ILIKE %s"
         cursor = self.connection.cursor()
         cursor.execute(query, ("%" + search_term + "%",))
 

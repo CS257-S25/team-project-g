@@ -1,0 +1,17 @@
+-- Book
+-- isbn: int
+-- title: text
+-- author: text ARRAY
+-- summary: text
+-- cover: text
+-- genres: text ARRAY
+-- publish year: date
+--
+-- Bookban
+-- isbn: int
+-- state: text
+-- district: text
+-- ban year: int
+-- ban month: year
+-- ban status: text
+-- origin: text

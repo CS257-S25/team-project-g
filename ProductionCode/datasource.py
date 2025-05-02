@@ -59,6 +59,34 @@ class DataSource:
         results = cursor.fetchall()
         return results
     
+    def search_genre(self, search_term):
+        """Searches booksbans database for genres containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            list of bans where genre contains the search term
+        """
+        query = "SELECT * FROM bookbans WHERE genre LIKE %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, ("%" + search_term + "%",))
+
+        results = cursor.fetchall()
+        return results
+    
+    def search_author_like(self, search_term):
+        """Searches booksbans database for authors containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            list of bans where author contains the search term
+        """
+        query = "SELECT * FROM bookbans WHERE author LIKE %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, ("%" + search_term + "%",))
+
+        results = cursor.fetchall()
+        return results
+
     def get_bans_per_year(self):
         """Returns the number of bans per year from 2020 to 2025."""
         query = (
@@ -111,6 +139,27 @@ class DataSource:
             "ORDER BY ban_count DESC "
             "LIMIT 5;"
         )
+
+    def get_most_banned_states(self):
+        """Returns the 5 states with the most bans."""
+        query = (
+            "SELECT state, COUNT(*) AS ban_count "
+            "FROM bookbans "
+            "GROUP BY state "
+            "ORDER BY ban_count DESC "
+            "LIMIT 5;"
+        )
+
+    def get_most_banned_titles(self):
+        """Returns the 5 titles with the most bans."""
+        query = (
+            "SELECT title, COUNT(*) AS ban_count "
+            "FROM bookbans "
+            "GROUP BY title "
+            "ORDER BY ban_count DESC "
+            "LIMIT 5;"
+        )
+
 
 
 # if __name__ == "__main__":

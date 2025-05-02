@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS books;
 CREATE TABLE books (
     isbn int,
     title text,
-    author text[],
+    authors text[],
     summary text,
     cover text,
     genres text[],

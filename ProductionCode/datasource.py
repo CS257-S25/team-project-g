@@ -68,7 +68,6 @@ class DataSource:
             "GROUP BY year_banned "
             "ORDER BY year_banned;"
         )
-        self.print_results(query)
 
     def get_most_common_words(self):
         """Returns the 5 most common words in the titles of banned books."""
@@ -83,7 +82,6 @@ class DataSource:
             "ORDER BY occurrences DESC "
             "LIMIT 5;"
         )
-        self.print_results(query)
 
     def get_most_banned_authors(self):
         """Returns the 5 authors with the most bans."""
@@ -94,7 +92,6 @@ class DataSource:
             "ORDER BY ban_count DESC "
             "LIMIT 5;"
         )
-        self.print_results(query)
 
     def get_keyword(self, keyword):
         """Returns all books that contain the given keyword in their title."""
@@ -104,7 +101,6 @@ class DataSource:
             f"WHERE title ILIKE '%{keyword}%' "
             "ORDER BY title;"
         )
-        self.print_results(query)
 
     def get_most_banned_districts(self):
         """Returns the 5 districts with the most bans."""
@@ -115,7 +111,6 @@ class DataSource:
             "ORDER BY ban_count DESC "
             "LIMIT 5;"
         )
-        self.print_results(query)
 
 
 # if __name__ == "__main__":

@@ -17,5 +17,6 @@ CREATE TABLE books (
     summary text,
     cover text,
     genres text[],
-    publish_year date
+    publish_date date,
+    rating: float
 );

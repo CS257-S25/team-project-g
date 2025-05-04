@@ -2,7 +2,6 @@ from datetime import datetime
 from statistics import fmean
 from psycopg2 import DATETIME
 
-
 class Book:
     def __init__(
         self,

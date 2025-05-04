@@ -2,9 +2,10 @@
 
 import psycopg2
 
-import psql_config as config
+import psl_config as config
 
 from book import Book
+from bookban import Bookban
 
 
 class DataSource:
@@ -46,6 +47,42 @@ class DataSource:
         results = cursor.fetchall()
         return results
 
+    def database_row_list_to_book_list(self, row_list):
+        return map(self.database_row_to_book, row_list)
+
+    def database_row_to_book(self, row):
+        book = Book(
+            isbn=row[0],
+            title=row[1],
+            authors=row[2],
+            summary=row[3],
+            cover=row[4],
+            genres=row[5],
+            publish_date=row[6],
+            rating=row[7],
+        )
+        return book
+    
+    def database_row_list_to_bookban_list(self, row_list):
+        return map(self.database_row_to_bookban, row_list)
+
+    def database_row_to_bookban(self, row):
+        isbn = row[0]
+        #TODO: something to get the book associated with the isbn
+
+        #for now, dummy book data
+        book = Book(isbn="000000000", title="Book Title", authors=["Author"], summary="summary of book", genres=["First Genre", "Second Genre"], cover="url", publish_date= 57891375319, rating=5.0)
+        bookban = Bookban(book=book, state=row[1], district=row[2], ban_date=row[3], ban_status=row[4], origin=row[5])
+        return bookban
+
+    def books_search_title(self, search_term):
+        query = "SELECT * FROM books WHERE title ILIKE %s"
+        args = ("%" + search_term + "%",)
+
+        results = self.execute_query(query, args)
+        books = self.database_row_list_to_book_list(results)
+        return books
+
     def search_author(self, search_term):
         """Searches booksbans database for authors exactly matching search term
         Args:
@@ -63,21 +100,6 @@ class DataSource:
 
         return books
 
-    def database_row_list_to_book_list(self, row_list):
-        return map(self.database_row_to_book, row_list)
-
-    def database_row_to_book(self, row):
-        book = Book(
-            isbn=row[0],
-            title=row[1],
-            authors=row[2],
-            summary=row[3],
-            cover=row[4],
-            genres=row[5],
-            publish_date=row[6],
-            rating=row[7],
-        )
-        return book
 
     def search_title_like(self, search_term):
         """Searches booksbans database for titles containing search term
@@ -183,6 +205,9 @@ class DataSource:
         )
 
 
-# if __name__ == "__main__":
-#     my_ds = DataSource()
-#     print(my_ds.search_title_like("Angel"))
+if __name__ == "__main__":
+    my_ds = DataSource()
+    # results = my_ds.search_author("Haruki Murakami")
+    results = my_ds.books_search_title("a")
+    for result in results:
+        print(result)

@@ -1,27 +1,27 @@
 from datetime import datetime
 from statistics import fmean
-
+from psycopg2 import DATETIME
 
 class Book:
     def __init__(
         self,
+        isbn: str,
         title: str,
         authors: list[str],
         summary: str,
-        cover_url: str,
+        cover: str,
         genres: list[str],
-        isbn: str,
-        publish_date: int,
-        rating_histogram: list[int],
+        publish_date: int,  # change this to a more accurate type
+        rating: float,
     ):
+        self.isbn: str = isbn
         self.title: str = title
         self.authors: list[str] = authors
         self.summary: str = summary
-        self.cover_url: str = cover_url
+        self.cover: str = cover
         self.genres: list[str] = genres
-        self.isbn: int = int(isbn)
-        self.publish_year: int = datetime.fromtimestamp(publish_date / 1000).year
-        self.rating: float = self.average_rating_histogram(rating_histogram)
+        self.publish_date = publish_date
+        self.rating = rating
 
     def __str__(self) -> str:
         return f"{self.title} by {self.authors_to_string()} (ISBN: {self.isbn})"

@@ -11,11 +11,12 @@ CREATE TABLE bookbans (
 
 DROP TABLE IF EXISTS books;
 CREATE TABLE books (
-    isbn int,
+    isbn text,
     title text,
-    author text[],
+    authors text[],
     summary text,
     cover text,
     genres text[],
-    publish_year date
+    publish_date date,
+    rating real 
 );

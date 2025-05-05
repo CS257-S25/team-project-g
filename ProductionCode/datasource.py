@@ -85,9 +85,10 @@ class DataSource:
             book=book,
             state=row[1],
             district=row[2],
-            ban_date=row[3],
-            ban_status=row[4],
-            ban_origin=row[5],
+            ban_year=row[3],
+            ban_month=row[4],
+            ban_status=row[5],
+            ban_origin=row[6],
         )
         return bookban
 
@@ -99,10 +100,9 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
         return books
 
-
     def books_search_author(self, search_term) -> list[Book]:
-        query = "SELECT * FROM books WHERE author ILIKE %s"
-        args = ("%" + search_term + "%",)
+        query = "SELECT title, authors FROM books WHERE authors @> ARRAY[%s];"
+        args = (search_term,)
 
         results = self.execute_query(query, args)
         books = self.database_row_list_to_book_list(results)

@@ -11,7 +11,7 @@ def print_book_short(book):
     output = book["title"] + " by "
     output += ", ".join(book["authors"])
     if book["isbn"] is not None:
-        output += f" (ISBN: {book["isbn"]})"
+        output += f" (ISBN: {book['isbn']})"
     else:
         output += " (ISBN not found)"
     return output

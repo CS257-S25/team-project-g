@@ -81,8 +81,11 @@ def main():
         metavar="MAX_RESULTS",
     )
     args = parser.parse_args()
+
+    ds = DataSource()
+
     cl_map = {
-        "search_title": DataSource.books_search_title,
+        "search_title": ds.books_search_title,
         "search_author": search_author,
         "search_genre": search_genre,
         "most_banned_districts": most_banned_districts,

@@ -47,4 +47,4 @@ class TestBookban(unittest.TestCase):
         )
 
     def test_date_to_str(self):
-        self.assertEqual(str(self.bookban.date_to_str()), "March, 2023")
+        self.assertEqual(self.bookban.date_to_str(), "March, 2023")

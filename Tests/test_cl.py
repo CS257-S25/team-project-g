@@ -157,6 +157,14 @@ class TestMostBannedFunctions(unittest.TestCase):
         results = list(most_banned_titles(3))
         self.assertEqual(results, expected)
 
+    def test_cl(self):
+        """Testing no input"""
+        sys.argv = ["cl.py", "--most-banned-states", "1"]
+        sys.stdout = StringIO()
+        cl.main()
+        printed = sys.stdout.getvalue()
+        self.assertEqual(printed, "Florida: 6533\n")
+
 
 if __name__ == "__main__":
     unittest.main()

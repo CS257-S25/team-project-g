@@ -223,23 +223,9 @@ class DataSource:
 if __name__ == "__main__":
     my_ds = DataSource()
     # results = my_ds.search_author("Haruki Murakami")
-    results = my_ds.books_search_title('killing')
+    results = my_ds.books_search_title("killing")
     for result in results:
         print(result)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 """Module for connecting to and interacting with psql database"""
@@ -306,17 +292,33 @@ class DataSource:
             rating=row[7],
         )
         return book
-    
+
     def database_row_list_to_bookban_list(self, row_list):
         return map(self.database_row_to_bookban, row_list)
 
     def database_row_to_bookban(self, row):
         isbn = row[0]
-        #TODO: something to get the book associated with the isbn
+        # TODO: something to get the book associated with the isbn
 
-        #for now, dummy book data
-        book = Book(isbn="000000000", title="Book Title", authors=["Author"], summary="summary of book", genres=["First Genre", "Second Genre"], cover="url", publish_date= 57891375319, rating=5.0)
-        bookban = Bookban(book=book, state=row[1], district=row[2], ban_date=row[3], ban_status=row[4], origin=row[5])
+        # for now, dummy book data
+        book = Book(
+            isbn="000000000",
+            title="Book Title",
+            authors=["Author"],
+            summary="summary of book",
+            genres=["First Genre", "Second Genre"],
+            cover="url",
+            publish_date=57891375319,
+            rating=5.0,
+        )
+        bookban = Bookban(
+            book=book,
+            state=row[1],
+            district=row[2],
+            ban_date=row[3],
+            ban_status=row[4],
+            origin=row[5],
+        )
         return bookban
 
     def books_search_title(self, search_term):
@@ -343,7 +345,6 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
 
         return books
-
 
     def search_title_like(self, search_term):
         """Searches booksbans database for titles containing search term
@@ -386,7 +387,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_illustrator(self, search_term):
         """Searches booksbans database for illustrators containing search term
         Args:
@@ -400,7 +401,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_translator(self, search_term):
         """Searches booksbans database for translators containing search term
         Args:
@@ -414,7 +415,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_state(self, search_term):
         """Searches booksbans database for states containing search term
         Args:
@@ -428,7 +429,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_district(self, search_term):
         """Searches booksbans database for districts containing search term
         Args:
@@ -442,22 +443,16 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def get_date_of_challenge(self):
         """Returns the date of challenge for all bans."""
         query = (
-            "SELECT date_of_challenge "
-            "FROM bookbans "
-            "ORDER BY date_of_challenge;"
+            "SELECT date_of_challenge " "FROM bookbans " "ORDER BY date_of_challenge;"
         )
 
     def get_ban_status(self):
         """Returns the status of all bans."""
-        query = (
-            "SELECT ban_status "
-            "FROM bookbans "
-            "ORDER BY ban_status;"
-        )
+        query = "SELECT ban_status " "FROM bookbans " "ORDER BY ban_status;"
 
     def get_origin_of_challenge(self):
         """Returns the origin of challenge for all bans."""

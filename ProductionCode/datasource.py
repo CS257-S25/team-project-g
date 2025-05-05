@@ -73,6 +73,99 @@ class DataSource:
         results = cursor.fetchall()
         return results
 
+    def search_secondary_author(self, search_term):
+        """Searches booksbans database for secondary authors containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            list of bans where secondary author contains the search term
+        """
+        query = "SELECT * FROM bookbans WHERE secondary_author ILIKE %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, ("%" + search_term + "%",))
+
+        results = cursor.fetchall()
+        return results
+    
+    def search_illustrator(self, search_term):
+        """Searches booksbans database for illustrators containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            list of bans where illustrator contains the search term
+        """
+        query = "SELECT * FROM bookbans WHERE illustrator ILIKE %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, ("%" + search_term + "%",))
+
+        results = cursor.fetchall()
+        return results
+    
+    def search_translator(self, search_term):
+        """Searches booksbans database for translators containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            list of bans where translator contains the search term
+        """
+        query = "SELECT * FROM bookbans WHERE translator ILIKE %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, ("%" + search_term + "%",))
+
+        results = cursor.fetchall()
+        return results
+    
+    def search_state(self, search_term):
+        """Searches booksbans database for states containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            list of bans where state contains the search term
+        """
+        query = "SELECT * FROM bookbans WHERE state ILIKE %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, ("%" + search_term + "%",))
+
+        results = cursor.fetchall()
+        return results
+    
+    def search_district(self, search_term):
+        """Searches booksbans database for districts containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            list of bans where district contains the search term
+        """
+        query = "SELECT * FROM bookbans WHERE district ILIKE %s"
+        cursor = self.connection.cursor()
+        cursor.execute(query, ("%" + search_term + "%",))
+
+        results = cursor.fetchall()
+        return results
+    
+    def get_date_of_challenge(self):
+        """Returns the date of challenge for all bans."""
+        query = (
+            "SELECT date_of_challenge "
+            "FROM bookbans "
+            "ORDER BY date_of_challenge;"
+        )
+
+    def get_ban_status(self):
+        """Returns the status of all bans."""
+        query = (
+            "SELECT ban_status "
+            "FROM bookbans "
+            "ORDER BY ban_status;"
+        )
+
+    def get_origin_of_challenge(self):
+        """Returns the origin of challenge for all bans."""
+        query = (
+            "SELECT origin_of_challenge "
+            "FROM bookbans "
+            "ORDER BY origin_of_challenge;"
+        )
 
     def get_bans_per_year(self):
         """Returns the number of bans per year from 2020 to 2025."""

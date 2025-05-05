@@ -101,7 +101,15 @@ class DataSource:
         return books
 
     def books_search_author(self, search_term) -> list[Book]:
-        query = "SELECT title, authors FROM books WHERE authors @> ARRAY[%s];"
+        query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
+        args = (search_term,)
+
+        results = self.execute_query(query, args)
+        books = self.database_row_list_to_book_list(results)
+        return books
+
+    def books_search_genre(self, search_term) -> list[Book]:
+        query = "SELECT * FROM books WHERE genres @> ARRAY[%s];"
         args = (search_term,)
 
         results = self.execute_query(query, args)
@@ -124,21 +132,6 @@ class DataSource:
         bookbans = self.database_row_list_to_bookban_list(results)
 
         return bookbans
-
-    def search_title_like(self, search_term):
-        """Searches booksbans database for titles containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where title contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE title ILIKE %s"
-        # search_term = "Angel"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
-
-        results = cursor.fetchall()
-        return results
 
     def search_genre(self, search_term):
         """Searches booksbans database for genres containing search term

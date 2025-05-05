@@ -86,8 +86,8 @@ def main():
 
     cl_map = {
         "search_title": ds.books_search_title,
-        "search_author": search_author,
-        "search_genre": search_genre,
+        "search_author": ds.books_search_author,
+        "search_genre": ds.books_search_genre,
         "most_banned_districts": most_banned_districts,
         "most_banned_authors": most_banned_authors,
         "most_banned_states": most_banned_states,

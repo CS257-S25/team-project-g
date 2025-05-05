@@ -71,6 +71,7 @@ def search(field, query):
         (str): a string of search results, separated by line breaks
     """
     output = ""
+    # output = search_title(query)
     match field:
         case "title":
             output = search_title(query)

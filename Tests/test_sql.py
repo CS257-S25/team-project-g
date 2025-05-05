@@ -3,6 +3,20 @@ This file contains the unit tests for the SQL queries.
 """
 
 import unittest
+from unittest.mock import patch
+from ProductionCode.datasource import (
+    books_search_title,
+    search_author,
+    search_title_like,
+    search_genre,
+    get_bans_per_year,
+    get_most_common_words,
+    get_most_banned_authors,
+    get_keyword,
+    get_most_banned_districts,
+    get_most_banned_states,
+    get_most_banned_titles
+)
 
 class TestSQLQueries(unittest.TestCase):
     """
@@ -20,4 +34,4 @@ class TestSQLQueries(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
             #set what it should return
         self.mock_cursor.fetchone.return_value = ("most_banned_authors")
-        self.assertEqual(get_most_banned_authors(5), "most_bannedPauthors")
+        self.assertEqual(books_search_title(""), "most_bannedPauthors")

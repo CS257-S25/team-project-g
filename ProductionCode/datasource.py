@@ -358,7 +358,6 @@ class DataSource:
 
         results = cursor.fetchall()
 
-<<<<<<< HEAD
     def search_secondary_author(self, search_term):
         """Searches booksbans database for secondary authors containing search term
         Args:
@@ -452,9 +451,6 @@ class DataSource:
             "FROM bookbans "
             "ORDER BY origin_of_challenge;"
         )
-=======
-        return results
->>>>>>> b6dec0954f21725b8f19c5cc4d03392ddd2bb9fe
 
     def get_bans_per_year(self):
         """Returns the number of bans per year from 2020 to 2025."""

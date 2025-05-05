@@ -47,10 +47,10 @@ class DataSource:
         results = cursor.fetchall()
         return results
 
-    def database_row_list_to_book_list(self, row_list):
-        return map(self.database_row_to_book, row_list)
+    def database_row_list_to_book_list(self, row_list) -> list[Book]:
+        return list(map(self.database_row_to_book, row_list))
 
-    def database_row_to_book(self, row):
+    def database_row_to_book(self, row) -> Book:
         book = Book(
             isbn=row[0],
             title=row[1],
@@ -62,20 +62,36 @@ class DataSource:
             rating=row[7],
         )
         return book
-    
-    def database_row_list_to_bookban_list(self, row_list):
-        return map(self.database_row_to_bookban, row_list)
 
-    def database_row_to_bookban(self, row):
+    def database_row_list_to_bookban_list(self, row_list) -> list[Bookban]:
+        return list(map(self.database_row_to_bookban, row_list))
+
+    def database_row_to_bookban(self, row) -> Bookban:
         isbn = row[0]
-        #TODO: something to get the book associated with the isbn
+        # TODO: something to get the book associated with the isbn
 
-        #for now, dummy book data
-        book = Book(isbn="000000000", title="Book Title", authors=["Author"], summary="summary of book", genres=["First Genre", "Second Genre"], cover="url", publish_date= 57891375319, rating=5.0)
-        bookban = Bookban(book=book, state=row[1], district=row[2], ban_date=row[3], ban_status=row[4], origin=row[5])
+        # for now, dummy book data
+        book = Book(
+            isbn="000000000",
+            title="Book Title",
+            authors=["Author"],
+            summary="summary of book",
+            genres=["First Genre", "Second Genre"],
+            cover="url",
+            publish_date=57891375319,
+            rating=5.0,
+        )
+        bookban = Bookban(
+            book=book,
+            state=row[1],
+            district=row[2],
+            ban_date=row[3],
+            ban_status=row[4],
+            ban_origin=row[5],
+        )
         return bookban
 
-    def books_search_title(self, search_term):
+    def books_search_title(self, search_term) -> list[Book]:
         query = "SELECT * FROM books WHERE title ILIKE %s"
         args = ("%" + search_term + "%",)
 
@@ -83,8 +99,8 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
         return books
 
-    def search_author(self, search_term):
-        """Searches booksbans database for authors exactly matching search term
+    def search_author(self, search_term) -> list[Bookban]:
+        """Searches bookbans database for authors exactly matching search term
         Args:
             search_term (str): the string being searched for
         Returns:
@@ -96,10 +112,9 @@ class DataSource:
         args = (search_term,)
 
         results = self.execute_query(query, args)
-        books = self.database_row_list_to_book_list(results)
+        bookbans = self.database_row_list_to_bookban_list(results)
 
-        return books
-
+        return bookbans
 
     def search_title_like(self, search_term):
         """Searches booksbans database for titles containing search term

@@ -208,6 +208,6 @@ class DataSource:
 if __name__ == "__main__":
     my_ds = DataSource()
     # results = my_ds.search_author("Haruki Murakami")
-    results = my_ds.books_search_title("a")
+    results = my_ds.books_search_title('killing')
     for result in results:
         print(result)

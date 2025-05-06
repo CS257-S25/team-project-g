@@ -1,9 +1,13 @@
+"""Module containing a book class for representing data on a book"""
+
 from datetime import datetime
 from statistics import fmean
 from psycopg2 import DATETIME
 
 
 class Book:
+    """Book class to represent book data"""
+
     def __init__(
         self,
         isbn: str,
@@ -25,9 +29,15 @@ class Book:
         self.rating = rating
 
     def __str__(self) -> str:
+        """Method for displaying basic book information
+        Args: None
+        Returns:
+            string with information on title, authors, and isbn number
+        """
         return f"{self.title} by {self.authors_to_string()} (ISBN: {self.isbn})"
 
     def authors_to_string(self) -> str:
+        """Helper method for displaying"""
         return ", ".join(self.authors)
 
     # def average_rating_histogram(self, rating_histogram):

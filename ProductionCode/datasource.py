@@ -285,28 +285,20 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def get_most_banned_authors(self, max_results):
-
-    def get_most_banned_authors(self):
         """Returns the 5 authors with the most bans."""
-        query = "SELECT author, COUNT(*) AS ban_count FROM bookbans GROUP BY author ORDER BY ban_count DESC LIMIT 5;"
-
-        results = self.execute_query(query)
         query = "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count DESC LIMIT %i;"
-        cursor = self.connection.cursor()
-        cursor.execute(query, (max_results))
+        args = (max_results,)
+        results = self.execute_query(query, args)
+        ranks = self.database_row_list_to_rank_list(results)
 
-        return results
+        return ranks
 
     def get_most_banned_districts(self, max_results):
         query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT %i;"
-        cursor = self.connection.cursor()
-        cursor.execute(query, (max_results))
-    def get_most_banned_districts(self):
-        query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT 5;"
-
-        results = self.execute_query(query)
+        args = (max_results, )
+        results = self.execute_query(query, args)
 
         ranks = self.database_row_list_to_rank_list(results)
 
@@ -315,25 +307,19 @@ class DataSource:
     def get_most_banned_states(self, max_results):
         """Returns the 5 states with the most bans."""
         query = "SELECT state, COUNT(*) AS ban_count FROM bookbans GROUP BY state ORDER BY ban_count DESC LIMIT %i;"
-        cursor = self.connection.cursor()
-        cursor.execute(query, (max_results))
-        results = cursor.fetchall()
-        return results
-        query = "SELECT state, COUNT(*) AS ban_count FROM bookbans GROUP BY state ORDER BY ban_count DESC LIMIT 5;"
-        results = self.execute_query(query)
-
+        args = (max_results, )
+        results = self.execute_query(query, args)
+  
         ranks = self.database_row_list_to_rank_list(results)
 
         return ranks
 
     def get_most_banned_titles(self, max_results):
         """Returns the 5 titles with the most bans."""
-        query = "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count DESC LIMIT 5;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
-        query = "SELECT title, COUNT(*) AS ban_count FROM bookbans GROUP BY title ORDER BY ban_count DESC LIMIT 5;"
+        query = "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count DESC LIMIT %i;"
+        args = (max_results, )
+        results = self.execute_query(query, args)
         results = self.execute_query(query)
-
         ranks = self.database_row_list_to_rank_list(results)
 
         return ranks

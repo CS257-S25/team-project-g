@@ -2,7 +2,7 @@
 
 import psycopg2
 
-import psl_config as config
+import psql_config as config
 
 from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban
@@ -48,9 +48,21 @@ class DataSource:
         return results
 
     def database_row_list_to_book_list(self, row_list) -> list[Book]:
+        """Helper method for converting database results to a list of Book objects
+        Args:
+            row_list (list[Tuple]): a list of rows from an sql query
+        Returns:
+            (list[Book]): a list of Book objects
+        """
         return list(map(self.database_row_to_book, row_list))
 
     def database_row_to_book(self, row) -> Book:
+        """Helper method for converting a database row to a Book object
+        Args:
+            row (Tuple): a row from the sql query
+        Returns:
+            (Book): a Book object
+        """
         book = Book(
             isbn=row[0],
             title=row[1],
@@ -64,9 +76,21 @@ class DataSource:
         return book
 
     def database_row_list_to_bookban_list(self, row_list) -> list[Bookban]:
+        """Helper method for converting database results to a list of Bookban objects
+        Args:
+            row_list (list[Tuple]): a list of rows from an sql query
+        Returns:
+            (list[Bookban]): a list of Bookban objects
+        """
         return list(map(self.database_row_to_bookban, row_list))
 
     def database_row_to_bookban(self, row) -> Bookban:
+        """Helper method for converting a database row to a Bookban object
+        Args:
+            row (Tuple): a row from the sql query
+        Returns:
+            (Bookban): a Bookban object
+        """
         isbn = row[0]
         # TODO: something to get the book associated with the isbn
 
@@ -93,6 +117,12 @@ class DataSource:
         return bookban
 
     def books_search_title(self, search_term) -> list[Book]:
+        """Searches books database for titles containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            (list[Book]): a list of Book objects where titles contain search_term
+        """
         query = "SELECT * FROM books WHERE title ILIKE %s"
         args = ("%" + search_term + "%",)
 
@@ -101,6 +131,12 @@ class DataSource:
         return books
 
     def books_search_author(self, search_term) -> list[Book]:
+        """Searches books database for authors that match search term
+        Args:
+            search_term (str): the author being searched for
+        Returns:
+            (list[Book]): a list of Book objects where search_term is in authors
+        """
         query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
         args = (search_term,)
 
@@ -109,6 +145,12 @@ class DataSource:
         return books
 
     def books_search_genre(self, search_term) -> list[Book]:
+        """Searches books database for genres that match search term
+        Args:
+            search_term (str): the genre being searched for
+        Returns:
+            (list[Book]): a list of Book objects where search_term is in genres
+        """
         query = "SELECT * FROM books WHERE genres @> ARRAY[%s];"
         args = (search_term,)
 
@@ -116,61 +158,29 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
         return books
 
-    def search_author(self, search_term) -> list[Bookban]:
-        """Searches bookbans database for authors exactly matching search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where author is the search term
-            test = DataSource()
+    # def get_bans_per_year(self):
+    #     """Returns the number of bans per year from 2020 to 2025."""
+    #     query = (
+    #         "SELECT year_banned, COUNT(*) AS bans_in_year "
+    #         "FROM bookbans "
+    #         "WHERE year_banned BETWEEN 2020 AND 2025 "
+    #         "GROUP BY year_banned "
+    #         "ORDER BY year_banned;"
+    #     )
 
-        """
-        query = "SELECT * FROM bookbans WHERE author=%s"
-        args = (search_term,)
-
-        results = self.execute_query(query, args)
-        bookbans = self.database_row_list_to_bookban_list(results)
-
-        return bookbans
-
-    def search_genre(self, search_term):
-        """Searches booksbans database for genres containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where genre contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE genre ILIKE %s"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
-
-        results = cursor.fetchall()
-
-        return results
-
-    def get_bans_per_year(self):
-        """Returns the number of bans per year from 2020 to 2025."""
-        query = (
-            "SELECT year_banned, COUNT(*) AS bans_in_year "
-            "FROM bookbans "
-            "WHERE year_banned BETWEEN 2020 AND 2025 "
-            "GROUP BY year_banned "
-            "ORDER BY year_banned;"
-        )
-
-    def get_most_common_words(self):
-        """Returns the 5 most common words in the titles of banned books."""
-        query = (
-            "SELECT word, COUNT(*) AS occurrences "
-            "FROM ("
-            "  SELECT regexp_split_to_table(lower(title), E'\\W+') AS word "
-            "  FROM bookbans"
-            ") AS words "
-            "WHERE word <> '' "
-            "GROUP BY word "
-            "ORDER BY occurrences DESC "
-            "LIMIT 5;"
-        )
+    # def get_most_common_words(self):
+    #     """Returns the 5 most common words in the titles of banned books."""
+    #     query = (
+    #         "SELECT word, COUNT(*) AS occurrences "
+    #         "FROM ("
+    #         "  SELECT regexp_split_to_table(lower(title), E'\\W+') AS word "
+    #         "  FROM bookbans"
+    #         ") AS words "
+    #         "WHERE word <> '' "
+    #         "GROUP BY word "
+    #         "ORDER BY occurrences DESC "
+    #         "LIMIT 5;"
+    #     )
 
     def get_most_banned_authors(self):
         """Returns the 5 authors with the most bans."""
@@ -182,14 +192,15 @@ class DataSource:
             "LIMIT 5;"
         )
 
-    def get_keyword(self, keyword):
-        """Returns all books that contain the given keyword in their title."""
-        query = (
-            "SELECT title, author, year_banned "
-            "FROM bookbans "
-            f"WHERE title ILIKE '%{keyword}%' "
-            "ORDER BY title;"
-        )
+    #
+    # def get_keyword(self, keyword):
+    #     """Returns all books that contain the given keyword in their title."""
+    #     query = (
+    #         "SELECT title, author, year_banned "
+    #         "FROM bookbans "
+    #         f"WHERE title ILIKE '%{keyword}%' "
+    #         "ORDER BY title;"
+    #     )
 
     def get_most_banned_districts(self):
         """Returns the 5 districts with the most bans."""
@@ -225,8 +236,8 @@ class DataSource:
 if __name__ == "__main__":
     my_ds = DataSource()
     # results = my_ds.search_author("Haruki Murakami")
-    results = my_ds.books_search_title("killing")
-    for result in results:
+    output = my_ds.books_search_title("killing")
+    for result in output:
         print(result)
 
 

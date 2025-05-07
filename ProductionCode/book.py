@@ -1,8 +1,8 @@
 """Module containing a book class for representing data on a book"""
 
-from datetime import datetime
-from statistics import fmean
-from psycopg2 import DATETIME
+# from datetime import datetime
+# from statistics import fmean
+# from psycopg2 import DATETIME
 
 
 class Book:
@@ -37,7 +37,7 @@ class Book:
         return f"{self.title} by {self.authors_to_string()} (ISBN: {self.isbn})"
 
     def authors_to_string(self) -> str:
-        """Helper method for displaying"""
+        """Helper method for displaying author information"""
         return ", ".join(self.authors)
 
     # def average_rating_histogram(self, rating_histogram):

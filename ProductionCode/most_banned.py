@@ -14,7 +14,7 @@ def format_item(item):
     return output
 
 
-def format_list(list):
+def format_list(ban_list):
     """Helper method for pretty formatting lists
     Args:
         item (list[{"field":str, "bans": int}]): a list of items with a field value
@@ -22,10 +22,10 @@ def format_list(list):
     Returns:
         a list of strings with the name of the item and the number of bans
     """
-    return map(format_item, list)
+    return map(format_item, ban_list)
 
 
-def limit_results(list, max_results):
+def limit_results(ban_list, max_results):
     """Returns the first {max_results} elements of a list
     Args:
         list (list): list to be limited
@@ -33,7 +33,7 @@ def limit_results(list, max_results):
     Returns:
         the first {max_results} elements of a list
     """
-    return list[0:max_results]
+    return ban_list[0:max_results]
 
 
 def most_banned_districts(max_results: int):

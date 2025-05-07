@@ -32,17 +32,21 @@ USAGE = (
 )
 
 EXAMPLES = (
-    'Examples:<br />'
-    '/search/title/Kaleidoscope<br />'
-    '/search/author/Haruki Murakami<br />'
-    '/most-banned/states/5<br />'
-    '/most-banned/authors/10<br />'
-    '/details/440236924<br />'
+    "Examples:<br />"
+    "/search/title/Kaleidoscope<br />"
+    "/most-banned/states/5<br />"
+    "/most-banned/authors/10<br />"
+    "/details/440236924<br />"
 )
+
 
 @app.route("/")
 def homepage():
-    """The homepage for the Flask app"""
+    """The homepage for the Flask app
+    args: None
+    Returns:
+        (str): a string of the homepage with line breaks
+    """
 
     return (
         "The following addresses can be used to see information about banned books:<br /><br />"
@@ -65,7 +69,7 @@ def details(isbn):
         abort(400, "No book with that ISBN found!")
 
     # variation on format_list_with_linebreak
-    return output.replace('\n', '<br /><br />')
+    return output.replace("\n", "<br /><br />")
 
 
 @app.route("/search/<field>/<query>", strict_slashes=False)
@@ -79,6 +83,7 @@ def search(field, query):
         (str): a string of search results, separated by line breaks
     """
     output = ""
+    # output = search_title(query)
     match field:
         case "title":
             output = search_title(query)
@@ -96,8 +101,12 @@ def search(field, query):
 
 @app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
 def most_banned(field, max_results):
-    """
-    The endpoint for the most banned titles
+    """The endpoint for the most banned titles
+    Args:
+        field (str): the category to search for; states, districts, authors, or titles
+        max_results (int): the number of results to return
+    Returns:
+        (str): a string of the most banned titles, separated by line breaks
     """
     if not max_results.isdigit() or field not in most_banned_map:
         abort(500)
@@ -108,8 +117,11 @@ def most_banned(field, max_results):
 
 @app.errorhandler(500)
 def python_bug(_error):
-    """
-    The endpoint for the 500 error
+    """The endpoint for the 500 error
+    Args:
+        _error (Exception): the error that was raised
+    Returns:
+        (str): 500: Bad Request
     """
     return "500: Bad Request", 500
 
@@ -126,9 +138,13 @@ def format_list_with_linebreak(list_of_strings):
 
 @app.errorhandler(404)
 def page_not_found(_error):
+    """The endpoint for the 404 error
+    Args:
+        _error (Exception): the error that was raised
+    Returns:
+        (str): 404: Sorry page not found with usage instructions
     """
-    The endpoint for the 404 error
-    """
+    
     return f"404: Sorry page not found<br /><br />{USAGE}<br /><br />{EXAMPLES}"
 
 

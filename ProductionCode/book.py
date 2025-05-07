@@ -1,8 +1,13 @@
-from datetime import datetime
-from statistics import fmean
-from psycopg2 import DATETIME
+"""Module containing a book class for representing data on a book"""
+
+# from datetime import datetime
+# from statistics import fmean
+# from psycopg2 import DATETIME
+
 
 class Book:
+    """Book class to represent book data"""
+
     def __init__(
         self,
         isbn: str,
@@ -11,7 +16,7 @@ class Book:
         summary: str,
         cover: str,
         genres: list[str],
-        publish_date: int,  # change this to a more accurate type
+        publish_date,  # change this to a more accurate type
         rating: float,
     ):
         self.isbn: str = isbn
@@ -24,32 +29,38 @@ class Book:
         self.rating = rating
 
     def __str__(self) -> str:
+        """Method for displaying basic book information
+        Args: None
+        Returns:
+            string with information on title, authors, and isbn number
+        """
         return f"{self.title} by {self.authors_to_string()} (ISBN: {self.isbn})"
 
     def authors_to_string(self) -> str:
+        """Helper method for displaying author information"""
         return ", ".join(self.authors)
 
-    def average_rating_histogram(self, rating_histogram):
-        return round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
+    # def average_rating_histogram(self, rating_histogram):
+    #     return round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
 
 
-def main() -> None:
-    """Main function for informal testing."""
-    book: Book = Book(
-        "to kill a mockingbird",
-        ["author a", "author b"],
-        "fjaskdhflahsf",
-        "url",
-        [
-            "fiction",
-            "historical fiction",
-        ],
-        "12481841",
-        84189471,
-        [10, 0, 1, 10, 50],
-    )
-    print(book)
-
-
-if __name__ == "__main__":
-    main()
+# def main() -> None:
+#     """Main function for informal testing."""
+#     book: Book = Book(
+#         "to kill a mockingbird",
+#         ["author a", "author b"],
+#         "fjaskdhflahsf",
+#         "url",
+#         [
+#             "fiction",
+#             "historical fiction",
+#         ],
+#         "12481841",
+#         84189471,
+#         [10, 0, 1, 10, 50],
+#     )
+#     print(book)
+#
+#
+# if __name__ == "__main__":
+#     main()

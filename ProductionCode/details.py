@@ -9,15 +9,15 @@ def print_book_full(book, bans):
     output = "Details for " + book["title"] + " by "
     output += ", ".join(book["authors"])
     # this conversion will eventually happen in the Book class
-    output += f" ({datetime.fromtimestamp(book["year"]/1000).year}, ISBN: {book["isbn"]})"
+    output += f" ({datetime.fromtimestamp(book['year']/1000).year}, ISBN: {book['isbn']})"
     # print the entire summary field
     output += "\nBook details from Goodreads: "+book["summary"]
     # print entire genre list
     output += "\nGenres: " + ", ".join(book["genres"])
     # print weighted avg of reviews (this conversion will eventually happen in the Book class)
-    output += f"\nAverage review: {fmean([1,2,3,4,5],weights=book["rating"]):.1f} stars"
+    output += f"\nAverage review: {fmean([1,2,3,4,5],weights=book['rating']):.1f} stars"
     for ban in bans:
-        output += f"\nBanned in {ban["district"]}, {ban["state"]} in {ban["ban_date"]}"
+        output += f"\nBanned in {ban['district']}, {ban['state']} in {ban['ban_date']}"
     return output
 
 def get_book_from_isbn(isbn):

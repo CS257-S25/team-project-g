@@ -280,7 +280,7 @@ class DataSource:
     
     def get_most_banned_authors(self):
         """Returns the 5 authors with the most bans."""
-        query = "SELECT author, COUNT(*) AS ban_count FROM bookbans GROUP BY author ORDER BY ban_count DESC LIMIT 5;"
+        query = "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count DESC LIMIT 5;"
         cursor = self.connection.cursor()
         cursor.execute(query)
 
@@ -306,7 +306,7 @@ class DataSource:
 
     def get_most_banned_titles(self):
         """Returns the 5 titles with the most bans."""
-        query = "SELECT title, COUNT(*) AS ban_count FROM bookbans GROUP BY title ORDER BY ban_count DESC LIMIT 5;"
+        query = "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count DESC LIMIT 5;"
         cursor = self.connection.cursor()
         cursor.execute(query)
 

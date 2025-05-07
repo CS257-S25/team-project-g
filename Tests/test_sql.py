@@ -26,10 +26,10 @@ class TestSQLQueries(unittest.TestCase):
     def setUp(self):
         #create mock connection
         self.mock_conn = MagicMock()
-        self mock_cursor = self.mock_conn.cursor.return_value
+        self.mock_cursor = self.mock_conn.cursor.return_value
     
     @patch('ProductionCode.datasource.psycopg2.connect')
-    def test_get_most_banned_authors(self, mock_connect):
+    def test_book_search_title_killing(self, mock_connect):
         response = (
             "Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)"
             "Killing Mr. Griffin by Lois Duncan (ISBN: None)"
@@ -41,3 +41,8 @@ class TestSQLQueries(unittest.TestCase):
             #set what it should return
         self.mock_cursor.fetchone.return_value = (response)
         self.assertEqual(books_search_title('killing'), response)
+
+    def test_search_author(self, mock_connect):
+        response = (
+            
+        )

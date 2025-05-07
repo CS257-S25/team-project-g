@@ -32,12 +32,13 @@ USAGE = (
 )
 
 EXAMPLES = (
-    'Examples:<br />'
-    '/search/title/Kaleidoscope<br />'
-    '/most-banned/states/5<br />'
-    '/most-banned/authors/10<br />'
-    '/details/440236924<br />'
+    "Examples:<br />"
+    "/search/title/Kaleidoscope<br />"
+    "/most-banned/states/5<br />"
+    "/most-banned/authors/10<br />"
+    "/details/440236924<br />"
 )
+
 
 @app.route("/")
 def homepage():
@@ -68,7 +69,7 @@ def details(isbn):
         abort(400, "No book with that ISBN found!")
 
     # variation on format_list_with_linebreak
-    return output.replace('\n', '<br /><br />')
+    return output.replace("\n", "<br /><br />")
 
 
 @app.route("/search/<field>/<query>", strict_slashes=False)
@@ -143,7 +144,7 @@ def page_not_found(_error):
     Returns:
         (str): 404: Sorry page not found with usage instructions
     """
-    return f"404: Sorry page not found<br /><br />{USAGE}"
+    return f"404: Sorry page not found<br /><br />{USAGE} <br /> <br />{EXAMPLES}"
 
 
 if __name__ == "__main__":

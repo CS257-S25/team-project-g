@@ -9,6 +9,7 @@ from ProductionCode.most_banned import (
 )
 from ProductionCode.search import search_author, search_genre, search_title
 from ProductionCode.details import get_details
+from ProductionCode.datasource import DataSource
 
 app = Flask(__name__)
 
@@ -82,22 +83,26 @@ def search(field, query):
     Returns:
         (str): a string of search results, separated by line breaks
     """
+
+    ds = DataSource()
+
     output = ""
     # output = search_title(query)
-    match field:
-        case "title":
-            output = search_title(query)
-        case "author":
-            output = search_author(query)
-        case "genre":
-            output = search_genre(query)
-        case _:
-            abort(
-                400,
-                "Invalid search field, options for field are title, author, or genre.",
-            )
-    return format_list_with_linebreak(output)
+    # match field:
+    #     case "title":
+    #         output = search_title(query)
+    #     case "author":
+    #         output = search_author(query)
+    #     case "genre":
+    #         output = search_genre(query)
+    #     case _:
+    #         abort(
+    #             400,
+    #             "Invalid search field, options for field are title, author, or genre.",
+    #         )
+    output = ds.books_search_title(query)
 
+    return format_list_with_linebreak(output)
 
 @app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
 def most_banned(field, max_results):
@@ -144,7 +149,7 @@ def page_not_found(_error):
     Returns:
         (str): 404: Sorry page not found with usage instructions
     """
-    
+
     return f"404: Sorry page not found<br /><br />{USAGE}<br /><br />{EXAMPLES}"
 
 

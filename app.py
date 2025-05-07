@@ -112,7 +112,9 @@ def most_banned(field, max_results):
         abort(500)
 
     function = database_functions_map[field]
-    return format_list_with_linebreak(function(int(max_results)))
+    output = function(int(max_results))
+    output = map(str, output)
+    return format_list_with_linebreak(output)
 
 
 @app.errorhandler(500)

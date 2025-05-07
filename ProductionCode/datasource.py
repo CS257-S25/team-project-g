@@ -288,7 +288,7 @@ class DataSource:
 
     def get_most_banned_authors(self, max_results):
         """Returns the 5 authors with the most bans."""
-        query = "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count DESC LIMIT %i;"
+        query = "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count DESC LIMIT %s;"
         args = (max_results,)
         results = self.execute_query(query, args)
         ranks = self.database_row_list_to_rank_list(results)
@@ -296,7 +296,7 @@ class DataSource:
         return ranks
 
     def get_most_banned_districts(self, max_results):
-        query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT %i;"
+        query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT %s;"
         args = (max_results, )
         results = self.execute_query(query, args)
 
@@ -306,7 +306,7 @@ class DataSource:
 
     def get_most_banned_states(self, max_results):
         """Returns the 5 states with the most bans."""
-        query = "SELECT state, COUNT(*) AS ban_count FROM bookbans GROUP BY state ORDER BY ban_count DESC LIMIT %i;"
+        query = "SELECT ban_state, COUNT(*) AS ban_count FROM bookbans GROUP BY ban_state ORDER BY ban_count DESC LIMIT %s;"
         args = (max_results, )
         results = self.execute_query(query, args)
   
@@ -316,7 +316,7 @@ class DataSource:
 
     def get_most_banned_titles(self, max_results):
         """Returns the 5 titles with the most bans."""
-        query = "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count DESC LIMIT %i;"
+        query = "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count DESC LIMIT %s;"
         args = (max_results, )
         results = self.execute_query(query, args)
         results = self.execute_query(query)

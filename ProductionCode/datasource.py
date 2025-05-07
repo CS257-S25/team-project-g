@@ -2,6 +2,7 @@
 
 import psycopg2
 
+from ProductionCode.search import query_data
 import psql_config as config
 
 from ProductionCode.book import Book
@@ -63,16 +64,14 @@ class DataSource:
         Returns:
             (Book): a Book object
         """
-        book = Book(
-            isbn=row[0],
-            title=row[1],
-            authors=row[2],
-            summary=row[3],
-            cover=row[4],
-            genres=row[5],
-            publish_date=row[6],
-            rating=row[7],
-        )
+        details = {
+            "summary": row[3],
+            "cover": row[4],
+            "genres": row[5],
+            "publish_date": row[6],
+            "rating": row[7],
+        }
+        book = Book(isbn=row[0], title=row[1], authors=row[2], details=details)
         return book
 
     def database_row_list_to_bookban_list(self, row_list) -> list[Bookban]:
@@ -92,19 +91,7 @@ class DataSource:
             (Bookban): a Bookban object
         """
         isbn = row[0]
-        # TODO: something to get the book associated with the isbn
-
-        # for now, dummy book data
-        book = Book(
-            isbn="000000000",
-            title="Book Title",
-            authors=["Author"],
-            summary="summary of book",
-            genres=["First Genre", "Second Genre"],
-            cover="url",
-            publish_date=57891375319,
-            rating=5.0,
-        )
+        book = self.book_from_isbn(isbn)
         bookban = Bookban(
             book=book,
             state=row[1],
@@ -115,6 +102,14 @@ class DataSource:
             ban_origin=row[6],
         )
         return bookban
+
+    def book_from_isbn(self, isbn) -> Book:
+        query = "SELECT * FROM books WHERE isbn=%s"
+        args = (isbn,)
+
+        results = self.execute_query(query, args)
+        book = self.database_row_to_book(results)
+        return book
 
     def books_search_title(self, search_term) -> list[Book]:
         """Searches books database for titles containing search term

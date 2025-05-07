@@ -7,6 +7,7 @@ import psql_config as config
 
 from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban
+from ProductionCode.rank import Rank
 
 
 class DataSource:
@@ -103,6 +104,13 @@ class DataSource:
         )
         return bookban
 
+    def database_row_list_to_rank_list(self, row_list) -> list[Rank]:
+        return list(map(self.database_row_to_rank, row_list))
+
+    def database_row_to_rank(self, row) -> Rank:
+        rank = Rank(name=row[0], tally=row[1])
+        return rank
+
     def book_from_isbn(self, isbn) -> Book:
         query = "SELECT * FROM books WHERE isbn=%s"
         args = (isbn,)
@@ -176,7 +184,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_illustrator(self, search_term):
         """Searches booksbans database for illustrators containing search term
         Args:
@@ -190,7 +198,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_translator(self, search_term):
         """Searches booksbans database for translators containing search term
         Args:
@@ -204,7 +212,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_state(self, search_term):
         """Searches booksbans database for states containing search term
         Args:
@@ -218,7 +226,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def search_district(self, search_term):
         """Searches booksbans database for districts containing search term
         Args:
@@ -232,7 +240,7 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def get_date_of_challenge(self):
         """Returns the date of challenge for all bans."""
         query = "SELECT date_of_challenge FROM bookbans ORDER BY date_of_challenge;"
@@ -277,41 +285,41 @@ class DataSource:
 
         results = cursor.fetchall()
         return results
-    
+
     def get_most_banned_authors(self):
         """Returns the 5 authors with the most bans."""
         query = "SELECT author, COUNT(*) AS ban_count FROM bookbans GROUP BY author ORDER BY ban_count DESC LIMIT 5;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
 
-        results = cursor.fetchall()
+        results = self.execute_query(query)
+
         return results
 
     def get_most_banned_districts(self):
         query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT 5;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
 
-        results = cursor.fetchall()
-        return results
+        results = self.execute_query(query)
+
+        ranks = self.database_row_list_to_rank_list(results)
+
+        return ranks
 
     def get_most_banned_states(self):
         """Returns the 5 states with the most bans."""
         query = "SELECT state, COUNT(*) AS ban_count FROM bookbans GROUP BY state ORDER BY ban_count DESC LIMIT 5;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
+        results = self.execute_query(query)
 
-        results = cursor.fetchall()
-        return results
+        ranks = self.database_row_list_to_rank_list(results)
+
+        return ranks
 
     def get_most_banned_titles(self):
         """Returns the 5 titles with the most bans."""
         query = "SELECT title, COUNT(*) AS ban_count FROM bookbans GROUP BY title ORDER BY ban_count DESC LIMIT 5;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
+        results = self.execute_query(query)
 
-        results = cursor.fetchall()
-        return results
+        ranks = self.database_row_list_to_rank_list(results)
+
+        return ranks
 
 
 if __name__ == "__main__":
@@ -320,5 +328,3 @@ if __name__ == "__main__":
     output = my_ds.books_search_title("killing")
     for result in output:
         print(result)
-
-

@@ -31,6 +31,14 @@ USAGE = (
     "&lt;isbn&gt; is the ISBN number of the book, which can be found using /search"
 )
 
+EXAMPLES = (
+    'Examples:<br />'
+    '/search/title/Kaleidoscope<br />'
+    '/search/author/Haruki Murakami<br />'
+    '/most-banned/states/5<br />'
+    '/most-banned/authors/10<br />'
+    '/details/440236924<br />'
+)
 
 @app.route("/")
 def homepage():

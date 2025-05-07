@@ -278,33 +278,32 @@ class DataSource:
         results = cursor.fetchall()
         return results
     
-    def get_most_banned_authors(self):
+    def get_most_banned_authors(self, max_results):
         """Returns the 5 authors with the most bans."""
-        query = "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count DESC LIMIT 5;"
+        query = "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count DESC LIMIT %i;"
         cursor = self.connection.cursor()
-        cursor.execute(query)
+        cursor.execute(query, (max_results))
 
         results = cursor.fetchall()
         return results
 
-    def get_most_banned_districts(self):
-        query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT 5;"
+    def get_most_banned_districts(self, max_results):
+        query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT %i;"
         cursor = self.connection.cursor()
-        cursor.execute(query)
+        cursor.execute(query, (max_results))
 
         results = cursor.fetchall()
         return results
 
-    def get_most_banned_states(self):
+    def get_most_banned_states(self, max_results):
         """Returns the 5 states with the most bans."""
-        query = "SELECT state, COUNT(*) AS ban_count FROM bookbans GROUP BY state ORDER BY ban_count DESC LIMIT 5;"
+        query = "SELECT state, COUNT(*) AS ban_count FROM bookbans GROUP BY state ORDER BY ban_count DESC LIMIT %i;"
         cursor = self.connection.cursor()
-        cursor.execute(query)
-
+        cursor.execute(query, (max_results))
         results = cursor.fetchall()
         return results
 
-    def get_most_banned_titles(self):
+    def get_most_banned_titles(self, max_results):
         """Returns the 5 titles with the most bans."""
         query = "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count DESC LIMIT 5;"
         cursor = self.connection.cursor()

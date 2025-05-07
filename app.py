@@ -11,6 +11,7 @@ from ProductionCode.search import search_author, search_genre, search_title
 from ProductionCode.details import get_details
 from ProductionCode.datasource import DataSource
 
+ds = DataSource()
 app = Flask(__name__)
 
 most_banned_map = {
@@ -18,6 +19,12 @@ most_banned_map = {
     "districts": most_banned_districts,
     "authors": most_banned_authors,
     "titles": most_banned_titles,
+}
+database_functions_map = {
+    "states": most_banned_states,
+    "districts": most_banned_districts,
+    "authors": most_banned_authors,
+    "titles": most_banned_authors
 }
 
 USAGE = (
@@ -117,8 +124,8 @@ def most_banned(field, max_results):
     if not max_results.isdigit() or field not in most_banned_map:
         abort(500)
 
-    function = most_banned_map[field]
-    return format_list_with_linebreak(function(int(max_results)))
+    function = ds.database_function_map[field]
+    return format_list_with_linebreak(function)
 
 
 @app.errorhandler(500)

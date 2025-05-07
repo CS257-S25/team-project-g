@@ -12,7 +12,7 @@ from ProductionCode.most_banned import (
     most_banned_states,
     most_banned_titles,
 )
-# from ProductionCode.datasource import DataSource
+from ProductionCode.datasource import DataSource
 
 
 def main():
@@ -82,12 +82,12 @@ def main():
     )
     args = parser.parse_args()
 
-    # ds = DataSource()
+    ds = DataSource()
 
     cl_map = {
-        "search_title": search_title,
-        "search_author": search_author,
-        "search_genre": search_genre,
+        "search_title": ds.books_search_title,
+        "search_author": ds.books_search_author,
+        "search_genre": ds.books_search_genre,
         "most_banned_districts": most_banned_districts,
         "most_banned_authors": most_banned_authors,
         "most_banned_states": most_banned_states,

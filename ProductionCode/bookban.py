@@ -1,6 +1,6 @@
 """Module containing a bookban class for representing data on a bookban"""
 
-from datetime import datetime
+# from datetime import datetime
 
 from ProductionCode.book import Book
 

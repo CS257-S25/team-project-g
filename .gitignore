@@ -1,6 +1,7 @@
 .DS_Store
 
 .psql_config.py
+psql_config.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

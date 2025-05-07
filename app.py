@@ -1,30 +1,17 @@
 """This is the main file for the Flask application."""
 
 from flask import Flask, abort
-from ProductionCode.most_banned import (
-    most_banned_districts,
-    most_banned_authors,
-    most_banned_states,
-    most_banned_titles,
-)
-from ProductionCode.search import search_author, search_genre, search_title
 from ProductionCode.details import get_details
 from ProductionCode.datasource import DataSource
 
 ds = DataSource()
 app = Flask(__name__)
 
-most_banned_map = {
-    "states": most_banned_states,
-    "districts": most_banned_districts,
-    "authors": most_banned_authors,
-    "titles": most_banned_titles,
-}
 database_functions_map = {
-    "states": most_banned_states,
-    "districts": most_banned_districts,
-    "authors": most_banned_authors,
-    "titles": most_banned_authors
+    "states": ds.get_most_banned_states,
+    "districts": ds.get_most_banned_districts,
+    "authors": ds.get_most_banned_authors,
+    "titles": ds.get_most_banned_authors
 }
 
 USAGE = (
@@ -121,11 +108,11 @@ def most_banned(field, max_results):
     Returns:
         (str): a string of the most banned titles, separated by line breaks
     """
-    if not max_results.isdigit() or field not in most_banned_map:
+    if not max_results.isdigit() or field not in database_functions_map:
         abort(500)
 
-    function = ds.database_function_map[field]
-    return format_list_with_linebreak(function)
+    function = database_functions_map[field]
+    return format_list_with_linebreak(function(int(max_results)))
 
 
 @app.errorhandler(500)

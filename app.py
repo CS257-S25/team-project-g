@@ -101,8 +101,9 @@ def search(field, query):
     #             "Invalid search field, options for field are title, author, or genre.",
     #         )
     output = ds.books_search_title(query)
-
+    output = map(str, output)
     return format_list_with_linebreak(output)
+
 
 @app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
 def most_banned(field, max_results):
@@ -154,4 +155,4 @@ def page_not_found(_error):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=7000)

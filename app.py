@@ -34,7 +34,11 @@ USAGE = (
 
 @app.route("/")
 def homepage():
-    """The homepage for the Flask app"""
+    """The homepage for the Flask app
+    args: None
+    Returns:
+        (str): a string of the homepage with line breaks
+    """
 
     return (
         "The following addresses can be used to see information about banned books:<br /><br />"
@@ -89,8 +93,12 @@ def search(field, query):
 
 @app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
 def most_banned(field, max_results):
-    """
-    The endpoint for the most banned titles
+    """The endpoint for the most banned titles
+    Args:
+        field (str): the category to search for; states, districts, authors, or titles
+        max_results (int): the number of results to return
+    Returns:
+        (str): a string of the most banned titles, separated by line breaks
     """
     if not max_results.isdigit() or field not in most_banned_map:
         abort(500)
@@ -101,8 +109,11 @@ def most_banned(field, max_results):
 
 @app.errorhandler(500)
 def python_bug(_error):
-    """
-    The endpoint for the 500 error
+    """The endpoint for the 500 error
+    Args:
+        _error (Exception): the error that was raised
+    Returns:
+        (str): 500: Bad Request
     """
     return "500: Bad Request", 500
 
@@ -119,8 +130,11 @@ def format_list_with_linebreak(list_of_strings):
 
 @app.errorhandler(404)
 def page_not_found(_error):
-    """
-    The endpoint for the 404 error
+    """The endpoint for the 404 error
+    Args:
+        _error (Exception): the error that was raised
+    Returns:
+        (str): 404: Sorry page not found with usage instructions
     """
     return f"404: Sorry page not found<br /><br />{USAGE}"
 

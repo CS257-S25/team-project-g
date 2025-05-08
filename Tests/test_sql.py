@@ -96,7 +96,7 @@ class TestSQLHelperMethods(unittest.TestCase):
         """Setup method to create datasource"""
         self.ds = DataSource()
 
-    def test_database_row_list_to_book_list(self):
+    def test_database_row_to_book(self):
         """Converting database row to book object test"""
         expected = Book(
             isbn="440236924",
@@ -111,7 +111,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             },
         )
 
-        results = self.ds.database_row_list_to_book_list(
+        results = self.ds.database_row_to_book(
             (
                 "440236924",
                 "Kaleidoscope",
@@ -122,6 +122,62 @@ class TestSQLHelperMethods(unittest.TestCase):
                 "2020-10-27",
                 3.9,
             )
+        )
+
+        self.assertEqual(results, expected)
+
+    def test_database_row_list_to_book_list(self):
+        """Converting database row to book object test"""
+        expected = [
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            ),
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            ),
+        ]
+
+        results = self.ds.database_row_list_to_book_list(
+            [
+                (
+                    "440236924",
+                    "Kaleidoscope",
+                    ["Danielle Steel"],
+                    "summary",
+                    "url.jpg",
+                    ["Mystery", "Fantasy"],
+                    "2020-10-27",
+                    3.9,
+                ),
+                (
+                    "440236924",
+                    "Kaleidoscope",
+                    ["Danielle Steel"],
+                    "summary",
+                    "url.jpg",
+                    ["Mystery", "Fantasy"],
+                    "2020-10-27",
+                    3.9,
+                ),
+            ]
         )
 
         self.assertEqual(results, expected)

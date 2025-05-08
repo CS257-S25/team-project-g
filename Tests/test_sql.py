@@ -212,7 +212,7 @@ class TestSQLQueries(unittest.TestCase):
         response = ("Kingdom of Ash", 52)
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.assertEqual(self.ds.get_most_banned_titles(1), str(response)
+        self.assertEqual(self.ds.get_most_banned_titles(1), str(response))
 
 
 class TestSQLHelperMethods(unittest.TestCase):

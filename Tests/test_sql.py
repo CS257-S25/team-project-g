@@ -1,6 +1,4 @@
-"""
-This file contains the unit tests for the SQL queries.
-"""
+"""This file contains the unit tests for the SQL queries."""
 
 import unittest
 from unittest.mock import MagicMock, patch
@@ -20,18 +18,17 @@ from ProductionCode.book import Book
 
 
 class TestSQLQueries(unittest.TestCase):
-    """
-    This class tests the SQL queries.
-    """
+    """This class tests the SQL queries."""
 
     def setUp(self):
-        # create mock connection
+        """Create a mock postgres connection."""
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
         self.ds = DataSource()
     
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_book_search_title_killing(self, mock_connect):
+        """Test search_title in a normal case."""
         response = (
             1250142202,
             "Killing Jesus: A History",
@@ -61,6 +58,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = (response)
         self.assertEqual(self.ds.books_search_title('Killing Jesus: '), str(response))
     def test_search_isbn(self, mock_connect):
+        """Test search_isbn in a normal case."""
         response = (
             440236924,
             "Kaleidoscope",
@@ -101,6 +99,7 @@ class TestSQLQueries(unittest.TestCase):
         self.asseertEqual(self.ds.book_from_isbn(440236924), str(response))
 
     def test_search_author(self, mock_connect):
+        """Test a normal case for search_author."""
         response = (
             1952457106,
             "A Kingdom of Flesh and Fire",
@@ -157,6 +156,7 @@ class TestSQLQueries(unittest.TestCase):
 
 
     def test_search_genre(self, mock_connect):
+        """Test a normal case for search_genre."""
         response = (
             "1682632075",
             "King & Kayla and the Case of the Gold Ring",
@@ -185,24 +185,28 @@ class TestSQLQueries(unittest.TestCase):
 
 
     def test_get_most_banned_authors(self, mock_connect):
+        """Test get_most_banned_authors with a limit of 1."""
         response = ()
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(get_most_banned_authors(1), response)
 
     def test_get_most_banned_districts(self, mock_connect):
+        """Test get_most_banned_districts with a limit of 1."""
         response = ()
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(get_most_banned_districts(1), response)
 
     def test_get_most_banned_states(self, mock_connect):
+        """Test get_most_banned_states with a limit of 1."""
         response = ()
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(get_most_banned_states(1), response)
 
     def test_get_most_banned_titles(self, mock_connect):
+        """Test get_most_banned_titles with a limit of 1."""
         response = ()
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response

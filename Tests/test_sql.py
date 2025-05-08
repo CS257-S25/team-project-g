@@ -49,7 +49,7 @@ class TestSQLQueries(unittest.TestCase):
             "photo.goodreads.com/books/1479249078i/31949128.jpg",
             {"Historical","Christianity","Faith","Biography","Book Club",
              "Nonfiction","History","Religion","Christian","Audiobook"},
-            2017-3-14,
+            "2017-3-14",
             4
         )
         #link the mock connection
@@ -91,7 +91,7 @@ class TestSQLQueries(unittest.TestCase):
             {"Adult Fiction","Contemporary Romance","Romance",
              "Novels","Contemporary","Drama","Adult","Chick Lit",
              "Historical Fiction","Fiction"},
-            2000-10-28,
+            "2000-10-28",
             4
         )
         mock_connect.return_value = self.mock_conn
@@ -147,7 +147,7 @@ class TestSQLQueries(unittest.TestCase):
              "Romantasy","Enemies To Lovers",
              "Fantasy","Fantasy Romance","Magic",
              "Audiobook","Vampires"},
-            2020-9-1,
+            "2020-9-1",
             4.3
         )
         mock_connect.return_value = self.mock_conn
@@ -176,7 +176,7 @@ class TestSQLQueries(unittest.TestCase):
             "com/books/1599572199i/54793419.jpg",
             {"Chapter Books","Humor","Fiction","Friendship","Dogs",
              "Animal Fiction","Mystery","Animals","Childrens"},
-            2021-2-2,
+            "2021-2-2",
             3.9
         )
         mock_connect.return_value = self.mock_conn

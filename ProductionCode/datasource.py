@@ -123,7 +123,7 @@ class DataSource:
         Returns:
             (Rank): a Rank object
         """
-        rank = Rank(name=row[0], tally=row[1])
+        rank = Rank(name=row[0], bans=row[1])
         return rank
 
     def book_from_isbn(self, isbn) -> Book:
@@ -335,7 +335,7 @@ class DataSource:
             (list[Rank]): a list of Rank objects of districts and number of bans
         """
         query = (
-            "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district"
+            "SELECT ban_district, COUNT(*) AS ban_count FROM bookbans GROUP BY ban_district"
             " ORDER BY ban_count DESC LIMIT %s;"
         )
         args = (max_results,)
@@ -377,7 +377,7 @@ class DataSource:
         )
         args = (max_results,)
         results = self.execute_query(query, args)
-        results = self.execute_query(query)
+
         ranks = self.database_row_list_to_rank_list(results)
 
         return ranks

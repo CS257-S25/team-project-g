@@ -24,7 +24,7 @@ class TestSQLQueries(unittest.TestCase):
         """Create a mock postgres connection."""
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
-        self.ds = DataSource()
+        #self.ds = DataSource()
     
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_book_search_title_killing(self, mock_connect):
@@ -56,7 +56,7 @@ class TestSQLQueries(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
             #set what it should return
         self.mock_cursor.fetchone.return_value = (response)
-        self.assertEqual(self.ds.books_search_title('Killing Jesus: '), str(response))
+        self.assertEqual(DataSource().books_search_title('Killing Jesus: '), str(response))
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_isbn(self, mock_connect):

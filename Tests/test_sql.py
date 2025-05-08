@@ -57,6 +57,8 @@ class TestSQLQueries(unittest.TestCase):
             #set what it should return
         self.mock_cursor.fetchone.return_value = (response)
         self.assertEqual(self.ds.books_search_title('Killing Jesus: '), str(response))
+
+    @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_isbn(self, mock_connect):
         """Test search_isbn in a normal case."""
         response = (
@@ -98,6 +100,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.book_from_isbn(440236924), str(response))
 
+    @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_author(self, mock_connect):
         """Test a normal case for search_author."""
         response = (
@@ -154,7 +157,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.books_search_author('Jennifer L. Armentrout'), str(response))
 
-
+    @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_genre(self, mock_connect):
         """Test a normal case for search_genre."""
         response = (
@@ -183,7 +186,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.books_search_genre('Animal Fiction'), str(response))
 
-
+    @patch('ProductionCode.datasource.psycopg2.connect')
     def test_get_most_banned_authors(self, mock_connect):
         """Test get_most_banned_authors with a limit of 1."""
         response = ({"Sarah J. Maas"}, 52)
@@ -191,6 +194,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_authors(1), str(response))
 
+    @patch('ProductionCode.datasource.psycopg2.connect')
     def test_get_most_banned_districts(self, mock_connect):
         """Test get_most_banned_districts with a limit of 1."""
         response = (
@@ -200,6 +204,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_districts(1), str(response))
 
+    @patch('ProductionCode.datasource.psycopg2.connect')
     def test_get_most_banned_states(self, mock_connect):
         """Test get_most_banned_states with a limit of 1."""
         response = ("Florida", 87)
@@ -207,6 +212,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_states(1), str(response))
 
+    @patch('ProductionCode.datasource.psycopg2.connect')
     def test_get_most_banned_titles(self, mock_connect):
         """Test get_most_banned_titles with a limit of 1."""
         response = ("Kingdom of Ash", 52)

@@ -147,7 +147,7 @@ class TestSQLQueries(unittest.TestCase):
              "Romantasy","Enemies To Lovers",
              "Fantasy","Fantasy Romance","Magic",
              "Audiobook","Vampires"},
-            2020-09-01,
+            2020-9-1,
             4.3
         )
         mock_connect.return_value = self.mock_conn
@@ -201,9 +201,8 @@ class TestSQLQueries(unittest.TestCase):
         self.assertEqual(self.ds.get_most_banned_districts(1), str(response))
 
     def test_get_most_banned_states(self, mock_connect):
-        response = ("Florida", 87)
         """Test get_most_banned_states with a limit of 1."""
-        response = ()
+        response = ("Florida", 87)
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_states(1), str(response))
@@ -219,7 +218,7 @@ class TestSQLQueries(unittest.TestCase):
 class TestSQLHelperMethods(unittest.TestCase):
     """This class tests the helper methods for SQL queries"""
 
-    def setUp(self) -> None:
+    def setUp(self):
         """Setup method to create datasource"""
         self.ds = DataSource()
 

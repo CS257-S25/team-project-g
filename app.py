@@ -11,7 +11,7 @@ database_most_banned_map = {
     "states": ds.get_most_banned_states,
     "districts": ds.get_most_banned_districts,
     "authors": ds.get_most_banned_authors,
-    "titles": ds.get_most_banned_authors,
+    "titles": ds.get_most_banned_titles,
 }
 
 database_search_map = {

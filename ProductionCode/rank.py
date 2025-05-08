@@ -1,7 +1,17 @@
+"""Module containing a Rank class for representing the number of bans a item has"""
+
+
 class Rank:
-    def __init__(self, name: str, tally: int):
+    """Rank class to represent the number of bans a item has"""
+
+    def __init__(self, name: str, bans: int):
         self.name = name
-        self.tally = tally
+        self.bans = bans
 
     def __str__(self) -> str:
-        return f"{self.name}: {self.tally}"
+        """Method for displaying rank
+        Args: None
+        Returns:
+            string with name and number of bans formatted
+        """
+        return f"{self.name}: {self.bans}"

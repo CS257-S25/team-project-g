@@ -2,7 +2,7 @@
 
 import psycopg2
 
-import psql_config as config
+import ProductionCode.psql_config as config
 
 from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban

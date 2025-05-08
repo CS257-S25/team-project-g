@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS bookbans;
 CREATE TABLE bookbans (
-    isbn int,
+    isbn text,
     ban_state text,
     ban_district text,
     ban_year int,

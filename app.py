@@ -1,22 +1,17 @@
 """This is the main file for the Flask application."""
 
 from flask import Flask, abort
-from ProductionCode.most_banned import (
-    most_banned_districts,
-    most_banned_authors,
-    most_banned_states,
-    most_banned_titles,
-)
-from ProductionCode.search import search_author, search_genre, search_title
 from ProductionCode.details import get_details
+from ProductionCode.datasource import DataSource
 
+ds = DataSource()
 app = Flask(__name__)
 
-most_banned_map = {
-    "states": most_banned_states,
-    "districts": most_banned_districts,
-    "authors": most_banned_authors,
-    "titles": most_banned_titles,
+database_functions_map = {
+    "states": ds.get_most_banned_states,
+    "districts": ds.get_most_banned_districts,
+    "authors": ds.get_most_banned_authors,
+    "titles": ds.get_most_banned_authors
 }
 
 USAGE = (
@@ -82,20 +77,25 @@ def search(field, query):
     Returns:
         (str): a string of search results, separated by line breaks
     """
+
+    ds = DataSource()
+
     output = ""
     # output = search_title(query)
-    match field:
-        case "title":
-            output = search_title(query)
-        case "author":
-            output = search_author(query)
-        case "genre":
-            output = search_genre(query)
-        case _:
-            abort(
-                400,
-                "Invalid search field, options for field are title, author, or genre.",
-            )
+    # match field:
+    #     case "title":
+    #         output = search_title(query)
+    #     case "author":
+    #         output = search_author(query)
+    #     case "genre":
+    #         output = search_genre(query)
+    #     case _:
+    #         abort(
+    #             400,
+    #             "Invalid search field, options for field are title, author, or genre.",
+    #         )
+    output = ds.books_search_title(query)
+    output = map(str, output)
     return format_list_with_linebreak(output)
 
 
@@ -108,11 +108,13 @@ def most_banned(field, max_results):
     Returns:
         (str): a string of the most banned titles, separated by line breaks
     """
-    if not max_results.isdigit() or field not in most_banned_map:
+    if not max_results.isdigit() or field not in database_functions_map:
         abort(500)
 
-    function = most_banned_map[field]
-    return format_list_with_linebreak(function(int(max_results)))
+    function = database_functions_map[field]
+    output = function(int(max_results))
+    output = map(str, output)
+    return format_list_with_linebreak(output)
 
 
 @app.errorhandler(500)
@@ -144,8 +146,9 @@ def page_not_found(_error):
     Returns:
         (str): 404: Sorry page not found with usage instructions
     """
-    return f"404: Sorry page not found<br /><br />{USAGE} <br /> <br />{EXAMPLES}"
+
+    return f"404: Sorry page not found<br /><br />{USAGE}<br /><br />{EXAMPLES}"
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=7000)

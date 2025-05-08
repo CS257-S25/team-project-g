@@ -14,21 +14,11 @@ class Book:
         title: str,
         authors: list[str],
         details: dict,
-        # summary: str,
-        # cover: str,
-        # genres: list[str],
-        # publish_date,  # change this to a more accurate type
-        # rating: float,
     ):
         self.isbn: str = isbn
         self.title: str = title
         self.authors: list[str] = authors
         self.details = details
-        # self.summary: str = summary
-        # self.cover: str = cover
-        # self.genres: list[str] = genres
-        # self.publish_date = publish_date
-        # self.rating = rating
 
     def __str__(self) -> str:
         """Method for displaying basic book information

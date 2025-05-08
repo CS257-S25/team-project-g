@@ -28,7 +28,7 @@ class DataSource:
                 password=config.password,
                 host="localhost",
             )
-        except psycopg2.OperationalError as e:
+        except psycopg2.Error as e:
             print("Connection error: ", e)
         return connection
 
@@ -40,14 +40,18 @@ class DataSource:
         Returns:
             query response
         """
-        # TODO: Should probably add error handling
-        cursor = self.connection.cursor()
-        if args is None:
-            cursor.execute(query)
-        else:
-            cursor.execute(query, args)
-        results = cursor.fetchall()
-        return results
+        cursor = None
+        try:
+            cursor = self.connection.cursor()
+            if args is None:
+                cursor.execute(query)
+            else:
+                cursor.execute(query, args)
+            results = cursor.fetchall()
+            return results
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            return None
 
     def database_row_list_to_book_list(self, row_list) -> list[Book]:
         """Helper method for converting database results to a list of Book objects
@@ -171,124 +175,135 @@ class DataSource:
     #         "ORDER BY year_banned;"
     #     )
 
-    def search_secondary_author(self, search_term):
-        """Searches booksbans database for secondary authors containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where secondary author contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE secondary_author ILIKE %s"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
-
-        results = cursor.fetchall()
-        return results
-
-    def search_illustrator(self, search_term):
-        """Searches booksbans database for illustrators containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where illustrator contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE illustrator ILIKE %s"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
-
-        results = cursor.fetchall()
-        return results
-
-    def search_translator(self, search_term):
-        """Searches booksbans database for translators containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where translator contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE translator ILIKE %s"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
-
-        results = cursor.fetchall()
-        return results
-
-    def search_state(self, search_term):
-        """Searches booksbans database for states containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where state contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE state ILIKE %s"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
-
-        results = cursor.fetchall()
-        return results
-
-    def search_district(self, search_term):
-        """Searches booksbans database for districts containing search term
-        Args:
-            search_term (str): the string being searched for
-        Returns:
-            list of bans where district contains the search term
-        """
-        query = "SELECT * FROM bookbans WHERE district ILIKE %s"
-        cursor = self.connection.cursor()
-        cursor.execute(query, ("%" + search_term + "%",))
-
-        results = cursor.fetchall()
-        return results
-
-    def get_date_of_challenge(self):
-        """Returns the date of challenge for all bans."""
-        query = "SELECT date_of_challenge FROM bookbans ORDER BY date_of_challenge;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
-
-        results = cursor.fetchall()
-        return results
-
-    def get_ban_status(self):
-        """Returns the status of all bans."""
-        query = "SELECT ban_status FROM bookbans ORDER BY ban_status;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
-
-        results = cursor.fetchall()
-        return results
-
-    def get_origin_of_challenge(self):
-        """Returns the origin of challenge for all bans."""
-        query = "SELECT origin_of_challenge FROM bookbans ORDER BY origin_of_challenge;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
-
-        results = cursor.fetchall()
-        return results
-
-    def get_bans_per_year(self):
-        """Returns the number of bans per year from 2020 to 2025."""
-        query = "SELECT year_banned, COUNT(*) AS bans_in_year FROM bookbans WHERE year_banned BETWEEN 2020 AND 2025 GROUP BY year_banned ORDER BY year_banned;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
-
-        results = cursor.fetchall()
-        return results
-
-    def get_most_common_words(self):
-        """Returns the 5 most common words in the titles of banned books."""
-        query = "SELECT word, COUNT(*) AS occurrences FROM (SELECT regexp_split_to_table(lower(title), E'\\W+') AS word FROM bookbans) AS words WHERE word <> '' GROUP BY word ORDER BY occurrences DESC LIMIT 5;"
-        cursor = self.connection.cursor()
-        cursor.execute(query)
-
-        results = cursor.fetchall()
-        return results
-
+    # def search_secondary_author(self, search_term):
+    #     """Searches booksbans database for secondary authors containing search term
+    #     Args:
+    #         search_term (str): the string being searched for
+    #     Returns:
+    #         list of bans where secondary author contains the search term
+    #     """
+    #     query = "SELECT * FROM bookbans WHERE secondary_author ILIKE %s"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query, ("%" + search_term + "%",))
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def search_illustrator(self, search_term):
+    #     """Searches booksbans database for illustrators containing search term
+    #     Args:
+    #         search_term (str): the string being searched for
+    #     Returns:
+    #         list of bans where illustrator contains the search term
+    #     """
+    #     query = "SELECT * FROM bookbans WHERE illustrator ILIKE %s"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query, ("%" + search_term + "%",))
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def search_translator(self, search_term):
+    #     """Searches booksbans database for translators containing search term
+    #     Args:
+    #         search_term (str): the string being searched for
+    #     Returns:
+    #         list of bans where translator contains the search term
+    #     """
+    #     query = "SELECT * FROM bookbans WHERE translator ILIKE %s"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query, ("%" + search_term + "%",))
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def search_state(self, search_term):
+    #     """Searches booksbans database for states containing search term
+    #     Args:
+    #         search_term (str): the string being searched for
+    #     Returns:
+    #         list of bans where state contains the search term
+    #     """
+    #     query = "SELECT * FROM bookbans WHERE state ILIKE %s"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query, ("%" + search_term + "%",))
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def search_district(self, search_term):
+    #     """Searches booksbans database for districts containing search term
+    #     Args:
+    #         search_term (str): the string being searched for
+    #     Returns:
+    #         list of bans where district contains the search term
+    #     """
+    #     query = "SELECT * FROM bookbans WHERE district ILIKE %s"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query, ("%" + search_term + "%",))
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def get_date_of_challenge(self):
+    #     """Returns the date of challenge for all bans."""
+    #     query = "SELECT date_of_challenge FROM bookbans ORDER BY date_of_challenge;"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query)
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def get_ban_status(self):
+    #     """Returns the status of all bans."""
+    #     query = "SELECT ban_status FROM bookbans ORDER BY ban_status;"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query)
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def get_origin_of_challenge(self):
+    #     """Returns the origin of challenge for all bans."""
+    #     query = "SELECT origin_of_challenge FROM bookbans ORDER BY origin_of_challenge;"
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query)
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def get_bans_per_year(self):
+    #     """Returns the number of bans per year from 2020 to 2025."""
+    #     query = (
+    #         "SELECT year_banned, COUNT(*) AS bans_in_year FROM bookbans WHERE year_banned"
+    #         " BETWEEN 2020 AND 2025 GROUP BY year_banned ORDER BY year_banned;"
+    #     )
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query)
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
+    # def get_most_common_words(self):
+    #     """Returns the 5 most common words in the titles of banned books."""
+    #     query = (
+    #         "SELECT word, COUNT(*) AS occurrences FROM"
+    #         " (SELECT regexp_split_to_table(lower(title), E'\\W+') AS word FROM bookbans)"
+    #         " AS words WHERE word <> '' GROUP BY word ORDER BY occurrences DESC LIMIT 5;"
+    #     )
+    #     cursor = self.connection.cursor()
+    #     cursor.execute(query)
+    #
+    #     results = cursor.fetchall()
+    #     return results
+    #
     def get_most_banned_authors(self, max_results):
         """Returns the 5 authors with the most bans."""
-        query = "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count DESC LIMIT %s;"
+        query = (
+            "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
+            " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count"
+            " DESC LIMIT %s;"
+        )
         args = (max_results,)
         results = self.execute_query(query, args)
         ranks = self.database_row_list_to_rank_list(results)
@@ -296,8 +311,11 @@ class DataSource:
         return ranks
 
     def get_most_banned_districts(self, max_results):
-        query = "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district ORDER BY ban_count DESC LIMIT %s;"
-        args = (max_results, )
+        query = (
+            "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district"
+            " ORDER BY ban_count DESC LIMIT %s;"
+        )
+        args = (max_results,)
         results = self.execute_query(query, args)
 
         ranks = self.database_row_list_to_rank_list(results)
@@ -306,18 +324,25 @@ class DataSource:
 
     def get_most_banned_states(self, max_results):
         """Returns the 5 states with the most bans."""
-        query = "SELECT ban_state, COUNT(*) AS ban_count FROM bookbans GROUP BY ban_state ORDER BY ban_count DESC LIMIT %s;"
-        args = (max_results, )
+        query = (
+            "SELECT ban_state, COUNT(*) AS ban_count FROM bookbans GROUP BY ban_state"
+            " ORDER BY ban_count DESC LIMIT %s;"
+        )
+        args = (max_results,)
         results = self.execute_query(query, args)
-  
+
         ranks = self.database_row_list_to_rank_list(results)
 
         return ranks
 
     def get_most_banned_titles(self, max_results):
         """Returns the 5 titles with the most bans."""
-        query = "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count DESC LIMIT %s;"
-        args = (max_results, )
+        query = (
+            "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
+            " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count"
+            " DESC LIMIT %s;"
+        )
+        args = (max_results,)
         results = self.execute_query(query, args)
         results = self.execute_query(query)
         ranks = self.database_row_list_to_rank_list(results)

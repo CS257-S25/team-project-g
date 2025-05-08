@@ -2,7 +2,6 @@
 
 import psycopg2
 
-from ProductionCode.search import query_data
 import psql_config as config
 
 from ProductionCode.book import Book
@@ -109,13 +108,31 @@ class DataSource:
         return bookban
 
     def database_row_list_to_rank_list(self, row_list) -> list[Rank]:
+        """Helper method for converting a list of rank tuple to a list of Ranks
+        Args:
+            row (str,int): a name and the number of associated bans
+        Returns:
+            (Rank): a Rank object
+        """
         return list(map(self.database_row_to_rank, row_list))
 
     def database_row_to_rank(self, row) -> Rank:
+        """Helper method for converting a rank tuple to a Rank object
+        Args:
+            row (str,int): a name and the number of associated bans
+        Returns:
+            (Rank): a Rank object
+        """
         rank = Rank(name=row[0], tally=row[1])
         return rank
 
     def book_from_isbn(self, isbn) -> Book:
+        """Queries book database based on ISBN
+        Args:
+            isbn (str): a book's isbn number
+        Returns:
+            (Book): a Book object with the isbn number
+        """
         query = "SELECT * FROM books WHERE isbn=%s"
         args = (isbn,)
 
@@ -311,6 +328,12 @@ class DataSource:
         return ranks
 
     def get_most_banned_districts(self, max_results):
+        """Searches bookban database for districts with the most bans
+        Args:
+            max_results (int): the number of results to display
+        Returns:
+            (list[Rank]): a list of Rank objects of districts and number of bans
+        """
         query = (
             "SELECT district, COUNT(*) AS ban_count FROM bookbans GROUP BY district"
             " ORDER BY ban_count DESC LIMIT %s;"
@@ -323,7 +346,12 @@ class DataSource:
         return ranks
 
     def get_most_banned_states(self, max_results):
-        """Returns the 5 states with the most bans."""
+        """Searches bookban database for states with the most bans
+        Args:
+            max_results (int): the number of results to display
+        Returns:
+            (list[Rank]): a list of Rank objects of states and number of bans
+        """
         query = (
             "SELECT ban_state, COUNT(*) AS ban_count FROM bookbans GROUP BY ban_state"
             " ORDER BY ban_count DESC LIMIT %s;"
@@ -336,7 +364,12 @@ class DataSource:
         return ranks
 
     def get_most_banned_titles(self, max_results):
-        """Returns the 5 titles with the most bans."""
+        """Searches bookban database for titles with the most bans
+        Args:
+            max_results (int): the number of results to display
+        Returns:
+            (list[Rank]): a list of Rank objects of titles and number of bans
+        """
         query = (
             "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
             " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count"

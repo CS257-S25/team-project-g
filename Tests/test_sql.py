@@ -307,4 +307,3 @@ class TestSQLHelperMethods(unittest.TestCase):
         )
 
         self.assertEqual(results, expected)
-)

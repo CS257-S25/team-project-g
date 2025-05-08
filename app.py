@@ -7,11 +7,17 @@ from ProductionCode.datasource import DataSource
 ds = DataSource()
 app = Flask(__name__)
 
-database_functions_map = {
+database_most_banned_map = {
     "states": ds.get_most_banned_states,
     "districts": ds.get_most_banned_districts,
     "authors": ds.get_most_banned_authors,
-    "titles": ds.get_most_banned_authors
+    "titles": ds.get_most_banned_authors,
+}
+
+database_search_map = {
+    "title": ds.books_search_title,
+    "author": ds.books_search_author,
+    "genre": ds.books_search_genre,
 }
 
 USAGE = (
@@ -33,6 +39,10 @@ EXAMPLES = (
     "/most-banned/authors/10<br />"
     "/details/440236924<br />"
 )
+
+
+def object_list_to_string(object_list):
+    return map(str, object_list)
 
 
 @app.route("/")
@@ -78,24 +88,8 @@ def search(field, query):
         (str): a string of search results, separated by line breaks
     """
 
-    ds = DataSource()
-
-    output = ""
-    # output = search_title(query)
-    # match field:
-    #     case "title":
-    #         output = search_title(query)
-    #     case "author":
-    #         output = search_author(query)
-    #     case "genre":
-    #         output = search_genre(query)
-    #     case _:
-    #         abort(
-    #             400,
-    #             "Invalid search field, options for field are title, author, or genre.",
-    #         )
-    output = ds.books_search_title(query)
-    output = map(str, output)
+    function = database_search_map[field]
+    output = function(query)
     return format_list_with_linebreak(output)
 
 
@@ -108,12 +102,11 @@ def most_banned(field, max_results):
     Returns:
         (str): a string of the most banned titles, separated by line breaks
     """
-    if not max_results.isdigit() or field not in database_functions_map:
+    if not max_results.isdigit() or field not in database_most_banned_map:
         abort(500)
 
-    function = database_functions_map[field]
+    function = database_most_banned_map[field]
     output = function(int(max_results))
-    output = map(str, output)
     return format_list_with_linebreak(output)
 
 
@@ -128,14 +121,15 @@ def python_bug(_error):
     return "500: Bad Request", 500
 
 
-def format_list_with_linebreak(list_of_strings):
+def format_list_with_linebreak(object_list):
     """Helper method for joining a list of strings with line breaks
     Args:
         list_of_strings (str[]): a list of strings
     Returns:
         (str): a string composed of each element of the list joined by line breaks
     """
-    return "</br>".join(list_of_strings)
+    string_list = object_list_to_string(object_list)
+    return "</br>".join(string_list)
 
 
 @app.errorhandler(404)

@@ -27,9 +27,9 @@ class DataSource:
                 password=config.PASSWORD,
                 host="localhost",
             )
-            return connection
         except psycopg2.Error as e:
             print("Connection error: ", e)
+        return connection
 
     def execute_query(self, query, args=None):
         """Helper method for executing sql queries

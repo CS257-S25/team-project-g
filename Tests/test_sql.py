@@ -16,6 +16,7 @@ from ProductionCode.datasource import (
     # get_most_banned_states,
     # get_most_banned_titles
     # )
+from ProductionCode.book import Book
 
 
 class TestSQLQueries(unittest.TestCase):
@@ -24,7 +25,7 @@ class TestSQLQueries(unittest.TestCase):
     """
 
     def setUp(self):
-        #create mock connection
+        # create mock connection
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
         self.ds = DataSource()
@@ -59,7 +60,6 @@ class TestSQLQueries(unittest.TestCase):
             #set what it should return
         self.mock_cursor.fetchone.return_value = (response)
         self.assertEqual(self.ds.books_search_title('Killing Jesus: '), str(response))
-
     def test_search_isbn(self, mock_connect):
         response = (
             440236924,
@@ -155,6 +155,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.asseertEqual(self.ds.books_search_author('Jennifer L. Armentrout'), response)
 
+
     def test_search_genre(self, mock_connect):
         response = (
             "1682632075",
@@ -182,6 +183,7 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.books_search_genre('Animal Fiction'), str(response))
 
+
     def test_get_most_banned_authors(self, mock_connect):
         response = ()
         mock_connect.return_value = self.mock_conn
@@ -205,3 +207,97 @@ class TestSQLQueries(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(get_most_banned_titles(1), response)
+
+
+class TestSQLHelperMethods(unittest.TestCase):
+    """This class tests the helper methods for SQL queries"""
+
+    def setUp(self) -> None:
+        """Setup method to create datasource"""
+        self.ds = DataSource()
+
+    def test_database_row_to_book(self):
+        """Converting database row to book object test"""
+        expected = Book(
+            isbn="440236924",
+            title="Kaleidoscope",
+            authors=["Danielle Steel"],
+            details={
+                "summary": "summary",
+                "cover": "url.jpg",
+                "genres": ["Mystery", "Fantasy"],
+                "publish_date": "2020-10-27",
+                "rating": 3.9,
+            },
+        )
+
+        results = self.ds.database_row_to_book(
+            (
+                "440236924",
+                "Kaleidoscope",
+                ["Danielle Steel"],
+                "summary",
+                "url.jpg",
+                ["Mystery", "Fantasy"],
+                "2020-10-27",
+                3.9,
+            )
+        )
+
+        self.assertEqual(results, expected)
+
+    def test_database_row_list_to_book_list(self):
+        """Converting database row to book object test"""
+        expected = [
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            ),
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            ),
+        ]
+
+        results = self.ds.database_row_list_to_book_list(
+            [
+                (
+                    "440236924",
+                    "Kaleidoscope",
+                    ["Danielle Steel"],
+                    "summary",
+                    "url.jpg",
+                    ["Mystery", "Fantasy"],
+                    "2020-10-27",
+                    3.9,
+                ),
+                (
+                    "440236924",
+                    "Kaleidoscope",
+                    ["Danielle Steel"],
+                    "summary",
+                    "url.jpg",
+                    ["Mystery", "Fantasy"],
+                    "2020-10-27",
+                    3.9,
+                ),
+            ]
+        )
+
+        self.assertEqual(results, expected)

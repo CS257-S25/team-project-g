@@ -49,7 +49,7 @@ class TestSQLQueries(unittest.TestCase):
             "photo.goodreads.com/books/1479249078i/31949128.jpg",
             {"Historical","Christianity","Faith","Biography","Book Club",
              "Nonfiction","History","Religion","Christian","Audiobook"},
-            2017-03-14,
+            2017-3-14,
             4
         )
         #link the mock connection
@@ -96,7 +96,7 @@ class TestSQLQueries(unittest.TestCase):
         )
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.asseertEqual(self.ds.book_from_isbn(440236924), str(response))
+        self.assertEqual(self.ds.book_from_isbn(440236924), str(response))
 
     def test_search_author(self, mock_connect):
         """Test a normal case for search_author."""
@@ -152,7 +152,7 @@ class TestSQLQueries(unittest.TestCase):
         )
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.asseertEqual(self.ds.books_search_author('Jennifer L. Armentrout'), response)
+        self.assertEqual(self.ds.books_search_author('Jennifer L. Armentrout'), str(response))
 
 
     def test_search_genre(self, mock_connect):
@@ -176,7 +176,7 @@ class TestSQLQueries(unittest.TestCase):
             "com/books/1599572199i/54793419.jpg",
             {"Chapter Books","Humor","Fiction","Friendship","Dogs",
              "Animal Fiction","Mystery","Animals","Childrens"},
-            2021-02-02,
+            2021-2-2,
             3.9
         )
         mock_connect.return_value = self.mock_conn
@@ -186,31 +186,34 @@ class TestSQLQueries(unittest.TestCase):
 
     def test_get_most_banned_authors(self, mock_connect):
         """Test get_most_banned_authors with a limit of 1."""
-        response = ()
+        response = ({"Sarah J. Maas"}, 52)
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.assertEqual(get_most_banned_authors(1), response)
+        self.assertEqual(self.ds.get_most_banned_authors(1), str(response))
 
     def test_get_most_banned_districts(self, mock_connect):
         """Test get_most_banned_districts with a limit of 1."""
-        response = ()
+        response = (
+            "Escambia County Public Schools",
+            23)
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.assertEqual(get_most_banned_districts(1), response)
+        self.assertEqual(self.ds.get_most_banned_districts(1), str(response))
 
     def test_get_most_banned_states(self, mock_connect):
+        response = ("Florida", 87)
         """Test get_most_banned_states with a limit of 1."""
         response = ()
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.assertEqual(get_most_banned_states(1), response)
+        self.assertEqual(self.ds.get_most_banned_states(1), str(response))
 
     def test_get_most_banned_titles(self, mock_connect):
         """Test get_most_banned_titles with a limit of 1."""
-        response = ()
+        response = ("Kingdom of Ash", 52)
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.assertEqual(get_most_banned_titles(1), response)
+        self.assertEqual(self.ds.get_most_banned_titles(1), str(response)
 
 
 class TestSQLHelperMethods(unittest.TestCase):
@@ -305,3 +308,4 @@ class TestSQLHelperMethods(unittest.TestCase):
         )
 
         self.assertEqual(results, expected)
+)

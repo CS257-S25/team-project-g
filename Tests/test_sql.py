@@ -56,7 +56,7 @@ class TestSQLQueries(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
             #set what it should return
         self.mock_cursor.fetchone.return_value = (response)
-        self.assertEqual(DataSource().books_search_title("Killing Jesus: "), str(response))
+        self.assertEqual(DataSource().books_search_title('Killing Jesus: '), str(response))
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_isbn(self, mock_connect):

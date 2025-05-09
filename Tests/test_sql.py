@@ -28,10 +28,29 @@ class TestSQLQueries(unittest.TestCase):
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_book_search_title_killing(self, mock_connect):
         """Test search_title in a normal case."""
-        expected = [
-            (["Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)"]
-            )
-        ]
+        expected = [(
+                1250142202,
+                "Killing Jesus: A History",
+                {"Martin Dugard","Bill O'Reilly"},
+                "Millions of readers have thrilled to bestselling authors"
+                "Bill O'Reilly and historian Martin Dugard's Killing Kennedy "
+                "and Killing Lincoln , page-turning works of nonfiction that have changed"
+                "the way we read history.The basis for the 2015 television film available "
+                "on streaming.Now the iconic anchor of The O'Reilly Factor details the "
+                "events leading up to the murder of the most influential man in Jesus "
+                "of Nazareth. Nearly two thousand years after this beloved and "
+                "controversial young revolutionary was brutally killed by Roman "
+                "soldiers, more than 2.2 billion human beings attempt to follow his "
+                "teachings and believe he is God. Killing Jesus will take readers "
+                "inside Jesus's life, recounting the seismic political and historical "
+                "events that made his death inevitable - and changed the world forever.",
+                "https://images-na.ssl-images-amazon.com/images/S/compressed."
+                "photo.goodreads.com/books/1479249078i/31949128.jpg",
+                {"Historical","Christianity","Faith","Biography","Book Club",
+                "Nonfiction","History","Religion","Christian","Audiobook"},
+                "2017-3-14",
+                4
+            )]
         # link the mock connection
         mock_connect.return_value = self.mock_conn
         # # set what it should return

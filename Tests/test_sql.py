@@ -29,7 +29,7 @@ class TestSQLQueries(unittest.TestCase):
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_book_search_title_killing(self, mock_connect):
         """Test search_title in a normal case."""
-        response = (
+        response = [(
             1250142202,
             "Killing Jesus: A History",
             {"Martin Dugard","Bill O'Reilly"},
@@ -51,12 +51,16 @@ class TestSQLQueries(unittest.TestCase):
              "Nonfiction","History","Religion","Christian","Audiobook"},
             "2017-3-14",
             4
-        )
+        )]
+
+        expected_result = ["Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)"]
         #link the mock connection
         mock_connect.return_value = self.mock_conn
             #set what it should return
-        self.mock_cursor.fetchone.return_value = (response)
-        self.assertEqual(DataSource().books_search_title('Killing Jesus: '), str(response))
+        self.mock_cursor.fetchall.return_value = (response)
+        search_result = DataSource().books_search_title('Killing Jesus: ')
+        search_result = list(map(str, search_result))
+        self.assertEqual(search_result, expected_result)
 
     @patch('ProductionCode.datasource.psycopg2.connect')
     def test_search_isbn(self, mock_connect):

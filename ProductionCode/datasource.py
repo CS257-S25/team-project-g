@@ -1,5 +1,6 @@
 """Module for connecting to and interacting with psql database"""
 
+import sys
 import psycopg2
 
 import ProductionCode.psql_config as config
@@ -29,6 +30,7 @@ class DataSource:
             )
         except psycopg2.Error as e:
             print("Connection error: ", e)
+            sys.exit()
         return connection
 
     def execute_query(self, query, args=None):

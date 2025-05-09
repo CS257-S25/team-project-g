@@ -28,10 +28,11 @@ class TestSQLQueries(unittest.TestCase):
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_book_search_title_killing(self, mock_connect):
         """Test search_title in a normal case."""
-        expected = [(
+        expected_cursor = [
+            (
                 1250142202,
                 "Killing Jesus: A History",
-                {"Martin Dugard","Bill O'Reilly"},
+                {"Martin Dugard", "Bill O'Reilly"},
                 "Millions of readers have thrilled to bestselling authors"
                 "Bill O'Reilly and historian Martin Dugard's Killing Kennedy "
                 "and Killing Lincoln , page-turning works of nonfiction that have changed"
@@ -46,21 +47,35 @@ class TestSQLQueries(unittest.TestCase):
                 "events that made his death inevitable - and changed the world forever.",
                 "https://images-na.ssl-images-amazon.com/images/S/compressed."
                 "photo.goodreads.com/books/1479249078i/31949128.jpg",
-                {"Historical","Christianity","Faith","Biography","Book Club",
-                "Nonfiction","History","Religion","Christian","Audiobook"},
+                {
+                    "Historical",
+                    "Christianity",
+                    "Faith",
+                    "Biography",
+                    "Book Club",
+                    "Nonfiction",
+                    "History",
+                    "Religion",
+                    "Christian",
+                    "Audiobook",
+                },
                 "2017-3-14",
-                4
-            )]
+                4,
+            )
+        ]
+        expected_results = [
+            "Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)"
+        ]
         # link the mock connection
         mock_connect.return_value = self.mock_conn
         # # set what it should return
-        self.mock_cursor.fetchall.return_value = expected
+        self.mock_cursor.fetchall.return_value = expected_cursor
         # mock_con = mock_connect.return_value mock_cur = mock_con.cursor.return_value
         # mock_cur.fetch_all.return_value = expected
 
         result = DataSource().books_search_title("Killing Jesus")
         result = list(map(str, result))
-        self.assertEqual(result, expected)
+        self.assertEqual(result, expected_results)
         # self.assertEqual(
         #     DataSource().books_search_title("Killing Jesus: "), str(response)
         # )

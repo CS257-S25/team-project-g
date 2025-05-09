@@ -30,30 +30,28 @@ class DataSource:
             )
         except psycopg2.Error as e:
             print("Connection error: ", e)
-            sys.exit()
         return connection
 
-    def execute_query(self, query, args=None):
-        """Helper method for executing sql queries
-        Args:
-            query (str): sql query
-            args (Tuple): arguments for query
-        Returns:
-            query response
-        """
-        cursor = None
-        try:
-            cursor = self.connection.cursor()
-            if args is None:
-                cursor.execute(query)
-            else:
-                cursor.execute(query, args)
-            results = cursor.fetchall()
-            return results
-        except psycopg2.Error as e:
-            print("Query error: ", e)
-            sys.exit()
-            return None
+    # def execute_query(self, query, args=None):
+    #     """Helper method for executing sql queries
+    #     Args:
+    #         query (str): sql query
+    #         args (Tuple): arguments for query
+    #     Returns:
+    #         query response
+    #     """
+    #     cursor = None
+    #     try:
+    #         cursor = self.connection.cursor()
+    #         if args is None:
+    #             cursor.execute(query)
+    #         else:
+    #             cursor.execute(query, args)
+    #         results = cursor.fetchall()
+    #         return results
+    #     except psycopg2.Error as e:
+    #         print("Query error: ", e)
+    #         return None
 
     def database_row_list_to_book_list(self, row_list) -> list[Book]:
         """Helper method for converting database results to a list of Book objects
@@ -139,7 +137,15 @@ class DataSource:
         query = "SELECT * FROM books WHERE isbn=%s"
         args = (isbn,)
 
-        results = self.execute_query(query, args)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+
         book = self.database_row_to_book(results)
         return book
 
@@ -153,7 +159,15 @@ class DataSource:
         query = "SELECT * FROM books WHERE title ILIKE %s"
         args = ("%" + search_term + "%",)
 
-        results = self.execute_query(query, args)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+
         books = self.database_row_list_to_book_list(results)
         return books
 
@@ -166,6 +180,18 @@ class DataSource:
         """
         query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
         args = (search_term,)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+
+        books = self.database_row_list_to_book_list(results)
+        return books
 
         results = self.execute_query(query, args)
         books = self.database_row_list_to_book_list(results)
@@ -181,7 +207,15 @@ class DataSource:
         query = "SELECT * FROM books WHERE genres @> ARRAY[%s];"
         args = (search_term,)
 
-        results = self.execute_query(query, args)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+
         books = self.database_row_list_to_book_list(results)
         return books
 
@@ -337,7 +371,15 @@ class DataSource:
         )
 
         args = (max_results,)
-        results = self.execute_query(query, args)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+
         ranks = self.database_row_list_to_rank_list(results)
 
         return ranks
@@ -354,7 +396,14 @@ class DataSource:
             " ORDER BY ban_count DESC LIMIT %s;"
         )
         args = (max_results,)
-        results = self.execute_query(query, args)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
 
@@ -372,7 +421,14 @@ class DataSource:
             " ORDER BY ban_count DESC LIMIT %s;"
         )
         args = (max_results,)
-        results = self.execute_query(query, args)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
 
@@ -391,7 +447,14 @@ class DataSource:
             " DESC LIMIT %s;"
         )
         args = (max_results,)
-        results = self.execute_query(query, args)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
 

@@ -246,8 +246,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             },
         )
 
-        results = self.ds.database_row_to_book(
-            (
+        results = self.ds.database_row_to_book[(
                 1250142202,
                 "Killing Jesus: A History",
                 {"Martin Dugard", "Bill O'Reilly"},

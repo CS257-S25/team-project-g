@@ -150,6 +150,27 @@ class DataSource:
         book = self.database_row_to_book(results)
         return book
 
+    def bans_from_isbn(self, isbn) -> list[Bookban]:
+        """Queries book database based on ISBN
+        Args:
+            isbn (str): a book's isbn number
+        Returns:
+            (list[Bookban]): a list of Bookban objects with the isbn number
+        """
+        query = "SELECT * FROM bookbans WHERE isbn=%s"
+        args = (isbn,)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+        bans = self.database_row_list_to_bookban_list(results)
+        return bans 
+
     def books_search_title(self, search_term) -> list[Book]:
         """Searches books database for titles containing search term
         Args:

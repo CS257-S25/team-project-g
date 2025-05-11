@@ -76,7 +76,7 @@ def details(isbn):
         abort(400, "No book with that ISBN found!")
 
     # variation on format_list_with_linebreak
-    return output.replace("\n", "<br /><br />")
+    return render_template("book.html", ban_isbn = ds.bans_from_isbn(isbn), book_isbn = ds.book_from_isbn(isbn))
 
 
 @app.route("/search/<field>/<query>", strict_slashes=False)

@@ -141,7 +141,7 @@ class DataSource:
         try:
             cursor = self.connection.cursor()
             cursor.execute(query, args)
-            results = cursor.fetchall()
+            results = cursor.fetchone()
 
         except psycopg2.Error as e:
             print("Query error: ", e)
@@ -460,6 +460,26 @@ class DataSource:
         ranks = self.database_row_list_to_rank_list(results)
 
         return ranks
+    
+    def get_most_banned_books(self, max_results):
+        query = (
+    "SELECT b.isbn, COUNT(*) AS ban_count FROM books AS b "
+    "INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) "
+    "GROUP BY b.isbn ORDER BY ban_count DESC LIMIT %s;"
+)
+        args = (max_results,)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+        books = list(map(lambda result : self.book_from_isbn(result[0]), results))
+
+        return books 
+
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 """This is the main file for the Flask application."""
 
-from flask import Flask, abort
+from flask import Flask, abort, render_template
 from ProductionCode.details import get_details
 from ProductionCode.datasource import DataSource
 
@@ -53,10 +53,12 @@ def homepage():
         (str): a string of the homepage with line breaks
     """
 
-    return (
-        "The following addresses can be used to see information about banned books:<br /><br />"
-        f"{USAGE}"
-    )
+    return render_template("index.html", most_banned_books=ds.get_most_banned_titles(5))
+
+    # return (
+    #     "The following addresses can be used to see information about banned books:<br /><br />"
+    #     f"{USAGE}"
+    # )
 
 
 @app.route("/details/<isbn>")

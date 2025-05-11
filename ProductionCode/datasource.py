@@ -220,6 +220,26 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
         return books
 
+    def get_book_details(self, isbn):
+        query = ("SELECT ban.ban_state, ban.ban_district, ban.ban_year, "
+                 "ban.ban_month, ban.ban_year, ban.ban_status, "
+                 "ban.ban_origin, b.title, b.cover, b.summary, "
+                 "b.authors, b.genres, b.rating, b.publish_date FROM "
+                 "db1.bookbans AS ban INNER JOIN db2.books AS b "
+                 "ON ban.isbn = b.isbn WHERE ban.isbn = %s")
+        args = isbn
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+        books = self.database_row_list_to_book_list(results)
+        return books
+
     # def get_bans_per_year(self):
     #     """Returns the number of bans per year from 2020 to 2025."""
     #     query = (

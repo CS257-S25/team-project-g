@@ -169,7 +169,7 @@ class DataSource:
             print("Query error: ", e)
             sys.exit()
         bans = self.database_row_list_to_bookban_list(results)
-        return bans 
+        return bans
 
     def books_search_title(self, search_term) -> list[Book]:
         """Searches books database for titles containing search term
@@ -241,13 +241,16 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
         return books
 
+    # WRITE TESTS FROM HERE
     def get_book_details(self, isbn):
-        query = ("SELECT ban.ban_state, ban.ban_district, ban.ban_year, "
-                 "ban.ban_month, ban.ban_year, ban.ban_status, "
-                 "ban.ban_origin, b.title, b.cover, b.summary, "
-                 "b.authors, b.genres, b.rating, b.publish_date FROM "
-                 "db1.bookbans AS ban INNER JOIN db2.books AS b "
-                 "ON ban.isbn = b.isbn WHERE ban.isbn = %s")
+        query = (
+            "SELECT ban.ban_state, ban.ban_district, ban.ban_year, "
+            "ban.ban_month, ban.ban_year, ban.ban_status, "
+            "ban.ban_origin, b.title, b.cover, b.summary, "
+            "b.authors, b.genres, b.rating, b.publish_date FROM "
+            "db1.bookbans AS ban INNER JOIN db2.books AS b "
+            "ON ban.isbn = b.isbn WHERE ban.isbn = %s"
+        )
         args = isbn
 
         try:
@@ -501,13 +504,13 @@ class DataSource:
         ranks = self.database_row_list_to_rank_list(results)
 
         return ranks
-    
+
     def get_most_banned_books(self, max_results):
         query = (
-    "SELECT b.isbn, COUNT(*) AS ban_count FROM books AS b "
-    "INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) "
-    "GROUP BY b.isbn ORDER BY ban_count DESC LIMIT %s;"
-)
+            "SELECT b.isbn, COUNT(*) AS ban_count FROM books AS b "
+            "INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) "
+            "GROUP BY b.isbn ORDER BY ban_count DESC LIMIT %s;"
+        )
         args = (max_results,)
         try:
             cursor = self.connection.cursor()
@@ -517,10 +520,9 @@ class DataSource:
         except psycopg2.Error as e:
             print("Query error: ", e)
             sys.exit()
-        books = list(map(lambda result : self.book_from_isbn(result[0]), results))
+        books = list(map(lambda result: self.book_from_isbn(result[0]), results))
 
-        return books 
-
+        return books
 
 
 if __name__ == "__main__":

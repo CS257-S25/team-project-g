@@ -12,14 +12,25 @@ class TestBookban(unittest.TestCase):
             isbn="440236924",
             title="Kaleidoscope",
             authors=["Danielle Steel"],
-            details=BookDetails(
-                summary="When a beautiful young Frenchwoman and a brilliant American actor meet in wartime Paris, their love begins like a fairy tale but ends in tragedy. Suddenly orphaned, their three children are cruelly separated. Megan, the baby, adopted by a family of comfortable means, becomes doctor in the rural Appalachia. Alexandra, raised in lavish wealth, marries a powerful man whose pride is his pedigree and who assumes that Alexandra is her parents' natural offspring. Neither of them has the remotest suspicion that she is adopted, or what turbulent tragedy lurks in her past. And Hilary, oldest of the Walker children, remembers them all, and the grief that tore them apart and cast them into separate lives. Feeling the loss throughout her life, and unable to find her sisters, she builds an extraordinary career and has no personal life. When John Chapman, lawyer and prestigious private investigator, is asked to find these three women, he wonders why. Their parents' only friend, he did nothing to keep them together  as children and has been haunted by remorse all his life. The investigator follows a trail that leads from chic New York to Boston slums, from elegant Parisian salons to the Appalachian hills, to the place where the three sisters face each other and one more final, devastating truth before they can move on.",
-                cover="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1173371736i/278102.jpg",
-                genres=["Adult Fiction","Contemporary Romance","Romance,Novels","Contemporary","Drama","Adult","Chick Lit","Historical Fiction","Fiction"],
-                publish_date="2000-10-28",
-                rating=4.0,
-            )
+            details={
+                "summary": "When a beautiful young Frenchwoman and a brilliant American actor meet in wartime Paris, their love begins like a fairy tale but ends in tragedy. Suddenly orphaned, their three children are cruelly separated. Megan, the baby, adopted by a family of comfortable means, becomes doctor in the rural Appalachia. Alexandra, raised in lavish wealth, marries a powerful man whose pride is his pedigree and who assumes that Alexandra is her parents' natural offspring. Neither of them has the remotest suspicion that she is adopted, or what turbulent tragedy lurks in her past. And Hilary, oldest of the Walker children, remembers them all, and the grief that tore them apart and cast them into separate lives. Feeling the loss throughout her life, and unable to find her sisters, she builds an extraordinary career and has no personal life. When John Chapman, lawyer and prestigious private investigator, is asked to find these three women, he wonders why. Their parents' only friend, he did nothing to keep them together  as children and has been haunted by remorse all his life. The investigator follows a trail that leads from chic New York to Boston slums, from elegant Parisian salons to the Appalachian hills, to the place where the three sisters face each other and one more final, devastating truth before they can move on.",
+                "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1173371736i/278102.jpg",
+                "genres": [
+                    "Adult Fiction",
+                    "Contemporary Romance",
+                    "Romance,Novels",
+                    "Contemporary",
+                    "Drama",
+                    "Adult",
+                    "Chick Lit",
+                    "Historical Fiction",
+                    "Fiction",
+                ],
+                "publish_date": "2000-10-28",
+                "rating": 4.0,
+            },
         )
+
         self.bookban = Bookban(
             book=book,
             state="Florida",
@@ -35,8 +46,8 @@ class TestBookban(unittest.TestCase):
         self.assertEqual(
             str(self.bookban),
             "Kaleidoscope by Danielle Steel (ISBN: 440236924) "
-            "banned in Martin County, Florida as of March, 2023",
+            "banned in Martin County Schools, Florida as of 3, 2023",
         )
 
     def test_date_to_str(self):
-        self.assertEqual(self.bookban.date_to_str(), "March, 2023")
+        self.assertEqual(self.bookban.date_to_str(), "3, 2023")

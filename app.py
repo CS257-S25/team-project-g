@@ -53,12 +53,12 @@ def homepage():
         (str): a string of the homepage with line breaks
     """
 
-    return render_template("index.html", most_banned_books=ds.get_most_banned_books(5))
+    # return render_template("index.html", most_banned_books=ds.get_most_banned_books(5))
 
-    # return (
-    #     "The following addresses can be used to see information about banned books:<br /><br />"
-    #     f"{USAGE}"
-    # )
+    return (
+        "The following addresses can be used to see information about banned books:<br /><br />"
+        f"{USAGE}"
+    )
 
 
 @app.route("/details/<isbn>")

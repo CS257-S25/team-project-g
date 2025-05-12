@@ -61,7 +61,8 @@ class DataSource:
         Returns:
             (list[Book]): a list of Book objects
         """
-        return list(map(self.database_row_to_book, row_list))
+        books = list(map(self.database_row_to_book, row_list))
+        return books
 
     def database_row_to_book(self, row) -> Book:
         """Helper method for converting a database row to a Book object

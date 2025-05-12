@@ -28,40 +28,54 @@ class TestSQLQueries(unittest.TestCase):
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_book_search_title_killing(self, mock_connect):
         """Test search_title in a normal case."""
-        response = [(
-            1250142202,
-            "Killing Jesus: A History",
-            {"Martin Dugard","Bill O'Reilly"},
-            "Millions of readers have thrilled to bestselling authors"
-            "Bill O'Reilly and historian Martin Dugard's Killing Kennedy "
-            "and Killing Lincoln , page-turning works of nonfiction that have changed"
-            "the way we read history.The basis for the 2015 television film available "
-            "on streaming.Now the iconic anchor of The O'Reilly Factor details the "
-            "events leading up to the murder of the most influential man in Jesus "
-            "of Nazareth. Nearly two thousand years after this beloved and "
-            "controversial young revolutionary was brutally killed by Roman "
-            "soldiers, more than 2.2 billion human beings attempt to follow his "
-            "teachings and believe he is God. Killing Jesus will take readers "
-            "inside Jesus's life, recounting the seismic political and historical "
-            "events that made his death inevitable - and changed the world forever.",
-            "https://images-na.ssl-images-amazon.com/images/S/compressed."
-            "photo.goodreads.com/books/1479249078i/31949128.jpg",
-            {"Historical","Christianity","Faith","Biography","Book Club",
-             "Nonfiction","History","Religion","Christian","Audiobook"},
-            "2017-3-14",
-            4
-        )]
+        response = [
+            (
+                1250142202,
+                "Killing Jesus: A History",
+                {"Martin Dugard", "Bill O'Reilly"},
+                "Millions of readers have thrilled to bestselling authors"
+                "Bill O'Reilly and historian Martin Dugard's Killing Kennedy "
+                "and Killing Lincoln , page-turning works of nonfiction that have changed"
+                "the way we read history.The basis for the 2015 television film available "
+                "on streaming.Now the iconic anchor of The O'Reilly Factor details the "
+                "events leading up to the murder of the most influential man in Jesus "
+                "of Nazareth. Nearly two thousand years after this beloved and "
+                "controversial young revolutionary was brutally killed by Roman "
+                "soldiers, more than 2.2 billion human beings attempt to follow his "
+                "teachings and believe he is God. Killing Jesus will take readers "
+                "inside Jesus's life, recounting the seismic political and historical "
+                "events that made his death inevitable - and changed the world forever.",
+                "https://images-na.ssl-images-amazon.com/images/S/compressed."
+                "photo.goodreads.com/books/1479249078i/31949128.jpg",
+                {
+                    "Historical",
+                    "Christianity",
+                    "Faith",
+                    "Biography",
+                    "Book Club",
+                    "Nonfiction",
+                    "History",
+                    "Religion",
+                    "Christian",
+                    "Audiobook",
+                },
+                "2017-3-14",
+                4,
+            )
+        ]
 
-        expected_result = ["Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)"]
-        #link the mock connection
+        expected_result = [
+            "Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)"
+        ]
+        # link the mock connection
         mock_connect.return_value = self.mock_conn
-            #set what it should return
-        self.mock_cursor.fetchall.return_value = (response)
-        search_result = DataSource().books_search_title('Killing Jesus: ')
+        # set what it should return
+        self.mock_cursor.fetchall.return_value = response
+        search_result = DataSource().books_search_title("Killing Jesus: ")
         search_result = list(map(str, search_result))
         self.assertEqual(search_result, expected_result)
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_isbn(self, mock_connect):
         """Test search_isbn in a normal case."""
         response = (
@@ -93,17 +107,26 @@ class TestSQLQueries(unittest.TestCase):
             "truth before they can move on.",
             "https://images-na.ssl-images-amazon.com/images/S"
             "/compressed.photo.goodreads.com/books/1173371736i/278102.jpg",
-            {"Adult Fiction","Contemporary Romance","Romance",
-             "Novels","Contemporary","Drama","Adult","Chick Lit",
-             "Historical Fiction","Fiction"},
+            {
+                "Adult Fiction",
+                "Contemporary Romance",
+                "Romance",
+                "Novels",
+                "Contemporary",
+                "Drama",
+                "Adult",
+                "Chick Lit",
+                "Historical Fiction",
+                "Fiction",
+            },
             "2000-10-28",
-            4
+            4,
         )
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.book_from_isbn(440236924), str(response))
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_author(self, mock_connect):
         """Test a normal case for search_author."""
         response = (
@@ -149,24 +172,34 @@ class TestSQLQueries(unittest.TestCase):
             "https://images-na.ssl-images-amazon.com/images"
             "/S/compressed.photo.goodreads.com/books"
             "/1734440592i/54319549.jpg",
-            {"Paranormal","New Adult","Fiction",
-             "Romantasy","Enemies To Lovers",
-             "Fantasy","Fantasy Romance","Magic",
-             "Audiobook","Vampires"},
+            {
+                "Paranormal",
+                "New Adult",
+                "Fiction",
+                "Romantasy",
+                "Enemies To Lovers",
+                "Fantasy",
+                "Fantasy Romance",
+                "Magic",
+                "Audiobook",
+                "Vampires",
+            },
             "2020-9-1",
-            4.3
+            4.3,
         )
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.assertEqual(self.ds.books_search_author('Jennifer L. Armentrout'), str(response))
+        self.assertEqual(
+            self.ds.books_search_author("Jennifer L. Armentrout"), str(response)
+        )
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_genre(self, mock_connect):
         """Test a normal case for search_genre."""
         response = (
             "1682632075",
             "King & Kayla and the Case of the Gold Ring",
-            {"Dori Hillestad Butler","Nancy Meyers"},
+            {"Dori Hillestad Butler", "Nancy Meyers"},
             "King &amp; Kayla are back on the case in this laugh-out-loud "
             "mystery from the Theodor Seuss Geisel Honor Award-winning series.King"
             ", Kayla, Mason, and Asia are playing in the snow. Later, Asia discovers "
@@ -180,16 +213,25 @@ class TestSQLQueries(unittest.TestCase):
             "facts, making lists, and evaluating evidence.",
             "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads."
             "com/books/1599572199i/54793419.jpg",
-            {"Chapter Books","Humor","Fiction","Friendship","Dogs",
-             "Animal Fiction","Mystery","Animals","Childrens"},
+            {
+                "Chapter Books",
+                "Humor",
+                "Fiction",
+                "Friendship",
+                "Dogs",
+                "Animal Fiction",
+                "Mystery",
+                "Animals",
+                "Childrens",
+            },
             "2021-2-2",
-            3.9
+            3.9,
         )
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
-        self.assertEqual(self.ds.books_search_genre('Animal Fiction'), str(response))
+        self.assertEqual(self.ds.books_search_genre("Animal Fiction"), str(response))
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_authors(self, mock_connect):
         """Test get_most_banned_authors with a limit of 1."""
         response = ({"Sarah J. Maas"}, 52)
@@ -197,17 +239,15 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_authors(1), str(response))
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_districts(self, mock_connect):
         """Test get_most_banned_districts with a limit of 1."""
-        response = (
-            "Escambia County Public Schools",
-            23)
+        response = ("Escambia County Public Schools", 23)
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_districts(1), str(response))
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_states(self, mock_connect):
         """Test get_most_banned_states with a limit of 1."""
         response = ("Florida", 87)
@@ -215,87 +255,13 @@ class TestSQLQueries(unittest.TestCase):
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_states(1), str(response))
 
-    @patch('ProductionCode.datasource.psycopg2.connect')
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_titles(self, mock_connect):
         """Test get_most_banned_titles with a limit of 1."""
         response = ("Kingdom of Ash", 52)
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.fetchone.return_value = response
         self.assertEqual(self.ds.get_most_banned_titles(1), str(response))
-
-
-class TestSQLHelperMethods(unittest.TestCase):
-    """This class tests the helper methods for SQL queries"""
-
-    def setUp(self):
-        """Setup method to create datasource"""
-        self.ds = DataSource()
-
-    def test_database_row_to_book(self):
-        """Converting database row to book object test"""
-        expected = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
-            details={
-                "summary": "summary",
-                "cover": "url.jpg",
-                "genres": ["Mystery", "Fantasy"],
-                "publish_date": "2020-10-27",
-                "rating": 3.9,
-            },
-        )
-
-        results = self.ds.database_row_to_book[(
-                1250142202,
-                "Killing Jesus: A History",
-                {"Martin Dugard", "Bill O'Reilly"},
-                "Millions of readers have thrilled to bestselling authors"
-                "Bill O'Reilly and historian Martin Dugard's Killing Kennedy "
-                "and Killing Lincoln , page-turning works of nonfiction that have changed"
-                "the way we read history.The basis for the 2015 television film available "
-                "on streaming.Now the iconic anchor of The O'Reilly Factor details the "
-                "events leading up to the murder of the most influential man in Jesus "
-                "of Nazareth. Nearly two thousand years after this beloved and "
-                "controversial young revolutionary was brutally killed by Roman "
-                "soldiers, more than 2.2 billion human beings attempt to follow his "
-                "teachings and believe he is God. Killing Jesus will take readers "
-                "inside Jesus's life, recounting the seismic political and historical "
-                "events that made his death inevitable - and changed the world forever.",
-                "https://images-na.ssl-images-amazon.com/images/S/compressed."
-                "photo.goodreads.com/books/1479249078i/31949128.jpg",
-                {
-                    "Historical",
-                    "Christianity",
-                    "Faith",
-                    "Biography",
-                    "Book Club",
-                    "Nonfiction",
-                    "History",
-                    "Religion",
-                    "Christian",
-                    "Audiobook",
-                },
-                "2017-3-14",
-                4,
-            )
-        ]
-        expected_results = [
-            "Killing Jesus: A History by Martin Dugard, Bill O'Reilly (ISBN: 1250142202)"
-        ]
-        # link the mock connection
-        mock_connect.return_value = self.mock_conn
-        # # set what it should return
-        self.mock_cursor.fetchall.return_value = expected_cursor
-        # mock_con = mock_connect.return_value mock_cur = mock_con.cursor.return_value
-        # mock_cur.fetch_all.return_value = expected
-
-        result = DataSource().books_search_title("Killing Jesus")
-        result = list(map(str, result))
-        self.assertEqual(result, expected_results)
-        # self.assertEqual(
-        #     DataSource().books_search_title("Killing Jesus: "), str(response)
-        # )
 
     # @patch("ProductionCode.datasource.psycopg2.connect")
     # def test_search_isbn(self, mock_connect):
@@ -486,96 +452,95 @@ class TestSQLHelperMethods(unittest.TestCase):
     #     self.assertEqual(self.ds.get_most_banned_titles(1), str(response))
 
 
-#
-# class TestSQLHelperMethods(unittest.TestCase):
-#     """This class tests the helper methods for SQL queries"""
-#
-#     def setUp(self):
-#         """Setup method to create datasource"""
-#         self.ds = DataSource()
-#
-#     def test_database_row_to_book(self):
-#         """Converting database row to book object test"""
-#         expected = Book(
-#             isbn="440236924",
-#             title="Kaleidoscope",
-#             authors=["Danielle Steel"],
-#             details={
-#                 "summary": "summary",
-#                 "cover": "url.jpg",
-#                 "genres": ["Mystery", "Fantasy"],
-#                 "publish_date": "2020-10-27",
-#                 "rating": 3.9,
-#             },
-#         )
-#
-#         results = self.ds.database_row_to_book(
-#             (
-#                 "440236924",
-#                 "Kaleidoscope",
-#                 ["Danielle Steel"],
-#                 "summary",
-#                 "url.jpg",
-#                 ["Mystery", "Fantasy"],
-#                 "2020-10-27",
-#                 3.9,
-#             )
-#         )
-#
-#         self.assertEqual(results, expected)
-#
-#     def test_database_row_list_to_book_list(self):
-#         """Converting database row to book object test"""
-#         expected = [
-#             Book(
-#                 isbn="440236924",
-#                 title="Kaleidoscope",
-#                 authors=["Danielle Steel"],
-#                 details={
-#                     "summary": "summary",
-#                     "cover": "url.jpg",
-#                     "genres": ["Mystery", "Fantasy"],
-#                     "publish_date": "2020-10-27",
-#                     "rating": 3.9,
-#                 },
-#             ),
-#             Book(
-#                 isbn="440236924",
-#                 title="Kaleidoscope",
-#                 authors=["Danielle Steel"],
-#                 details={
-#                     "summary": "summary",
-#                     "cover": "url.jpg",
-#                     "genres": ["Mystery", "Fantasy"],
-#                     "publish_date": "2020-10-27",
-#                     "rating": 3.9,
-#                 },
-#             ),
-#         ]
-#
-#         results = self.ds.database_row_list_to_book_list(
-#             [
-#                 (
-#                     "440236924",
-#                     "Kaleidoscope",
-#                     ["Danielle Steel"],
-#                     "summary",
-#                     "url.jpg",
-#                     ["Mystery", "Fantasy"],
-#                     "2020-10-27",
-#                     3.9,
-#                 ),
-#                 (
-#                     "440236924",
-#                     "Kaleidoscope",
-#                     ["Danielle Steel"],
-#                     "summary",
-#                     "url.jpg",
-#                     ["Mystery", "Fantasy"],
-#                     "2020-10-27",
-#                     3.9,
-#                 ),
-#             ]
-#         )
-#
-#         self.assertEqual(results, expected)
+class TestSQLHelperMethods(unittest.TestCase):
+    """This class tests the helper methods for SQL queries"""
+
+    def setUp(self):
+        """Setup method to create datasource"""
+        self.ds = DataSource()
+
+    def test_database_row_to_book(self):
+        """Converting database row to book object test"""
+        expected = Book(
+            isbn="440236924",
+            title="Kaleidoscope",
+            authors=["Danielle Steel"],
+            details={
+                "summary": "summary",
+                "cover": "url.jpg",
+                "genres": ["Mystery", "Fantasy"],
+                "publish_date": "2020-10-27",
+                "rating": 3.9,
+            },
+        )
+
+        results = self.ds.database_row_to_book(
+            (
+                "440236924",
+                "Kaleidoscope",
+                ["Danielle Steel"],
+                "summary",
+                "url.jpg",
+                ["Mystery", "Fantasy"],
+                "2020-10-27",
+                3.9,
+            )
+        )
+
+        self.assertEqual(results, expected)
+
+    def test_database_row_list_to_book_list(self):
+        """Converting database row to book object test"""
+        expected = [
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            ),
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            ),
+        ]
+
+        results = self.ds.database_row_list_to_book_list(
+            [
+                (
+                    "440236924",
+                    "Kaleidoscope",
+                    ["Danielle Steel"],
+                    "summary",
+                    "url.jpg",
+                    ["Mystery", "Fantasy"],
+                    "2020-10-27",
+                    3.9,
+                ),
+                (
+                    "440236924",
+                    "Kaleidoscope",
+                    ["Danielle Steel"],
+                    "summary",
+                    "url.jpg",
+                    ["Mystery", "Fantasy"],
+                    "2020-10-27",
+                    3.9,
+                ),
+            ]
+        )
+
+        self.assertEqual(results, expected)

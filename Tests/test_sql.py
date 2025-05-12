@@ -2,6 +2,7 @@
 
 import unittest
 from unittest.mock import MagicMock, patch
+from ProductionCode import datasource
 from ProductionCode.datasource import DataSource
 
 # books_search_title,
@@ -14,6 +15,7 @@ from ProductionCode.datasource import DataSource
 # get_most_banned_titles
 # )
 from ProductionCode.book import Book
+from ProductionCode.bookban import Bookban
 
 
 class TestSQLQueries(unittest.TestCase):
@@ -456,11 +458,16 @@ class TestSQLHelperMethods(unittest.TestCase):
     """This class tests the helper methods for SQL queries"""
 
     def setUp(self):
-        """Setup method to create datasource"""
-        self.ds = DataSource()
+        """Create a mock postgres connection"""
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
 
-    def test_database_row_to_book(self):
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_database_row_to_book(self, mock_connect):
         """Converting database row to book object test"""
+
+        ds = DataSource()
+
         expected = Book(
             isbn="440236924",
             title="Kaleidoscope",
@@ -474,7 +481,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             },
         )
 
-        results = self.ds.database_row_to_book(
+        results = ds.database_row_to_book(
             (
                 "440236924",
                 "Kaleidoscope",
@@ -487,10 +494,14 @@ class TestSQLHelperMethods(unittest.TestCase):
             )
         )
 
-        self.assertEqual(results, expected)
+        self.assertEqual(str(results), str(expected))
 
-    def test_database_row_list_to_book_list(self):
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_database_row_list_to_book_list(self, mock_connect):
         """Converting database row to book object test"""
+
+        ds = DataSource()
+
         expected = [
             Book(
                 isbn="440236924",
@@ -518,7 +529,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             ),
         ]
 
-        results = self.ds.database_row_list_to_book_list(
+        results = ds.database_row_list_to_book_list(
             [
                 (
                     "440236924",
@@ -543,4 +554,102 @@ class TestSQLHelperMethods(unittest.TestCase):
             ]
         )
 
-        self.assertEqual(results, expected)
+        self.assertEqual(list(map(str, results)), list(map(str, expected)))
+
+    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_database_row_to_bookban(self, mock_connect, mock_book_from_isbn):
+        """Test for helper method converting database row to bookban"""
+        mock_connect.return_value = self.mock_conn
+
+        mock_book_from_isbn.return_value = Book(
+            isbn="440236924",
+            title="Kaleidoscope",
+            authors=["Danielle Steel"],
+            details={
+                "summary": "summary",
+                "cover": "url.jpg",
+                "genres": ["Mystery", "Fantasy"],
+                "publish_date": "2020-10-27",
+                "rating": 3.9,
+            },
+        )
+
+        ds = DataSource()
+
+        expected = "Kaleidoscope by Danielle Steel (ISBN: 440236924) banned in Martin County Schools, Florida as of 3, 2023"
+
+        result = ds.database_row_to_bookban(
+            (
+                "440236924",
+                "Florida",
+                "Martin County Schools",
+                2023,
+                3,
+                "Banned from Libraries and Classrooms",
+                "Formal Challenge",
+            )
+        )
+
+        self.assertEqual(str(result), expected)
+
+    @patch("ProductionCode.datasource.DataSource.database_row_to_bookban")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_database_row__list_to_bookban_list(
+        self, mock_connect, mock_database_row_to_bookban
+    ):
+        """Test for helper method converting database row to bookban"""
+        mock_connect.return_value = self.mock_conn
+
+        mock_database_row_to_bookban.return_value = Bookban(
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            ),
+            state="Florida",
+            district="Martin County Schools",
+            ban_year=2023,
+            ban_month=3,
+            ban_status="Banned from Libraries and Classrooms",
+            ban_origin="Formal Challenge",
+        )
+
+        ds = DataSource()
+
+        expected = [
+            "Kaleidoscope by Danielle Steel (ISBN: 440236924) banned in Martin County Schools, Florida as of 3, 2023",
+            "Kaleidoscope by Danielle Steel (ISBN: 440236924) banned in Martin County Schools, Florida as of 3, 2023",
+        ]
+
+        result = ds.database_row_list_to_bookban_list(
+            [
+                (
+                    "440236924",
+                    "Florida",
+                    "Martin County Schools",
+                    2023,
+                    3,
+                    "Banned from Libraries and Classrooms",
+                    "Formal Challenge",
+                ),
+                (
+                    "440236924",
+                    "Florida",
+                    "Martin County Schools",
+                    2023,
+                    3,
+                    "Banned from Libraries and Classrooms",
+                    "Formal Challenge",
+                ),
+            ]
+        )
+
+        self.assertEqual(list(map(str, result)), expected)

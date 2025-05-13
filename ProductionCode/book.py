@@ -36,20 +36,20 @@ class Book:
     #     return round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)
 
 
-class BookDetails:
-    def __init__(
-        self,
-        summary: str,
-        cover: str,
-        genres: list[str],
-        publish_date,
-        rating: float,
-    ):
-        self.summary: str = summary
-        self.cover: str = cover
-        self.genres: list[str] = genres
-        self.publish_date = publish_date
-        self.rating: float = rating
+# class BookDetails:
+#     def __init__(
+#         self,
+#         summary: str,
+#         cover: str,
+#         genres: list[str],
+#         publish_date,
+#         rating: float,
+#     ):
+#         self.summary: str = summary
+#         self.cover: str = cover
+#         self.genres: list[str] = genres
+#         self.publish_date = publish_date
+#         self.rating: float = rating
 
 
 # def main() -> None:

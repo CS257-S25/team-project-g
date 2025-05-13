@@ -1,9 +1,55 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="(( url_for('static', filename'bookstyle.css') ))">
-        <title>{{book_isbn.title}}</title>
-    </head>
-    <body>
-        <img src ={{book_isbn.details.cover}} style = "width:267px;height:400px;flex-shrink:0;aspect-ratio:267/400">
-    </body>
+<!-- templates/book.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ book_isbn.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bookstyle.css') }}"/>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>The Forbidden Archive Search</h1>
+    </header>
+    <main class="book-details">
+      <div class="cover">
+        <img
+          src="{{ book_isbn.details.cover }}"
+          alt="Cover of {{ book_isbn.title }}"
+        />
+      </div>
+      <div class="info">
+        <h2 class="title">{{ book_isbn.title }}</h2>
+        <p class="author">{{ book_isbn.authors }}</p>
+        <p class="rating">Rating: {{ book_isbn.rating }}</p>
+        <p class="banned-date">
+          Banned on {{ ban_isbn.month }} {{ ban_isbn.year}}
+        </p>
+        <p class="districts">
+          Districts Banned in:
+          {{ ban_isbn.districts | join(', ') }}
+        </p>
+        <p class="status">Ban Status: {{ ban_isbn.ban_status }}</p>
+        <p class="origin">
+          Origin of Challenge: {{ ban_isbn.origin }}
+        </p>
+
+        <section class="summary">
+          <h3>Summary</h3>
+          <p>{{ book_isbn.summary }}</p>
+        </section>
+
+        <section class="genres">
+          <h3>Genres</h3>
+          <ul>
+            {% for genre in book_isbn.genres %}
+              <li>{{ genre }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
 </html>

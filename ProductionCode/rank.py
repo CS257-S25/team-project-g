@@ -14,4 +14,4 @@ class Rank:
         Returns:
             string with name and number of bans formatted
         """
-        return f"({self.name}, {self.bans})"
+        return f"({self.name!r}, {self.bans})"

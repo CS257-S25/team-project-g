@@ -957,3 +957,39 @@ class TestSQLMostBannedMethods(unittest.TestCase):
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_authors(1)
         self.assertEqual(list(map(str, results)), list(map(str, response)))
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_districts(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [(
+            "Escambia County Public Schools",
+            23
+        )]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_districts(1)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_states(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [(
+            "Florida",
+            87
+        )]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_states(1)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_titles(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [(
+            "Kingdom of Ash",
+            52
+        )]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_titles(1)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))

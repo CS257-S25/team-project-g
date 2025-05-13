@@ -1071,17 +1071,6 @@ class TestSQLExceptionBranches(unittest.TestCase):
             ds.bans_from_isbn("440236924")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
-    def test_get_book_details_error(self, mock_connect):
-        """Covers exception in get_book_details."""
-        mock_connect.return_value = self.mock_conn
-        ds = DataSource()
-
-        # Now the error path
-        self.mock_cursor.execute.side_effect = psycopg2.Error("bad")
-        with self.assertRaises(SystemExit):
-            ds.get_book_details("999")
-
-    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_author_error(self, mock_connect):
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")

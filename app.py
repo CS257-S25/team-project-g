@@ -70,11 +70,6 @@ def details(isbn):
     Returns:
         (str): a string of details with line breaks between fields
     """
-    try:
-        output = get_details(isbn)
-    except ValueError:
-        abort(400, "No book with that ISBN found!")
-
     # variation on format_list_with_linebreak
     return render_template("book.html", ban_isbn = ds.bans_from_isbn(isbn), book_isbn = ds.book_from_isbn(isbn))
 

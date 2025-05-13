@@ -12,4 +12,4 @@ class RankTest(unittest.TestCase):
         # Test the rank function
         ranked_data = Rank("Ace of Spades", 2)
 
-        self.assertEqual("Ace of Spades: 2", str(ranked_data))
+        self.assertEqual("(Ace of Spades, 2)", str(ranked_data))

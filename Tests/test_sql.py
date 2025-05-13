@@ -939,3 +939,21 @@ class TestSQLHelperMethods(unittest.TestCase):
         result = ds.database_row_list_to_rank_list([("Florida", 50), ("Florida", 50)])
 
         self.assertEqual(list(map(str, result)), list(map(str, expected)))
+
+class TestSQLMostBannedMethods(unittest.TestCase):
+    def setUp(self):
+        """Create a mock prostgres connection"""
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_authors(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        ds = datasource()
+        response = [(
+            ["Sarah J. Maas"],
+            52
+        )]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_authors(1)
+        self.assertEqual(results, response)

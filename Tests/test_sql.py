@@ -1,5 +1,6 @@
 """This file contains the unit tests for the SQL queries."""
 
+import psycopg2
 import unittest
 from unittest.mock import MagicMock, patch
 from ProductionCode import datasource
@@ -963,9 +964,159 @@ class TestSQLMostBannedMethods(unittest.TestCase):
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_authors(self, mock_connect):
         mock_connect.return_value = self.mock_conn
-        ds = datasource()
-        response = [(["Sarah J. Maas"], 52)]
+        ds = DataSource()
+        response = [(
+            ["Sarah J. Maas"],
+            52
+        )]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_authors(1)
-        self.assertEqual(results, response)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))
 
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_districts(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [(
+            "Escambia County Public Schools",
+            23
+        )]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_districts(1)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_states(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [(
+            "Florida",
+            87
+        )]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_states(1)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_titles(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [(
+            "Kingdom of Ash",
+            52
+        )]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_titles(1)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))
+
+    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_books(self, mock_connect, mock_book_from_isbn):
+        """Test get_most_banned_books with a limit of 1."""
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [("1639731067", 52)]
+        self.mock_cursor.fetchall.return_value = response
+        expected_str = "Kingdom of Ash by Sarah J. Maas (ISBN: 1639731067)"
+        mock_book_from_isbn.return_value = expected_str
+        results = ds.get_most_banned_books(1)
+        self.assertEqual(list(map(str, results)), [expected_str])
+
+class TestSQLExceptionBranches(unittest.TestCase):
+    def setUp(self):
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_book_from_isbn_error(self, mock_connect):
+        """If the SELECT fails, we sys.exit() in book_from_isbn."""
+        mock_connect.return_value = self.mock_conn
+        # make cursor.execute raise
+        self.mock_cursor.execute.side_effect = psycopg2.Error("boom")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.book_from_isbn("12345")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_search_title_error(self, mock_connect):
+        """Trigger the except-clause in books_search_title."""
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("oh no")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.books_search_title("anything")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_search_author_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("fail")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.books_search_author("someone")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_search_genre_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("oops")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.books_search_genre("fantasy")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_bans_from_isbn_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("nope")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.bans_from_isbn("440236924")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_book_details_error(self, mock_connect):
+        """Covers exception in get_book_details."""
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+
+        # Now the error path
+        self.mock_cursor.execute.side_effect = psycopg2.Error("bad")
+        with self.assertRaises(SystemExit):
+            ds.get_book_details("999")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_author_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.get_most_banned_authors(1)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_districts_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.get_most_banned_districts(1)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_states_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.get_most_banned_states(1)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_titles_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.get_most_banned_titles(1)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_books_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.get_most_banned_books(1)

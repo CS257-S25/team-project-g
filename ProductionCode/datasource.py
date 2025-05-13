@@ -518,9 +518,9 @@ class DataSource:
         return books
 
 
-if __name__ == "__main__":
-    my_ds = DataSource()
-    # results = my_ds.search_author("Haruki Murakami")
-    output = my_ds.books_search_title("killing")
-    for result in output:
-        print(result)
+# if __name__ == "__main__":
+#     my_ds = DataSource()
+#     # results = my_ds.search_author("Haruki Murakami")
+#     output = my_ds.books_search_title("killing")
+#     for result in output:
+#         print(result)

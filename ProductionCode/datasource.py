@@ -404,17 +404,6 @@ class DataSource:
             " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count"
             " DESC LIMIT %s;"
         )
-        query = (
-            "SELECT author, COUNT(*) AS ban_count "
-            "FROM ( "
-            "    SELECT UNNEST(b.authors) AS author "
-            "    FROM books AS b "
-            "    INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) "
-            ") AS individual_authors "
-            "GROUP BY author "
-            "ORDER BY ban_count DESC "
-            "LIMIT %s;"
-        )
 
         args = (max_results,)
         try:

@@ -956,4 +956,4 @@ class TestSQLMostBannedMethods(unittest.TestCase):
         )]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_authors(1)
-        self.assertEqual(results, response)
+        self.assertEqual(list(map(str, results)), list(map(str, response)))

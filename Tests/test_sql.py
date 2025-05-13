@@ -950,10 +950,10 @@ class TestSQLMostBannedMethods(unittest.TestCase):
     def test_get_most_banned_authors(self, mock_connect):
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
-        response = [(
+        response = [
             ["Sarah J. Maas"],
             52
-        )]
+        ]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_authors(1)
         self.assertEqual(list(map(str, results)), list(map(str, response)))

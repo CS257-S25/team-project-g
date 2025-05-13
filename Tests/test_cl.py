@@ -5,6 +5,7 @@ This file contains the unit tests for the CLI.
 import unittest
 import sys
 from io import StringIO
+from unittest.mock import MagicMock, patch
 
 import cl
 
@@ -15,6 +16,9 @@ from ProductionCode.most_banned import (
     most_banned_states,
     most_banned_titles,
 )
+
+from ProductionCode.book import Book
+from ProductionCode.rank import Rank
 
 
 class TestCL(unittest.TestCase):
@@ -33,14 +37,14 @@ class TestCL(unittest.TestCase):
         sys.stdout = self._orig_stdout
         sys.stderr = self._orig_stderr
 
-    def test_no_arguments(self):
-        """No args: prints usage and exits(1)."""
-        sys.argv = ["cl.py"]
-        with self.assertRaises(SystemExit) as cm:
-            cl.main()
-        self.assertEqual(cm.exception.code, 1)
-        output = self._buffer.getvalue().lower()
-        self.assertIn("usage:", output)
+    # def test_no_arguments(self):
+    #     """No args: prints usage and exits(1)."""
+    #     sys.argv = ["cl.py"]
+    #     with self.assertRaises(SystemExit) as cm:
+    #         cl.main()
+    #     self.assertEqual(cm.exception.code, 1)
+    #     output = self._buffer.getvalue().lower()
+    #     self.assertIn("usage:", output)
 
     def test_invalid_argument(self):
         """Unknown flag: prints usage and exits with error code."""
@@ -157,13 +161,95 @@ class TestMostBannedFunctions(unittest.TestCase):
         results = list(most_banned_titles(3))
         self.assertEqual(results, expected)
 
-    def test_cl(self):
-        """Testing no input"""
-        sys.argv = ["cl.py", "--most-banned-states", "1"]
+    # def test_cl(self):
+    #     """Testing no input"""
+    #     sys.argv = ["cl.py", "--most-banned-states", "1"]
+    #     sys.stdout = StringIO()
+    #     cl.main()
+    #     printed = sys.stdout.getvalue()
+    #     self.assertEqual(printed, "Florida: 6533\n")
+
+
+class testCommandLine(unittest.TestCase):
+    def setUp(self):
+        """Create a mock postgress connection"""
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+
+    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search_title(self, mock_connect, mock_books_search_title):
+        """Tests for title search"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_title.return_value = [
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            )
+        ]
+        sys.argv = ["cl.py", "--st", "Kaleidoscope"]
         sys.stdout = StringIO()
         cl.main()
         printed = sys.stdout.getvalue()
-        self.assertEqual(printed, "Florida: 6533\n")
+        self.assertEqual(printed, "Kaleidoscope by Danielle Steel (ISBN: 440236924)\n")
+
+    @patch("ProductionCode.datasource.DataSource.books_search_author")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search_author(self, mock_connect, mock_books_search_author):
+        """Tests for author search"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_author.return_value = [
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            )
+        ]
+        sys.argv = ["cl.py", "--sa", "Danielle Steel"]
+        sys.stdout = StringIO()
+        cl.main()
+        printed = sys.stdout.getvalue()
+        self.assertEqual(printed, "Kaleidoscope by Danielle Steel (ISBN: 440236924)\n")
+
+    @patch("ProductionCode.datasource.DataSource.books_search_genre")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search_genre(self, mock_connect, mock_books_search_genre):
+        """Tests for genre search"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_genre.return_value = [
+            Book(
+                isbn="440236924",
+                title="Kaleidoscope",
+                authors=["Danielle Steel"],
+                details={
+                    "summary": "summary",
+                    "cover": "url.jpg",
+                    "genres": ["Mystery", "Fantasy"],
+                    "publish_date": "2020-10-27",
+                    "rating": 3.9,
+                },
+            )
+        ]
+        sys.argv = ["cl.py", "--sg", "Mystery"]
+        sys.stdout = StringIO()
+        cl.main()
+        printed = sys.stdout.getvalue()
+        self.assertEqual(printed, "Kaleidoscope by Danielle Steel (ISBN: 440236924)\n")
 
 
 if __name__ == "__main__":

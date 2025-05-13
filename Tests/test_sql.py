@@ -993,3 +993,16 @@ class TestSQLMostBannedMethods(unittest.TestCase):
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_titles(1)
         self.assertEqual(list(map(str, results)), list(map(str, response)))
+
+    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_books(self, mock_connect, mock_book_from_isbn):
+        """Test get_most_banned_books with a limit of 1."""
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [("1639731067", 52)]
+        self.mock_cursor.fetchall.return_value = response
+        expected_str = "Kingdom of Ash by Sarah J. Maas (ISBN: 1639731067)"
+        mock_book_from_isbn.return_value = expected_str
+        results = ds.get_most_banned_books(1)
+        self.assertEqual(list(map(str, results)), [expected_str])

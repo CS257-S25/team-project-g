@@ -463,6 +463,7 @@ class TestSQLSearchMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_title(self, mock_connect):
+        """Tests search title method for the books database"""
         mock_connect.return_value = self.mock_conn
 
         ds = DataSource()
@@ -503,6 +504,7 @@ class TestSQLSearchMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_author(self, mock_connect):
+        """Tests search author method for books database"""
         mock_connect.return_value = self.mock_conn
 
         ds = DataSource()
@@ -543,6 +545,8 @@ class TestSQLSearchMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_genre(self, mock_connect):
+        """Tests search genre method for books database"""
+
         mock_connect.return_value = self.mock_conn
 
         ds = DataSource()
@@ -592,6 +596,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_book_from_isbn(self, mock_connect):
+        """Tests search book by isbn method for book database"""
         mock_connect.return_value = self.mock_conn
 
         ds = DataSource()
@@ -629,6 +634,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
     @patch("ProductionCode.datasource.DataSource.database_row_list_to_bookban_list")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_bans_from_isbn(self, mock_connect, mock_database_row_list_to_bookban_list):
+        """Tests search book bans by isbn method for bookbans database"""
         mock_connect.return_value = self.mock_conn
 
         mock_database_row_list_to_bookban_list.return_value = [
@@ -706,7 +712,7 @@ class TestSQLHelperMethods(unittest.TestCase):
         self.mock_cursor = self.mock_conn.cursor.return_value
 
     @patch("ProductionCode.datasource.psycopg2.connect")
-    def test_database_row_to_book(self, mock_connect):
+    def test_database_row_to_book(self, _mock_connect):
         """Converting database row to book object test"""
 
         ds = DataSource()
@@ -744,7 +750,7 @@ class TestSQLHelperMethods(unittest.TestCase):
     def test_database_row_list_to_book_list(
         self, mock_connect, mock_database_row_to_book
     ):
-        """Converting database row to book object test"""
+        """Converting database row to book object list test"""
         mock_connect.return_value = self.mock_conn
 
         mock_database_row_to_book.return_value = Book(
@@ -837,7 +843,10 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         ds = DataSource()
 
-        expected = "Kaleidoscope by Danielle Steel (ISBN: 440236924) banned in Martin County Schools, Florida as of 3, 2023"
+        expected = (
+            "Kaleidoscope by Danielle Steel (ISBN: 440236924)"
+            " banned in Martin County Schools, Florida as of 3, 2023"
+        )
 
         result = ds.database_row_to_bookban(
             (
@@ -885,8 +894,10 @@ class TestSQLHelperMethods(unittest.TestCase):
         ds = DataSource()
 
         expected = [
-            "Kaleidoscope by Danielle Steel (ISBN: 440236924) banned in Martin County Schools, Florida as of 3, 2023",
-            "Kaleidoscope by Danielle Steel (ISBN: 440236924) banned in Martin County Schools, Florida as of 3, 2023",
+            "Kaleidoscope by Danielle Steel (ISBN: 440236924)"
+            " banned in Martin County Schools, Florida as of 3, 2023",
+            "Kaleidoscope by Danielle Steel (ISBN: 440236924)"
+            " banned in Martin County Schools, Florida as of 3, 2023",
         ]
 
         result = ds.database_row_list_to_bookban_list(
@@ -915,7 +926,8 @@ class TestSQLHelperMethods(unittest.TestCase):
         self.assertEqual(list(map(str, result)), expected)
 
     @patch("ProductionCode.datasource.psycopg2.connect")
-    def test_database_row_to_rank(self, mock_connect):
+    def test_database_row_to_rank(self, _mock_connect):
+        """Converting database row to rank object test"""
         ds = DataSource()
 
         expected = Rank("Florida", 50)
@@ -929,6 +941,7 @@ class TestSQLHelperMethods(unittest.TestCase):
     def test_database_row_list_to_rank_list(
         self, mock_connect, mock_database_row_to_rank
     ):
+        """Converting database row list to rank object list test"""
         mock_connect.return_value = self.mock_conn
         mock_database_row_to_rank.return_value = Rank("Florida", 50)
 
@@ -940,6 +953,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         self.assertEqual(list(map(str, result)), list(map(str, expected)))
 
+
 class TestSQLMostBannedMethods(unittest.TestCase):
     def setUp(self):
         """Create a mock prostgres connection"""
@@ -950,10 +964,8 @@ class TestSQLMostBannedMethods(unittest.TestCase):
     def test_get_most_banned_authors(self, mock_connect):
         mock_connect.return_value = self.mock_conn
         ds = datasource()
-        response = [(
-            ["Sarah J. Maas"],
-            52
-        )]
+        response = [(["Sarah J. Maas"], 52)]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_authors(1)
         self.assertEqual(results, response)
+

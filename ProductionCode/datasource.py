@@ -216,10 +216,6 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
         return books
 
-        results = self.execute_query(query, args)
-        books = self.database_row_list_to_book_list(results)
-        return books
-
     def books_search_genre(self, search_term) -> list[Book]:
         """Searches books database for genres that match search term
         Args:
@@ -496,6 +492,13 @@ class DataSource:
         return ranks
 
     def get_most_banned_books(self, max_results):
+        """Searches bookban database for books with the most bans
+        Args:
+            max_results (int): the number of results to display
+        Returns:
+            (list[Book]): a list of Book objects with the most bans
+        """
+
         query = (
             "SELECT b.isbn, COUNT(*) AS ban_count FROM books AS b "
             "INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) "

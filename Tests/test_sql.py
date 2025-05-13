@@ -949,7 +949,7 @@ class TestSQLMostBannedMethods(unittest.TestCase):
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_authors(self, mock_connect):
         mock_connect.return_value = self.mock_conn
-        ds = datasource()
+        ds = DataSource()
         response = [(
             ["Sarah J. Maas"],
             52

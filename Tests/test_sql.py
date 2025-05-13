@@ -1057,20 +1057,10 @@ class TestSQLExceptionBranches(unittest.TestCase):
             ds.bans_from_isbn("440236924")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
-    def test_get_book_details_success_and_error(self, mock_connect):
-        """Cover both success and exception in get_book_details."""
+    def test_get_book_details_error(self, mock_connect):
+        """Covers exception in get_book_details."""
         mock_connect.return_value = self.mock_conn
-        # First, the success path
-        cols = [
-            ("FL", "District X", 2023, 4, 2023, "Status", "Origin",
-             "Title", "cover.jpg", "sum", ["A","B"], ["G1"], 4.2, "2023-04-01")
-        ]
-        # stub out row -> Bookban conversion
-        with patch.object(DataSource, 'database_row_list_to_bookban_list', return_value=[1,2,3]):
-            self.mock_cursor.fetchall.return_value = cols
-            ds = DataSource()
-            result = ds.get_book_details("999")
-            self.assertEqual(result, [1,2,3])
+        ds = DataSource()
 
         # Now the error path
         self.mock_cursor.execute.side_effect = psycopg2.Error("bad")

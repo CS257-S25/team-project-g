@@ -112,8 +112,8 @@ def map():
 
     return render_template("map.html")
 
-@app.route("genres/<genre>")
-def genres():
+@app.route("/genres/<genre>")
+def genre():
     """Route for Genres page"""
     return render_template("genre.html")
 

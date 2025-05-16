@@ -112,10 +112,15 @@ def map():
 
     return render_template("map.html")
 
+@app.route("genres/<genre>")
+def genres():
+    """Route for Genres page"""
+    return render_template("genre.html")
+
 @app.route("/genres")
 def genres():
     """Route for Genres page"""
-    return render_template("genres.html")
+    return render_template("genres.html", banned_genres = ds.get_most_banned_genres(5))
 
 
 @app.errorhandler(500)

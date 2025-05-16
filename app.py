@@ -53,12 +53,12 @@ def homepage():
         (str): a string of the homepage with line breaks
     """
 
-    # return render_template("index.html", most_banned_books=ds.get_most_banned_books(5))
+    return render_template("index.html", most_banned_books=ds.get_most_banned_books(5))
 
-    return (
-        "The following addresses can be used to see information about banned books:<br /><br />"
-        f"{USAGE}"
-    )
+    # return (
+    #     "The following addresses can be used to see information about banned books:<br /><br />"
+    #     f"{USAGE}"
+    # )
 
 
 @app.route("/details/<isbn>")
@@ -74,20 +74,20 @@ def details(isbn):
     return render_template("book.html", ban_isbn = ds.bans_from_isbn(isbn), book_isbn = ds.book_from_isbn(isbn))
 
 
-@app.route("/search/<field>/<query>", strict_slashes=False)
-def search(field, query):
-    """The endpoint for searching for a field
+# @app.route("/search/<field>/<query>", strict_slashes=False)
+# def search(field, query):
+#     """The endpoint for searching for a field
 
-    Args:
-        field (str): the category the search query is for; title, author, or genre
-        query (str): the search term
-    Returns:
-        (str): a string of search results, separated by line breaks
-    """
+#     Args:
+#         field (str): the category the search query is for; title, author, or genre
+#         query (str): the search term
+#     Returns:
+#         (str): a string of search results, separated by line breaks
+#     """
 
-    function = database_search_map[field]
-    output = function(query)
-    return format_list_with_linebreak(output)
+#     function = database_search_map[field]
+#     output = function(query)
+#     return format_list_with_linebreak(output)
 
 
 @app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
@@ -105,6 +105,12 @@ def most_banned(field, max_results):
     function = database_most_banned_map[field]
     output = function(int(max_results))
     return format_list_with_linebreak(output)
+
+@app.route("/map")
+def map():
+    """Route for map page"""
+
+    return render_template("map.html")
 
 
 @app.errorhandler(500)
@@ -127,6 +133,21 @@ def format_list_with_linebreak(object_list):
     """
     string_list = object_list_to_string(object_list)
     return "</br>".join(string_list)
+
+# @app.route("/search/<query>", strict_slashes=False)
+# def search(query):
+#     """The endpoint for searching"""
+#     ds = DataSource()
+#     # results_isbn = ds.book_from_isbn(query)
+#     results_title = ds.books_search_title(query)
+#     results_author = ds.books_search_author(query)
+#     return render_template(
+#         "search.html",
+#         query=query,
+#         results_isbn=results_isbn,
+#         results_title=results_title,
+#         results_author=results_author,
+#     )
 
 
 @app.errorhandler(404)

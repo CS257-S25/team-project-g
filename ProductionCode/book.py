@@ -35,7 +35,11 @@ class Book:
 
     def genres_to_string(self) -> str:
         """Helper method for displaying author information"""
-        return ", ".join(self.details["genres"])
+        genres = self.details["genres"]
+        if genres:
+            return ", ".join(genres)
+        else:
+            return ""
 
     # def average_rating_histogram(self, rating_histogram):
     #     return round(fmean([1, 2, 3, 4, 5], weights=rating_histogram), 1)

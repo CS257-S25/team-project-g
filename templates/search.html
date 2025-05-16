@@ -39,22 +39,20 @@
       {% if results_isbn %}
       <div class="result-section">
         <h2>ISBN</h2>
-        {% for book in results_isbn: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} class="cover">
+            <img src={{ results_isbn.details.cover }} class="cover">
           </div>
           <div class="book-content">
-            <p class="book-title">{{ book.title }} <span
-                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
-            <p class="book-authors">{{ book.authors_to_string() }}</p>
-            <p class="book-publish_date">{{ book.details.publish_date}}</p>
-            <p class="book-genres">{{ book.genres_to_string() }}</p>
+            <p class="book-title">{{ results_isbn.title }} <span
+                style="font-size:1em;font-weight: lighter">({{results_isbn.isbn}})</span></p>
+            <p class="book-authors">{{ results_isbn.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ results_isbn.details.publish_date}}</p>
+            <p class="book-genres">{{ results_isbn.genres_to_string() }}</p>
           </div>
           <div class="ban-content">
           </div>
         </div>
-        {% endfor %}
       </div>
       {% endif %}
 

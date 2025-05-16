@@ -1,6 +1,43 @@
 <html>
-    <title>
-        Genres
-    </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='genrestyle.css') }}">
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Genres</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='navstyle.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='genresstyle.css') }}">
+</head>
+<body>
+        {% include 'nav.html' %}
+
+    <div class="container">
+        <div class="row">
+        <!-- Center: book covers with 3 random genres each -->
+        <div class="col-md-9 books-grid">
+            {% for book in books %}
+            <div class="book-card">
+                <img src="{{ book.cover_url }}" alt="{{ book.title }} cover" class="book-cover">
+                <div class="genre-tags">
+                {# shuffle the list and take the first 3 #}
+                {% set rnd = book.genres|shuffle %}
+                {% for genre in rnd[0:3] %}
+                    <span class="tag">{{ genre }}</span>
+                {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Sidebar: full list of genres -->
+        <div class="col-md-3 sidebar">
+            <h3>All Banned Genres</h3>
+            <ul class="genre-list">
+            {% for genre in genres %}
+                <li>{{ genre }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        </div>
+    </div>
+</body>
 </html>

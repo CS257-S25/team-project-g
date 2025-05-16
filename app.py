@@ -112,6 +112,11 @@ def map():
 
     return render_template("map.html")
 
+@app.route("/genres")
+def genres():
+    """Route for Genres page"""
+    return render_template("genres.html")
+
 
 @app.errorhandler(500)
 def python_bug(_error):

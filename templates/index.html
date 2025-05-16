@@ -1,90 +1,118 @@
-<!-- Eventually replace inline css -->
-
 <html>
 
 <head>
-  <!-- <link rel="stylesheet" href="index.css"> -->
+  <link rel="stylesheet" href="{{url_for('static', filename='index.css') }}">
 </head>
 
-<body style="margin: 0">
+<body>
   <!-- Navbar -->
-  <nav style="display:flex; background-color: purple; justify-content: space-between; padding-right:2%; padding-left:2%">
-    <div style="display:flex;">
-      <a class="brand" href="#">
+  <nav>
+    <div>
+      <a class="logo" href="#">
         <b>
-
-        The Forbidden Library
+          The Forbidden Library
         </b>
       </a>
-      <div>
-        <a href="#">Most Banned</a>
-        <a href="#">Map</a>
-        <a href="#">Advanced Search</a>
+      <div class="pages">
+        <ul>
+          <li>
+            <a href="#">Most Banned</a>
+          </li>
+          <li>
+            <a href="/map">Map</a>
+          </li>
+          <li>
+            <a href="#">Advanced Search</a>
+          </li>
+        </ul>
       </div>
     </div>
-    <input type="text" placeholder="Search..">
+    <div class="search">
+      <input type="text" placeholder="Search..">
+    </div>
   </nav>
   <!-- Header -->
-  <div style="display: flex;justify-content: center; align-items: center; height:10em; background-color:green;">
+  <div class="header">
     <div style=" display:flex; flex-direction: column;">
       <h1>The Forbidden Library</h1>
       <input type=" text" placeholder="Search..">
-  </div>
+    </div>
   </div>
   <!-- Main Content -->
-  <div style="display:flex; margin-left: 5%; margin-right: 5%">
+  <div class="main">
     <!-- Sidebar -->
-    <div style="width:27.5%; margin-right:1em; padding:1em; background-color: red;">
-      <h2>Links</h2>
-      <h3>See Most Banned...</h3>
-      <ul>
-        <li>
-          <a href="#">Books</a>
-        </li>
-        <li>
-          <a href="#">Authors</a>
-        </li>
-        <li>
-          <a href="#">States</a>
-        </li>
-        <li>
-          <a href="#">Districts</a>
-        </li>
-      </ul>
-      <h3>Search For...</h3>
-      <ul>
-        <li>
-          <a href="#">Title</a>
-        </li>
-        <li>
-          <a href="#">Author</a>
-        </li>
+    <div class="sidebar">
+      <div class="navigation">
+        <h2>Navigation</h2>
+        <h3>See Most Banned...</h3>
+        <ul>
+          <li>
+            <a href="#">Books</a>
+          </li>
+          <li>
+            <a href="#">Authors</a>
+          </li>
+          <li>
+            <a href="#">States</a>
+          </li>
+          <li>
+            <a href="#">Districts</a>
+          </li>
+        </ul>
+        <h3>Search For...</h3>
+        <ul>
+          <li>
+            <a href="#">Title</a>
+          </li>
+          <li>
+            <a href="#">Author</a>
+          </li>
 
-        <li>
-          <a href="#">Genre</a>
-        </li>
-        <li>
-          <a href="#">ISBN</a>
-        </li>
+          <li>
+            <a href="#">Genre</a>
+          </li>
+          <li>
+            <a href="#">ISBN</a>
+          </li>
 
-      </ul>
-    </div>
-    <div style="width:67.5%; margin-left: 1em; padding:1em; background-color: blue;">
-      <!-- Most Banned -->
-      <h2>Discover the Most Banned Books</h2>
-      <div style="display: flex;">
-        {% for book in most_banned_books: %}
-        <!-- Book -->
-        <div style="width:15%; padding-left:2%; padding-right: 2%">
-          <img src={{ book.details.cover }} style="width:100%; object-fit:cover; aspect-ratio: 6/9">
-        </div>
-        {% endfor %}
+        </ul>
       </div>
-      <!-- Map -->
-      <h2>See where Books have been Banned</h2>
+      <div class="map">
+        <h2>Map</h2>
+        <div id="map">
+        </div>
+      </div>
+      <script type="module" src="{{url_for('static', filename='map.js')}}"></script>
 
     </div>
-  </div>
+    <div class="content">
+      <!-- Most Banned -->
+      <div class="most_banned">
+        <h2>Discover the Most Banned Books</h2>
+        <div style="display: flex; flex-direction: column;">
+          {% for book in most_banned_books: %}
+          <div class="book">
+            <div class="cover-wrapper">
+              <img src={{ book[1].details.cover }} class="cover">
+            </div>
+            <div class="book-content">
+              <p class="book-title">{{ book[1].title }} <span
+                  style="font-size:1em;font-weight: lighter">({{book[1].isbn}})</span></p>
+              <p class="book-authors">{{ book[1].authors_to_string() }}</p>
+              <p class="book-publish_date">{{ book[1].details.publish_date}}</p>
+              <p class="book-genres">{{ book[1].genres_to_string() }}</p>
+            </div>
+            <div class="ban-content">
+              <p class="book-bans"><span>{{book[0]}} </span>bans</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Map -->
+        <!-- <h2>See where Books have been Banned</h2> -->
+
+      </div>
+    </div>
 </body>
 
 </html>

@@ -513,7 +513,7 @@ class DataSource:
         except psycopg2.Error as e:
             print("Query error: ", e)
             sys.exit()
-        books = list(map(lambda result: self.book_from_isbn(result[0]), results))
+        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
         return books
 

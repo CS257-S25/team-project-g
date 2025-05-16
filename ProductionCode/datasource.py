@@ -462,7 +462,6 @@ class DataSource:
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
-
         return ranks
 
     def get_most_banned_titles(self, max_results):

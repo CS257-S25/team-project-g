@@ -6,8 +6,9 @@ async function main() {
   const stateRes = await fetch('static/states-10m.json')
   const us = await stateRes.json();
 
-
-  const banRes = await fetch('http://127.0.0.1:5000/get-most-banned-states')
+  const banEndpoint = `${window.location.origin}/get-most-banned-states`;
+  console.log("url: " + banEndpoint)
+  const banRes = await fetch(banEndpoint)
   const banList = await banRes.json();
 
   const states = topojson.feature(us, us.objects.states)

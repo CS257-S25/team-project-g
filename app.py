@@ -1,5 +1,6 @@
 """This is the main file for the Flask application."""
 
+import json
 from flask import Flask, abort, render_template
 from ProductionCode.details import get_details
 from ProductionCode.datasource import DataSource
@@ -161,6 +162,12 @@ def page_not_found(_error):
 
     return f"404: Sorry page not found<br /><br />{USAGE}<br /><br />{EXAMPLES}"
 
+@app.route("/get-most-banned-states")
+def get_most_banned_states():
+    ds = DataSource()
+    most_banned_states = ds.get_most_banned_states(99)
+    ban_json = json.dumps(most_banned_states, default=lambda obj: obj.__dict__)
+    return ban_json
 
 if __name__ == "__main__":
     app.run()

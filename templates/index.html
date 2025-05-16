@@ -96,8 +96,8 @@
               <img src={{ book[1].details.cover }} class="cover">
             </div>
             <div class="book-content">
-              <p class="book-title">{{ book[1].title }} <span
-                  style="font-size:1em;font-weight: lighter">({{book[1].isbn}})</span></p>
+              <a class="book-title" href="{{'/details/' + book[1].isbn}}">{{ book[1].title }} <span
+                  style="font-size:1em;font-weight: lighter">({{book[1].isbn}})</span></a>
               <p class="book-authors">{{ book[1].authors_to_string() }}</p>
               <p class="book-publish_date">{{ book[1].details.publish_date}}</p>
               <p class="book-genres">{{ book[1].genres_to_string() }}</p>

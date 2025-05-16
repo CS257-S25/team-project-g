@@ -1,0 +1,110 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="{{url_for('static', filename='search.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div>
+      <a class="logo" href="#">
+        <b>
+          The Forbidden Library
+        </b>
+      </a>
+      <div class="pages">
+        <ul>
+          <li>
+            <a href="#">Most Banned</a>
+          </li>
+          <li>
+            <a href="#">Map</a>
+          </li>
+          <li>
+            <a href="#">Advanced Search</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="search">
+      <input type="text" placeholder="Search..">
+    </div>
+  </nav>
+  <!-- Content -->
+  <div class="main">
+    <h1>Search Results for "{{query}}":</h1>
+    <div class="results">
+      <!-- ISBN -->
+      {% if results_isbn %}
+      <div class="result-section">
+        <h2>ISBN</h2>
+        {% for book in results_isbn: %}
+        <div class="book">
+          <div class="cover-wrapper">
+            <img src={{ book.details.cover }} class="cover">
+          </div>
+          <div class="book-content">
+            <p class="book-title">{{ book.title }} <span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+
+
+      <!-- Title -->
+      <div class="result-section">
+        <h2>Title</h2>
+        {% for book in results_title: %}
+        <div class="book">
+          <div class="cover-wrapper">
+            <img src={{ book.details.cover }} class="cover">
+          </div>
+          <div class="book-content">
+            <p class="book-title">{{ book.title }} <span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+
+      <!-- Authors-->
+      <div class="result-section">
+        <h2>Authors</h2>
+        {% for book in results_author: %}
+        <div class="book">
+          <div class="cover-wrapper">
+            <img src={{ book.details.cover }} class="cover">
+          </div>
+          <div class="book-content">
+            <p class="book-title">{{ book.title }} <span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

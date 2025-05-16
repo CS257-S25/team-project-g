@@ -1,0 +1,44 @@
+
+<html>
+
+<head>
+  <link rel="stylesheet" href="{{url_for('static', filename='map.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div>
+      <a class="logo" href="#">
+        <b>
+          The Forbidden Library
+        </b>
+      </a>
+      <div class="pages">
+        <ul>
+          <li>
+            <a href="/map">Most Banned</a>
+          </li>
+          <li>
+            <a href="#">Map</a>
+          </li>
+          <li>
+            <a href="#">Advanced Search</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="search">
+      <input type="text" placeholder="Search..">
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="map" id="map"></div>
+    <script type="module" src="{{url_for('static', filename='map.js')}}"></script>
+  </div>
+
+
+</body>
+
+</html>

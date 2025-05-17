@@ -1,0 +1,19 @@
+:root {
+  --accent: #7f1d1d;
+  --link: #0369a1;
+  --bg: #fafafa;
+  --lighter: #e7e5e4;
+  --light: #d6d3d1;
+  --border: #d6d3d1;
+  --text: #1c1917;
+
+  --accent: #BB2E2E;
+  --link: #0369a1;
+  --bg: #2B2A2D;
+  --lighter: rgba(255,255,255,0.05);
+  --light: rgba(225, 225, 225, 0.15);
+  --text: white;
+
+   
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}

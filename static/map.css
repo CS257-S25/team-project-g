@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --accent: #7f1d1d;
   --link: #0369a1;
   --bg: #fafafa;
@@ -7,25 +7,14 @@
   --border: #d6d3d1;
   --black: #1c1917;
 
-  /* --lighter: #bb2e2e; */
-  /* --bg: #2b2a2d; */
-}
+} */
 
 body {
   margin: 0;
   background-color: var(--bg);
-  font-family: Garamond
+  color: var(--text)
 }
 
-a.logo {
-  font-size: 1.2em;
-  font-family: Georgia;
-  font-weight: bold;
-  color: var(--accent);
-  text-align: center;
-  text-decoration: none;
-  padding-left: 0.
-}
 
 h1 {
   font-size: 3em;
@@ -47,79 +36,6 @@ h3 {
 p {
   margin: 0;
   padding: 0;
-}
-
-/* Nav */
-
-nav {
-  display: flex;
-  background-color: var(--lighter);
-  height: 36px;
-  justify-content: space-between;
-  padding-right: 2%;
-  padding-left: 2%;
-  border-bottom: 2px solid var(--border)
-}
-
-nav div {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-nav a.logo {
-  font-size: 1.2em;
-  font-family: Georgia;
-  color: var(--accent);
-  text-align: center;
-  text-decoration: none;
-  margin-right: 0.2em;
-}
-
-nav div ul {
-  height: 100%;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-nav div ul li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  float: left;
-  height: 100%;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-nav li a {
-  display: block;
-  color: var(--black);
-  text-align: center;
-  text-decoration: none;
-}
-
-nav li:hover {
-  background-color: var(--light);
-}
-
-nav div.search {
-  margin-left: auto;
-}
-
-
-nav div.search form {
-  padding: 0;
-  margin: 0;
-  height: 80%;
-  display: flex;
-}
-
-nav div.search input[type="submit"] {
-  margin-left: 4px;
 }
 
 

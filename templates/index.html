@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <title>The Forbidden Library</title>
   <link rel="stylesheet" href="{{url_for('static', filename='index.css') }}">
 </head>
 
@@ -8,34 +9,43 @@
   <!-- Navbar -->
   <nav>
     <div>
-      <a class="logo" href="#">
-        <b>
-          The Forbidden Library
-        </b>
+      <a class="logo" href="/">
+        The Forbidden Library
       </a>
       <div class="pages">
         <ul>
           <li>
-            <a href="#">Most Banned</a>
-          </li>
-          <li>
             <a href="/map">Map</a>
           </li>
           <li>
-            <a href="#">Advanced Search</a>
+            <a href="#">Books</a>
+          </li>
+          <li>
+            <a href="#">Authors</a>
+          </li>
+          <li>
+            <a href="#">Genres</a>
           </li>
         </ul>
       </div>
     </div>
     <div class="search">
-      <input type="text" placeholder="Search..">
+      <form action="/search">
+        <input aria-label="Search" id="search" name="searchterm" type="text" placeholder="Search..">
+        <input aria-label="Submit Search" type="submit" value="Go">
+      </form>
     </div>
   </nav>
   <!-- Header -->
   <div class="header">
     <div style=" display:flex; flex-direction: column;">
       <h1>The Forbidden Library</h1>
-      <input type=" text" placeholder="Search..">
+      <div class="search">
+        <form action="/search">
+          <input aria-label="Search" name="searchterm" type="text" placeholder="Search..">
+          <input aria-label=" Submit Search" type="submit" value="Go">
+        </form>
+      </div>
     </div>
   </div>
   <!-- Main Content -->
@@ -77,12 +87,15 @@
 
         </ul>
       </div>
-      <div class="map">
+      <div class="map-section">
         <h2>Map</h2>
-        <div id="map">
+        <div class="map" id="map">
+        </div>
+        <script type="module" src="{{url_for('static', filename='map-simple.js')}}"></script>
+        <div class="map-details">
+          <a href="/map">Go to Map</a>
         </div>
       </div>
-      <script type="module" src="{{url_for('static', filename='map.js')}}"></script>
 
     </div>
     <div class="content">
@@ -93,11 +106,11 @@
           {% for book in most_banned_books: %}
           <div class="book">
             <div class="cover-wrapper">
-              <img src={{ book[1].details.cover }} class="cover">
+              <img src={{ book[1].details.cover }} alt={{book[1].title}} class="cover">
             </div>
             <div class="book-content">
-              <a class="book-title" href="{{'/details/' + book[1].isbn}}">{{ book[1].title }} <span
-                  style="font-size:1em;font-weight: lighter">({{book[1].isbn}})</span></a>
+              <p class="book-title">{{ book[1].title }} <span
+                  style="font-size:1em;font-weight: lighter">({{book[1].isbn}})</span></p>
               <p class="book-authors">{{ book[1].authors_to_string() }}</p>
               <p class="book-publish_date">{{ book[1].details.publish_date}}</p>
               <p class="book-genres">{{ book[1].genres_to_string() }}</p>
@@ -108,9 +121,6 @@
           </div>
           {% endfor %}
         </div>
-        <!-- Map -->
-        <!-- <h2>See where Books have been Banned</h2> -->
-
       </div>
     </div>
 </body>

@@ -8,44 +8,49 @@
   <!-- Navbar -->
   <nav>
     <div>
-      <a class="logo" href="#">
-        <b>
-          The Forbidden Library
-        </b>
+      <a class="logo" href="/">
+        The Forbidden Library
       </a>
       <div class="pages">
         <ul>
           <li>
-            <a href="#">Most Banned</a>
+            <a href="/map">Map</a>
           </li>
           <li>
-            <a href="#">Map</a>
+            <a href="#">Books</a>
           </li>
           <li>
-            <a href="#">Advanced Search</a>
+            <a href="#">Authors</a>
+          </li>
+          <li>
+            <a href="#">Genres</a>
           </li>
         </ul>
       </div>
     </div>
     <div class="search">
-      <input type="text" placeholder="Search..">
+      <form action="/search">
+        <input aria-label="Search" id="search" name="searchterm" type="text" placeholder="Search..">
+        <input aria-label="Submit Search" type="submit" value="Go">
+      </form>
     </div>
   </nav>
+
   <!-- Content -->
   <div class="main">
-    <h1>Search Results for "{{query}}":</h1>
     <div class="results">
+      <h1>Search Results for "{{query}}":</h1>
       <!-- ISBN -->
       {% if results_isbn %}
       <div class="result-section">
         <h2>ISBN</h2>
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ results_isbn.details.cover }} class="cover">
+            <img src={{ results_isbn.details.cover }} alt="{{ results_isbn.title }}" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title">{{ results_isbn.title }} <span
-                style="font-size:1em;font-weight: lighter">({{results_isbn.isbn}})</span></p>
+                style="font-size:1em;font-weight: lighter">({{ results_isbn.isbn}})</span></p>
             <p class="book-authors">{{ results_isbn.authors_to_string() }}</p>
             <p class="book-publish_date">{{ results_isbn.details.publish_date}}</p>
             <p class="book-genres">{{ results_isbn.genres_to_string() }}</p>
@@ -59,12 +64,13 @@
 
 
       <!-- Title -->
+      {% if results_title%}
       <div class="result-section">
         <h2>Title</h2>
         {% for book in results_title: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} class="cover">
+            <img src={{ book.details.cover }} alt="book.title" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title">{{ book.title }} <span
@@ -78,15 +84,17 @@
         </div>
         {% endfor %}
       </div>
+      {% endif %}
 
 
       <!-- Authors-->
+      {% if results_author %}
       <div class="result-section">
         <h2>Authors</h2>
         {% for book in results_author: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} class="cover">
+            <img src={{ book.details.cover }} alt="book.title" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title">{{ book.title }} <span
@@ -100,6 +108,7 @@
         </div>
         {% endfor %}
       </div>
+      {% endif %}
 
     </div>
   </div>

@@ -26,16 +26,14 @@ async function main() {
           stroke: "#000000",
           strokeWidth: 1,
           fill: (d) => banMap.get(d.properties.name),
-          title: (d) => `${d.properties.name} \n ${banMap.get(d.properties.name) ? banMap.get(d.properties.name) : 0} bans`,
-          tip: true,
         }
       )],
     color: {
       scheme: "reds",
       unknown: "#fff",
       type: "log",
-      label: "Number of book bans",
-      legend: true,
+      // label: "Number of book bans",
+      // legend: true,
     }
 
   })
@@ -43,30 +41,6 @@ async function main() {
   const div = document.querySelector("#map");
   div.append(plot);
 
-  // WIP!
-  // const paths = plot.querySelectorAll("path");
-  // paths.forEach((path, i) => {
-  //   const d = statesFeatures[i];
-  //   path.addEventListener("mouseenter", () => {
-  //     updateSidebar(d.properties.name)
-  //     console.log(d.properties.name)
-  //   });
-  //   path.addEventListener("mouseleave", () => {
-  //
-  //   })
-  // })
-  //
-  // async function updateSidebar(state) {
-  //   const path = `${window.location.origin}/get-state_bans/${state}`
-  //   const res = await fetch(path)
-  //   const districts = await res.json()
-  //
-  //   const list = document.getElementById("map-info")
-  //
-  //   for (let i = 0; i < districts.length(); i++) {
-  //     list.append(Object.assign(document.createElement('li'), { textContent: districts[i].name }))
-  //   }
-  // }
 }
 
 window.addEventListener("DOMContentLoaded", async (_evt) => {

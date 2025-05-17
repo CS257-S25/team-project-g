@@ -1,4 +1,3 @@
-
 <html>
 
 <head>
@@ -6,36 +5,57 @@
 </head>
 
 <body>
+
   <!-- Navbar -->
   <nav>
     <div>
-      <a class="logo" href="#">
-        <b>
-          The Forbidden Library
-        </b>
+      <a class="logo" href="/">
+        The Forbidden Library
       </a>
       <div class="pages">
         <ul>
           <li>
-            <a href="/map">Most Banned</a>
+            <a href="/map">Map</a>
           </li>
           <li>
-            <a href="#">Map</a>
+            <a href="#">Books</a>
           </li>
           <li>
-            <a href="#">Advanced Search</a>
+            <a href="#">Authors</a>
+          </li>
+          <li>
+            <a href="#">Genres</a>
           </li>
         </ul>
       </div>
     </div>
     <div class="search">
-      <input type="text" placeholder="Search..">
+      <form action="/search">
+        <input aria-label="Search" id="search" name="searchterm" type="text" placeholder="Search..">
+        <input aria-label="Submit Search" type="submit" value="Go">
+      </form>
     </div>
   </nav>
-
+  <!-- Header -->
+  <div class="header">
+    <div style=" display:flex; flex-direction: column;">
+      <h1>Banned Books in the United States</h1>
+    </div>
+  </div>
   <div class="main">
-    <div class="map" id="map"></div>
+    <div class="map" id="map">
+    </div>
     <script type="module" src="{{url_for('static', filename='map.js')}}"></script>
+    <div class="map-info">
+      <h2>Most Banned States</h2>
+      <ol>
+        {% for state in most_banned_states: %}
+        <li>
+          <p>{{state.name}}: {{state.bans}}</p>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
   </div>
 
 

@@ -1,0 +1,128 @@
+<html>
+
+<head>
+  <title>The Forbidden Library</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='index.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div>
+      <a class="logo" href="/">
+        The Forbidden Library
+      </a>
+      <div class="pages">
+        <ul>
+          <li>
+            <a href="/map">Map</a>
+          </li>
+          <li>
+            <a href="#">Books</a>
+          </li>
+          <li>
+            <a href="#">Authors</a>
+          </li>
+          <li>
+            <a href="#">Genres</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="search">
+      <form action="/search">
+        <input aria-label="Search" id="search" name="searchterm" type="text" placeholder="Search..">
+        <input aria-label="Submit Search" type="submit" value="Go">
+      </form>
+    </div>
+  </nav>
+  <!-- Header -->
+  <div class="header">
+    <div style=" display:flex; flex-direction: column;">
+      <h1>The Forbidden Library</h1>
+      <div class="search">
+        <form action="/search">
+          <input aria-label="Search" name="searchterm" type="text" placeholder="Search..">
+          <input aria-label=" Submit Search" type="submit" value="Go">
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="main">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="navigation">
+        <h2>Navigation</h2>
+        <h3>See Most Banned...</h3>
+        <ul>
+          <li>
+            <a href="#">Books</a>
+          </li>
+          <li>
+            <a href="#">Authors</a>
+          </li>
+          <li>
+            <a href="#">States</a>
+          </li>
+          <li>
+            <a href="#">Districts</a>
+          </li>
+        </ul>
+        <h3>Search For...</h3>
+        <ul>
+          <li>
+            <a href="#">Title</a>
+          </li>
+          <li>
+            <a href="#">Author</a>
+          </li>
+
+          <li>
+            <a href="#">Genre</a>
+          </li>
+          <li>
+            <a href="#">ISBN</a>
+          </li>
+
+        </ul>
+      </div>
+      <div class="map-section">
+        <h2>Map</h2>
+        <div class="map" id="map">
+        </div>
+        <script type="module" src="{{url_for('static', filename='map-simple.js')}}"></script>
+        <div class="map-details">
+          <a href="/map">Go to Map</a>
+        </div>
+      </div>
+
+    </div>
+    <div class="content">
+      <!-- Most Banned -->
+      <div class="most_banned">
+        <h2>Discover the Most Banned Books</h2>
+        <div style="display: flex; flex-direction: column;">
+          {% for book in most_banned_books: %}
+          <div class="book">
+            <div class="cover-wrapper">
+              <img src={{ book[1].details.cover }} alt={{book[1].title}} class="cover">
+            </div>
+            <div class="book-content">
+              <p class="book-title">{{ book[1].title }} <span
+                  style="font-size:1em;font-weight: lighter">({{book[1].isbn}})</span></p>
+              <p class="book-authors">{{ book[1].authors_to_string() }}</p>
+              <p class="book-publish_date">{{ book[1].details.publish_date}}</p>
+              <p class="book-genres">{{ book[1].genres_to_string() }}</p>
+            </div>
+            <div class="ban-content">
+              <p class="book-bans"><span>{{book[0]}} </span>bans</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>

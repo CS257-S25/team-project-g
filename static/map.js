@@ -11,7 +11,7 @@ async function main() {
   const banRes = await fetch(banEndpoint)
   const banList = await banRes.json();
 
-  const states = topojson.feature(us, us.objects.states)
+const states = topojson.feature(us, us.objects.states)
   const statesFeatures = states.features
 
   const banMap = new Map(banList.map(({ name, bans }) => [name, bans]))

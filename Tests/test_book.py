@@ -19,13 +19,6 @@ class TestBook(unittest.TestCase):
                 "genres": [
                     "Adult Fiction",
                     "Contemporary Romance",
-                    "Romance,Novels",
-                    "Contemporary",
-                    "Drama",
-                    "Adult",
-                    "Chick Lit",
-                    "Historical Fiction",
-                    "Fiction",
                 ],
                 "publish_date": "2000-10-28",
                 "rating": 4.0,
@@ -41,3 +34,6 @@ class TestBook(unittest.TestCase):
     def test_authors_to_string(self):
         """Tests to string method for authors"""
         self.assertEqual(str(self.book.authors_to_string()), "Danielle Steel")
+    def test_genres_to_string(self):
+        """Tests to string method for authors"""
+        self.assertEqual(str(self.book.genres_to_string()), "Adult Fiction, Contemporary Romance")

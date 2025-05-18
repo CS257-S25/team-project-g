@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='books.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+</head>
+
+<body>
+    <!-- Navbar -->
+     {% include 'nav.html' %}
+     <!-- Header -->
+      <div class="header">
+        <h1>Banned Books</h1>
+      </div>
+      <!-- Content -->
+       <div class="main">
+              {% for book in books[:300] %}
+              <a href="/details/{{book.isbn}}">
+      <div class="book">
+        <img src="{{book.details.cover if book.details.cover else url_for('static', filename='no-cover.png')}}" alt="{{book.title}}">
+        <div class="hover">
+            <p class="title">{{book.title}}</p>
+            <p class="author">{{book.authors_to_string()}}</p>
+        </div>
+        <!-- <p>{{book.title}}</p> -->
+      </div></a>
+
+      {% endfor %}
+          <!-- Row -->
+           <!-- <div class="row">
+      {% for book in books[:10] %}
+      <div class="book">
+        <img src="{{book.details.cover}}">
+        <p>{{book.title}}</p>
+      </div>
+      {% endfor %}
+           </div> -->
+          <!-- Row -->
+           <!-- <div class="row">
+      {% for book in books[10:20] %}
+      <div class="book">
+        <img src="{{book.details.cover}}">
+        <p>{{book.title}}</p>
+      </div>
+      {% endfor %} -->
+           </div>
+       </div>
+</body>
+
+</html>

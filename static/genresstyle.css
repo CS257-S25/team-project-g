@@ -1,0 +1,40 @@
+.container {
+  margin: 20px auto;
+}
+.books-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.book-card {
+  width: calc(33.333% - 20px);
+  text-align: center;
+}
+.book-cover {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.genre-tags {
+  margin-top: 8px;
+}
+.tag {
+  display: inline-block;
+  background: #f0f0f0;
+  padding: 4px 8px;
+  margin: 2px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+.sidebar {
+  border-left: 1px solid #ccc;
+  padding-left: 20px;
+}
+.genre-list {
+  list-style: none;
+  padding: 0;
+}
+.genre-list li {
+  margin: 6px 0;
+}

@@ -148,11 +148,8 @@ class DataSource:
             print("Query error: ", e)
             sys.exit()
 
-        if results:
-            book = self.database_row_to_book(results)
-            return book
-        else:
-            return None
+        book = self.database_row_to_book(results)
+        return book
 
     def bans_from_isbn(self, isbn) -> list[Bookban]:
         """Queries book database based on ISBN
@@ -204,14 +201,8 @@ class DataSource:
         Returns:
             (list[Book]): a list of Book objects where search_term is in authors
         """
-        # query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
-        query = ("SELECT * FROM books "
-"WHERE EXISTS ("
-  "SELECT 1 "
-  "FROM unnest(authors) AS author "
-  "WHERE author ILIKE %s"
-");")
-        args = ("%" + search_term + "%",)
+        query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
+        args = (search_term,)
 
         try:
             cursor = self.connection.cursor()
@@ -471,6 +462,7 @@ class DataSource:
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
+
         return ranks
 
     def get_most_banned_titles(self, max_results):
@@ -483,6 +475,32 @@ class DataSource:
         query = (
             "SELECT b.title, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
             " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY title ORDER BY ban_count"
+            " DESC LIMIT %s;"
+        )
+        args = (max_results,)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+
+        ranks = self.database_row_list_to_rank_list(results)
+
+        return ranks
+
+    def get_most_banned_genres(self, max_results):
+        """Searches bookban database for genres with the most bans
+        Args:
+            max_results (int): the number of results to display
+        Returns:
+            (list[Rank]): a list of Rank objects of genres and number of bans
+        """
+        query = (
+            "SELECT b.genres, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
+            " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY genres ORDER BY ban_count"
             " DESC LIMIT %s;"
         )
         args = (max_results,)
@@ -524,7 +542,6 @@ class DataSource:
         books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
         return books
-
 
 
 # if __name__ == "__main__":

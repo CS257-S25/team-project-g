@@ -1,0 +1,17 @@
+<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Genres</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='navstyle.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='genresstyle.css') }}">
+</head>
+<body>
+        {% include 'nav.html' %}
+        <br>
+        {% for genres in banned_genres: %}
+        <img src={{ genres[1].details.cover }}>
+        {% endfor %}
+</body>
+</html>

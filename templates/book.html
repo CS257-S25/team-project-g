@@ -5,20 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>{{ book_isbn.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='navstyle.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='bookstyle.css') }}">
 </head>
 <body>
   <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="#" class="brand">The Forbidden Archive</a>
-      <form class="search-form" action="#" method="get">
-        <input type="text" name="q" placeholder="Search…">
-        <button type="submit">🔍</button>
-      </form>
-    </div>
-  </header>
-
+  {% include 'nav.html' %}
   <div class="page">
     <div class="book-details">
       <!-- LEFT COLUMN -->

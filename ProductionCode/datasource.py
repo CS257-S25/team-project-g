@@ -514,8 +514,9 @@ class DataSource:
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
+        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
-        return ranks
+        return books
 
     def get_most_banned_books(self, max_results):
         """Searches bookban database for books with the most bans

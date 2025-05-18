@@ -22,7 +22,7 @@
             <img src={{ results_isbn.details.cover }} alt="{{ results_isbn.title }}" class="cover">
           </div>
           <div class="book-content">
-            <p class="book-title">{{ results_isbn.title }} <span
+            <p class="book-title"><a href="/details/{{results_isbn.isbn}}">{{ results_isbn.title }} </a><span
                 style="font-size:1em;font-weight: lighter">({{ results_isbn.isbn}})</span></p>
             <p class="book-authors">{{ results_isbn.authors_to_string() }}</p>
             <p class="book-publish_date">{{ results_isbn.details.publish_date}}</p>
@@ -39,14 +39,19 @@
       <!-- Title -->
       {% if results_title%}
       <div class="result-section">
-        <h2>Title</h2>
+        <div class="heading">
+          <h2>Title</h2>
+          {% if not type %}
+          <div class="a-wrapper"><a href="/search?searchterm={{query}}&type=title">Search only Titles</a></div>
+          {% endif %}
+        </div>
         {% for book in results_title: %}
         <div class="book">
           <div class="cover-wrapper">
             <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
           </div>
           <div class="book-content">
-            <p class="book-title">{{ book.title }} <span
+            <p class="book-title"><a href="details/{{book.isbn}}">{{ book.title }} </a><span
                 style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
             <p class="book-authors">{{ book.authors_to_string() }}</p>
             <p class="book-publish_date">{{ book.details.publish_date}}</p>
@@ -63,14 +68,19 @@
       <!-- Authors-->
       {% if results_author %}
       <div class="result-section">
-        <h2>Authors</h2>
+        <div class="heading">
+          <h2>Authors</h2>
+          {% if not type %}
+          <div class="a-wrapper"><a href="/search?searchterm={{query}}&type=title">Search only Authors</a></div>
+          {% endif %}
+        </div>
         {% for book in results_author: %}
         <div class="book">
           <div class="cover-wrapper">
             <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
           </div>
           <div class="book-content">
-            <p class="book-title">{{ book.title }} <span
+            <p class="book-title"> <a href="/details/{{book.isbn}}">{{ book.title }} </a><span
                 style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
             <p class="book-authors">{{ book.authors_to_string() }}</p>
             <p class="book-publish_date">{{ book.details.publish_date}}</p>
@@ -82,7 +92,6 @@
         {% endfor %}
       </div>
       {% endif %}
-
     </div>
   </div>
 </body>

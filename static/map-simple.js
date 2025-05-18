@@ -24,7 +24,7 @@ async function main() {
         states,
         {
           stroke: "#f9f9f9",
-          strokeWidth: 1,
+          strokeWidth: 0.4,
           fill: (d) => banMap.get(d.properties.name),
         }
       )],

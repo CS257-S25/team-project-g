@@ -25,7 +25,7 @@ async function main() {
         states,
         {
           stroke: "#f9f9f9",
-          strokeWidth: 0.2,
+          strokeWidth: 0.4,
           fill: (d) => banMap.get(d.properties.name),
           title: (d) => `${d.properties.name} \n ${banMap.get(d.properties.name) ? banMap.get(d.properties.name) : 0} bans`,
           tip: true,

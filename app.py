@@ -169,18 +169,30 @@ def get_most_banned_states():
     most_banned_states = ds.get_most_banned_states(99)
     ban_json = json.dumps(most_banned_states, default=lambda obj: obj.__dict__)
     return ban_json
+
 @app.route("/search")
 def search():
     """The endpoint for searching"""
-    query = request.args["searchterm"]
+    query = request.args.get("searchterm")
+    type = request.args.get("type")
     ds = DataSource()
-    results_isbn = ds.book_from_isbn(query)
-    results_title = ds.books_search_title(query)
-    results_author = ds.books_search_author(query)
-    print(results_isbn)
+
+    if type == "title":
+        results_isbn = None
+        results_title = ds.books_search_title(query)
+        results_author = None
+    elif type == "author":
+        results_isbn = None
+        results_title = None
+        results_author = ds.books_search_author(query)
+    else:
+        results_isbn = ds.book_from_isbn(query)
+        results_title = ds.books_search_title(query)[:5]
+        results_author = ds.books_search_author(query)[:5]
     return render_template(
         "search.html",
         query=query,
+        type=type,
         results_isbn=results_isbn,
         results_title=results_title,
         results_author=results_author,

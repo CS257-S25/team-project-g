@@ -488,7 +488,7 @@ class DataSource:
             " DESC LIMIT %s;"
         )
         args = (max_results,)
-        try
+        try:
             cursor = self.connection.cursor()
             cursor.execute(query, args)
             results = cursor.fetchall()

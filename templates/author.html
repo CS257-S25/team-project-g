@@ -1,31 +1,28 @@
-<html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{author}}</title>
+  <meta charset="UTF-8">
+  <title>Books by {{ author }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='genre.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='authors.css') }}">
 </head>
 <body>
-        {% include 'nav.html' %}
-      <div class="header">
-        <h1>{{ author }}</h1>
-      </div>
-      <!-- Content -->
-       <div class="main">
-              {% for book in books[:300] %}
-              <a href="/details/{{book.isbn}}">
+  <div class="header">
+    <h1>Books by {{ author }}</h1>
+  </div>
+  <div class="main">
+    {% for book in books %}
       <div class="book">
-        <img src="{{book.details.cover if book.details.cover else url_for('static', filename='no-cover.png')}}" alt="{{book.title}}">
+        <img src="{{ book.cover }}" alt="Cover of {{ book.title }}">
         <div class="hover">
-            <p class="title">{{book.title}}</p>
-            <p class="author">{{book.authors_to_string()}}</p>
+          <p class="title">
+            <a href="{{ url_for('details', isbn=book.isbn) }}">{{ book.title }}</a>
+          </p>
+          <p class="author">{{ author }}</p>
         </div>
-        <!-- <p>{{book.title}}</p> -->
-      </div></a>
-
-      {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
 </body>
 </html>

@@ -198,5 +198,12 @@ def search():
         results_author=results_author,
     )
 
+@app.route("/books")
+def books():
+    ds = DataSource()
+    # replace later
+    books = ds.books_search_title("a")
+    return render_template("books.html", books=books)
+
 if __name__ == "__main__":
     app.run(port="5132")

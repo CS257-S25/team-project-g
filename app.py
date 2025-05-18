@@ -205,5 +205,11 @@ def books():
     books = ds.books_search_title("")
     return render_template("books.html", books=books)
 
+@app.route("genres/<genre>")
+def genres(genre):
+    ds = DataSource()
+    books = ds.books_search_genre(genre)
+    return render_template("genre.html", books=books)
+
 if __name__ == "__main__":
     app.run(port="5131")

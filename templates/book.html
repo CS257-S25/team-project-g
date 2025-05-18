@@ -24,7 +24,12 @@
         </div>
         <div class="meta">
           <p class="meta-title">{{ book_isbn.title }}</p>
-          <a href="/authors/{{ book_isbn.details.authors }}" class="meta-author">{{ book_isbn.details.authors }}</a>
+          <p class="meta-author">
+            {% for author in book_isbn.authors %}
+              <a href="{{ url_for('authors', author=author) }}"
+                class="meta-author">{{ author }}</a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+          </p>
           <p class="meta-rating">Rating: {{ book_isbn.details.rating }}</p>
         </div>
 

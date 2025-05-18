@@ -85,7 +85,12 @@
             <div class="book-content">
               <p class="book-title"><a href="/details/{{book[1].isbn}}">{{ book[1].title }} </a><span
                   >({{book[1].isbn}})</span></p>
-              <p class="book-authors">{{ book[1].authors_to_string() }}</p>
+              <p class="book-authors">
+                {% for author in book[1].authors %}
+                  <a href="{{ url_for('authors', author=author) }}"
+                    class="book-author-link">{{ author }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+              </p>
               <p class="book-publish_date">{{ book[1].details.publish_date}}</p>
               <p class="book-genres">{{ book[1].genres_to_string() }}</p>
             </div>

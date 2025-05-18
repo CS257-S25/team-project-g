@@ -501,6 +501,32 @@ class DataSource:
 
         return ranks
 
+    def get_most_banned_genres(self, max_results):
+        """Searches bookban database for genres with the most bans
+        Args:
+            max_results (int): the number of results to display
+        Returns:
+            (list[Rank]): a list of Rank objects of genres and number of bans
+        """
+        query = (
+            "SELECT b.genres, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
+            " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY genres ORDER BY ban_count"
+            " DESC LIMIT %s;"
+        )
+        args = (max_results,)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Query error: ", e)
+            sys.exit()
+
+        ranks = self.database_row_list_to_rank_list(results)
+
+        return ranks
+
     def get_most_banned_books(self, max_results):
         """Searches bookban database for books with the most bans
         Args:

@@ -7,10 +7,12 @@ async function main() {
   const us = await stateRes.json();
 
 
-  const banRes = await fetch('http://127.0.0.1:5000/get-most-banned-states')
+  const banEndpoint = `${window.location.origin}/get-most-banned-states`;
+  const banRes = await fetch(banEndpoint)
   const banList = await banRes.json();
 
   const states = topojson.feature(us, us.objects.states)
+  const statesFeatures = states.features
 
   const banMap = new Map(banList.map(({ name, bans }) => [name, bans]))
 
@@ -21,25 +23,20 @@ async function main() {
       Plot.geo(
         states,
         {
-          stroke: "#000000",
-          strokeWidth: 1,
+          stroke: "#f9f9f9",
+          strokeWidth: 0.4,
           fill: (d) => banMap.get(d.properties.name),
-          title: (d) => `${d.properties.name} \n ${banMap.get(d.properties.name) ? banMap.get(d.properties.name) : 0} bans`,
-          tip: true,
         }
       )],
     color: {
-      scheme: "reds",
-      unknown: "#fff",
+      range: ["#F9D6D6", "#F1AFAF", "#E98282", "#D14F4F", "#B22E2E"],
+      unknown: "#464548",
       type: "log",
       // label: "Number of book bans",
       // legend: true,
     }
 
-
   })
-
-
 
   const div = document.querySelector("#map");
   div.append(plot);
@@ -49,5 +46,6 @@ async function main() {
 window.addEventListener("DOMContentLoaded", async (_evt) => {
   await main();
 })
+
 
 // test

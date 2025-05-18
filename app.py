@@ -209,7 +209,7 @@ def books():
 def genres(genre):
     ds = DataSource()
     books = ds.books_search_genre(genre)
-    return render_template("genre.html", books=books)
+    return render_template("genre.html", books=books, genre=genre)
 
 if __name__ == "__main__":
     app.run(port="5131")

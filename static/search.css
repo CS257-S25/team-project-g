@@ -42,8 +42,8 @@ div.results {
 div.result-section {
   padding: 1em;
   margin-bottom: 1em;
-  background-color: var(--lighter);
-  border: 2px solid var(--border);
+  
+  /* border: 2px solid var(--border); */
 }
 
 /* Book */
@@ -55,7 +55,12 @@ div.book {
   display: flex;
   padding-bottom: 2px;
   padding-top: 2px;
-  border-top: 2px solid var(--border);
+  /* border-top: 2px solid var(--border); */
+
+  background-color: var(--lighter);
+  border: 1px solid var(--text);
+  border-radius: 4px;
+  margin-top: 1em;
 }
 
 div.cover-wrapper {

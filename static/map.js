@@ -18,21 +18,22 @@ async function main() {
 
 
   const plot = Plot.plot({
+    className: "map-plot",
     projection: "albers-usa",
     marks: [
       Plot.geo(
         states,
         {
-          stroke: "#000000",
-          strokeWidth: 1,
+          stroke: "#f9f9f9",
+          strokeWidth: 0.2,
           fill: (d) => banMap.get(d.properties.name),
           title: (d) => `${d.properties.name} \n ${banMap.get(d.properties.name) ? banMap.get(d.properties.name) : 0} bans`,
           tip: true,
         }
       )],
     color: {
-      scheme: "reds",
-      unknown: "#fff",
+      range: ["#F9D6D6", "#F1AFAF", "#E98282", "#D14F4F", "#B22E2E"],
+      unknown: "#464548",
       type: "log",
       label: "Number of book bans",
       legend: true,

@@ -43,7 +43,7 @@
         {% for book in results_title: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} alt="book.title" class="cover">
+            <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title">{{ book.title }} <span
@@ -67,7 +67,7 @@
         {% for book in results_author: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} alt="book.title" class="cover">
+            <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title">{{ book.title }} <span

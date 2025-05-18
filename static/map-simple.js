@@ -23,14 +23,14 @@ async function main() {
       Plot.geo(
         states,
         {
-          stroke: "#000000",
+          stroke: "#f9f9f9",
           strokeWidth: 1,
           fill: (d) => banMap.get(d.properties.name),
         }
       )],
     color: {
-      scheme: "reds",
-      unknown: "#fff",
+      range: ["#F9D6D6", "#F1AFAF", "#E98282", "#D14F4F", "#B22E2E"],
+      unknown: "#464548",
       type: "log",
       // label: "Number of book bans",
       // legend: true,

@@ -86,3 +86,11 @@ div.map figure svg:nth-of-type(2) {
   padding-left: 5%;
   padding-right: 5%;
 }
+
+.map-plot {
+  --plot-background: #313033;
+}
+
+/* .map-plot svg[aria-label="tip"]{
+  align-items: center;
+} */

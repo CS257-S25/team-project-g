@@ -204,8 +204,14 @@ class DataSource:
         Returns:
             (list[Book]): a list of Book objects where search_term is in authors
         """
-        query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
-        args = (search_term,)
+        # query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
+        query = ("SELECT * FROM books "
+"WHERE EXISTS ("
+  "SELECT 1 "
+  "FROM unnest(authors) AS author "
+  "WHERE author ILIKE %s"
+");")
+        args = ("%" + search_term + "%",)
 
         try:
             cursor = self.connection.cursor()
@@ -518,6 +524,7 @@ class DataSource:
         books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
         return books
+
 
 
 # if __name__ == "__main__":

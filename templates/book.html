@@ -24,7 +24,7 @@
         </div>
         <div class="meta">
           <p class="meta-title">{{ book_isbn.title }}</p>
-          <p class="meta-author">{{ book_isbn.details.authors }}</p>
+          <a href="/authors/{{ book_isbn.details.authors }}" class="meta-author">{{ book_isbn.details.authors }}</a>
           <p class="meta-rating">Rating: {{ book_isbn.details.rating }}</p>
         </div>
 

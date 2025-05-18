@@ -1,6 +1,7 @@
 """This is the main file for the Flask application."""
 
-from flask import Flask, abort, render_template
+import json
+from flask import Flask, abort, render_template, request
 from ProductionCode.details import get_details
 from ProductionCode.datasource import DataSource
 
@@ -109,18 +110,9 @@ def most_banned(field, max_results):
 @app.route("/map")
 def map():
     """Route for map page"""
-
-    return render_template("map.html")
-
-@app.route("/genres/<genre>")
-def genre():
-    """Route for Genres page"""
-    return render_template("genre.html")
-
-@app.route("/genres")
-def genres():
-    """Route for Genres page"""
-    return render_template("genres.html", banned_genres = ds.get_most_banned_genres(5))
+    ds = DataSource()
+    most_banned_states = ds.get_most_banned_states(10)
+    return render_template("map.html", most_banned_states=most_banned_states)
 
 
 @app.errorhandler(500)
@@ -148,7 +140,7 @@ def format_list_with_linebreak(object_list):
 # def search(query):
 #     """The endpoint for searching"""
 #     ds = DataSource()
-#     # results_isbn = ds.book_from_isbn(query)
+#     results_isbn = ds.book_from_isbn(query)
 #     results_title = ds.books_search_title(query)
 #     results_author = ds.books_search_author(query)
 #     return render_template(
@@ -171,6 +163,40 @@ def page_not_found(_error):
 
     return f"404: Sorry page not found<br /><br />{USAGE}<br /><br />{EXAMPLES}"
 
+@app.route("/get-most-banned-states")
+def get_most_banned_states():
+    ds = DataSource()
+    most_banned_states = ds.get_most_banned_states(99)
+    ban_json = json.dumps(most_banned_states, default=lambda obj: obj.__dict__)
+    return ban_json
+
+@app.route("/search")
+def search():
+    """The endpoint for searching"""
+    query = request.args.get("searchterm")
+    type = request.args.get("type")
+    ds = DataSource()
+
+    if type == "title":
+        results_isbn = None
+        results_title = ds.books_search_title(query)
+        results_author = None
+    elif type == "author":
+        results_isbn = None
+        results_title = None
+        results_author = ds.books_search_author(query)
+    else:
+        results_isbn = ds.book_from_isbn(query)
+        results_title = ds.books_search_title(query)[:5]
+        results_author = ds.books_search_author(query)[:5]
+    return render_template(
+        "search.html",
+        query=query,
+        type=type,
+        results_isbn=results_isbn,
+        results_title=results_title,
+        results_author=results_author,
+    )
 
 if __name__ == "__main__":
-    app.run(port=1234)
+    app.run(port="5132")

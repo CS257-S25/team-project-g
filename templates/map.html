@@ -1,34 +1,41 @@
+
 <html>
 
 <head>
-  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
   <link rel="stylesheet" href="{{url_for('static', filename='map.css') }}">
-  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
 </head>
 
 <body>
   <!-- Navbar -->
-   {% include 'nav.html' %}
-  <!-- Header -->
-  <div class="header">
-    <div style=" display:flex; flex-direction: column;">
-      <h1>Banned Books in the United States</h1>
+  <nav>
+    <div>
+      <a class="logo" href="#">
+        <b>
+          The Forbidden Library
+        </b>
+      </a>
+      <div class="pages">
+        <ul>
+          <li>
+            <a href="/map">Most Banned</a>
+          </li>
+          <li>
+            <a href="#">Map</a>
+          </li>
+          <li>
+            <a href="#">Advanced Search</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
+    <div class="search">
+      <input type="text" placeholder="Search..">
+    </div>
+  </nav>
+
   <div class="main">
-    <div class="map" id="map">
-    </div>
+    <div class="map" id="map"></div>
     <script type="module" src="{{url_for('static', filename='map.js')}}"></script>
-    <div class="map-info">
-      <h2>Most Banned States</h2>
-      <ol>
-        {% for state in most_banned_states: %}
-        <li>
-          <p>{{state.name}}: {{state.bans}}</p>
-        </li>
-        {% endfor %}
-      </ol>
-    </div>
   </div>
 
 

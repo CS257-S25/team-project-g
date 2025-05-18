@@ -147,7 +147,6 @@ class DataSource:
         except psycopg2.Error as e:
             print("Query error: ", e)
             sys.exit()
-
         if results:
             book = self.database_row_to_book(results)
             return book
@@ -172,6 +171,9 @@ class DataSource:
         except psycopg2.Error as e:
             print("Query error: ", e)
             sys.exit()
+
+
+        
         bans = self.database_row_list_to_bookban_list(results)
         return bans
 
@@ -486,7 +488,7 @@ class DataSource:
             " DESC LIMIT %s;"
         )
         args = (max_results,)
-        try:
+        try
             cursor = self.connection.cursor()
             cursor.execute(query, args)
             results = cursor.fetchall()

@@ -9,38 +9,6 @@ body {
   line-height: 1.5;
 }
 
-/* NAVBAR */
-.navbar {
-  background-color: #BB2E2E;
-  padding: 10px 20px;
-}
-.nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.brand {
-  color: #fff;
-  font-size: 1.3rem;
-  text-decoration: none;
-}
-.search-form {
-  display: flex;
-}
-.search-form input {
-  padding: 5px 8px;
-  border: none;
-  border-radius: 4px 0 0 4px;
-}
-.search-form button {
-  padding: 5px 8px;
-  border: none;
-  background: #fff;
-  color: #BB2E2E;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-}
-
 /* PAGE WRAPPER */
 .page {
   max-width: 1000px;

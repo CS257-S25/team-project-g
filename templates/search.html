@@ -1,57 +1,75 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
   <link rel="stylesheet" href="{{url_for('static', filename='search.css') }}">
-  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
 </head>
 
 <body>
   <!-- Navbar -->
-   {% include 'nav.html' %}
+  <nav>
+    <div>
+      <a class="logo" href="#">
+        <b>
+          The Forbidden Library
+        </b>
+      </a>
+      <div class="pages">
+        <ul>
+          <li>
+            <a href="#">Most Banned</a>
+          </li>
+          <li>
+            <a href="#">Map</a>
+          </li>
+          <li>
+            <a href="#">Advanced Search</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="search">
+      <input type="text" placeholder="Search..">
+    </div>
+  </nav>
   <!-- Content -->
   <div class="main">
+    <h1>Search Results for "{{query}}":</h1>
     <div class="results">
-      <h1>Search Results for "{{query}}":</h1>
       <!-- ISBN -->
       {% if results_isbn %}
       <div class="result-section">
         <h2>ISBN</h2>
+        {% for book in results_isbn: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ results_isbn.details.cover }} alt="{{ results_isbn.title }}" class="cover">
+            <img src={{ book.details.cover }} class="cover">
           </div>
           <div class="book-content">
-            <p class="book-title"><a href="/details/{{results_isbn.isbn}}">{{ results_isbn.title }} </a><span
-                style="font-size:1em;font-weight: lighter">({{ results_isbn.isbn}})</span></p>
-            <p class="book-authors">{{ results_isbn.authors_to_string() }}</p>
-            <p class="book-publish_date">{{ results_isbn.details.publish_date}}</p>
-            <p class="book-genres">{{ results_isbn.genres_to_string() }}</p>
+            <p class="book-title">{{ book.title }} <span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
           </div>
           <div class="ban-content">
           </div>
         </div>
+        {% endfor %}
       </div>
       {% endif %}
 
 
 
       <!-- Title -->
-      {% if results_title%}
       <div class="result-section">
-        <div class="heading">
-          <h2>Title</h2>
-          {% if not type %}
-          <div class="a-wrapper"><a href="/search?searchterm={{query}}&type=title">Search only Titles</a></div>
-          {% endif %}
-        </div>
+        <h2>Title</h2>
         {% for book in results_title: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
+            <img src={{ book.details.cover }} class="cover">
           </div>
           <div class="book-content">
-            <p class="book-title"><a href="details/{{book.isbn}}">{{ book.title }} </a><span
+            <p class="book-title">{{ book.title }} <span
                 style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
             <p class="book-authors">{{ book.authors_to_string() }}</p>
             <p class="book-publish_date">{{ book.details.publish_date}}</p>
@@ -62,25 +80,18 @@
         </div>
         {% endfor %}
       </div>
-      {% endif %}
 
 
       <!-- Authors-->
-      {% if results_author %}
       <div class="result-section">
-        <div class="heading">
-          <h2>Authors</h2>
-          {% if not type %}
-          <div class="a-wrapper"><a href="/search?searchterm={{query}}&type=title">Search only Authors</a></div>
-          {% endif %}
-        </div>
+        <h2>Authors</h2>
         {% for book in results_author: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
+            <img src={{ book.details.cover }} class="cover">
           </div>
           <div class="book-content">
-            <p class="book-title"> <a href="/details/{{book.isbn}}">{{ book.title }} </a><span
+            <p class="book-title">{{ book.title }} <span
                 style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
             <p class="book-authors">{{ book.authors_to_string() }}</p>
             <p class="book-publish_date">{{ book.details.publish_date}}</p>
@@ -91,7 +102,7 @@
         </div>
         {% endfor %}
       </div>
-      {% endif %}
+
     </div>
   </div>
 </body>

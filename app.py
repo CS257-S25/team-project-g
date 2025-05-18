@@ -202,7 +202,7 @@ def search():
 def books():
     ds = DataSource()
     # replace later
-    books = ds.books_search_title("a")
+    books = ds.books_search_title("")
     return render_template("books.html", books=books)
 
 if __name__ == "__main__":

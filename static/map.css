@@ -58,7 +58,8 @@ div.map {
   padding: 1em;
   width: 70%;
   background-color: var(--lighter);
-  border: 2px solid var(--border);
+  border: 1px solid var(--text);
+  border-radius: 4px;
   margin-right: 1em;
 
 }
@@ -68,8 +69,9 @@ div.map-info {
   width: 30%;
   padding: 1em;
   background-color: var(--lighter);
-  border: 2px solid var(--border);
   margin-left: 1em;
+  border: 1px solid var(--text);
+  border-radius: 4px;
 }
 
 div.map figure {

@@ -183,7 +183,6 @@ class TestAppError(unittest.TestCase):
     def test_404(self):
         """Tests 404 page"""
         response = self.app.get("/not-a-real-page", follow_redirects=True)
-        # TODO: CHANGE WHEN 404 PAGE IS DONE
         self.assertIn(b"404", response.data)
 
     @patch("app.map_page", side_effect=Exception("Mock Error"))
@@ -191,7 +190,6 @@ class TestAppError(unittest.TestCase):
     def test_500(self, _mock_connect, _mock_map):
         """Tests 500 page"""
         response = self.app.get("/mock-error")
-        # TODO: CHANGE WHEN 500 PAGE IS DONE
         self.assertIn(b"500", response.data)
 
 

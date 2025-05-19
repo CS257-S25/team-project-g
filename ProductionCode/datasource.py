@@ -150,8 +150,7 @@ class DataSource:
         if results:
             book = self.database_row_to_book(results)
             return book
-        else:
-            return None
+        return None
 
     def bans_from_isbn(self, isbn) -> list[Bookban]:
         """Queries book database based on ISBN

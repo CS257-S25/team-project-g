@@ -36,8 +36,7 @@ class Book:
         """Helper method for displaying author information"""
         if self.details["genres"]:
             return ", ".join(self.details["genres"])
-        else:
-            return ""
+        return ""
 
 
 # class BookDetails:

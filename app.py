@@ -61,9 +61,6 @@ def page_not_found(error):
     Returns:
         (str): 404: Sorry page not found with usage instructions
     """
-
-    # # TODO: Replace with 404 page
-    # return "404: Sorry page not found"
     return render_template("error.html", error=error, code=404)
 
 
@@ -119,13 +116,13 @@ def genres_list():
     fiction = ds.books_search_genre("Fiction")
     romance = ds.books_search_genre("Romance")
     childrens = ds.books_search_genre("Childrens")
-    books = ds.books_search_title("")
+    book_list = ds.books_search_title("")
     return render_template(
         "genres.html",
         fiction=fiction,
         romance=romance,
         childrens=childrens,
-        books=books,
+        books=book_list,
     )
 
 
@@ -152,8 +149,8 @@ def get_most_banned_states():
 @app.route("/authors")
 def authors_list():
     ds = DataSource()
-    books = ds.books_search_title("")
-    return render_template("authors.html", books=books)
+    book_list = ds.books_search_title("")
+    return render_template("authors.html", books=book_list)
 
 
 if __name__ == "__main__":

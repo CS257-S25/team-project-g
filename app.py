@@ -212,9 +212,13 @@ def authors(author):
     books = ds.books_search_author(author)
     return render_template("author.html", books=books, author=author)
 
-@app.route("/most-banned/authors")
+#sorry about the bad naming rn
+#TODO: figure out path naming
+@app.route("/authors")
 def most_banned_authors():
-    return render_template("most-banned")
+    ds = DataSource()
+    authors = ds.get_most_banned_authors(100)
+    return render_template("authors.html", authors=authors)
 
 # API ENDPOINTS
 

@@ -34,7 +34,10 @@ class Book:
 
     def genres_to_string(self) -> str:
         """Helper method for displaying author information"""
-        return ", ".join(self.details["genres"])
+        if self.details["genres"]:
+            return ", ".join(self.details["genres"])
+        else:
+            return ""
 
 
 # class BookDetails:

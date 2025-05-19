@@ -2,7 +2,6 @@ body {
   margin: 0;
   background-color: var(--bg);
   color: var(--text)
-
 }
 
 h1 {
@@ -42,7 +41,7 @@ div.results {
 div.result-section {
   padding: 1em;
   margin-bottom: 1em;
-  
+
   /* border: 2px solid var(--border); */
 }
 
@@ -50,15 +49,18 @@ div.result-section div.heading {
   display: flex;
   justify-content: space-between;
 }
-div.result-section div.heading div.a-wrapper{
-  display:flex;
+
+div.result-section div.heading div.a-wrapper {
+  display: flex;
 }
-div.result-section div.heading div.a-wrapper a{
+
+div.result-section div.heading div.a-wrapper a {
   color: var(--link);
   text-decoration: none;
   align-self: flex-end;
 }
-div.result-section div.heading div.a-wrapper a:hover{
+
+div.result-section div.heading div.a-wrapper a:hover {
   text-decoration: underline;
 }
 
@@ -127,13 +129,14 @@ div.book p.book-title a {
 }
 
 div.book p.book-title span {
-  font-size:1em;
+  font-size: 1em;
   font-weight: lighter;
 }
 
 div.book p.book-title a:hover {
   text-decoration: underline;
 }
+
 p.book-authors {
   font-weight: bold;
 }

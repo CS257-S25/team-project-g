@@ -42,19 +42,19 @@ def map_page():
 
 
 @app.errorhandler(500)
-def python_bug(_error):
+def python_bug(error):
     """The endpoint for the 500 error
     Args:
         _error (Exception): the error that was raised
     Returns:
         (str): 500: Bad Request
     """
-
-    return render_template("/404.html")
+    print(error)
+    return render_template("error.html", error=error)
 
 
 @app.errorhandler(404)
-def page_not_found(_error):
+def page_not_found(error):
     """The endpoint for the 404 error
     Args:
         _error (Exception): the error that was raised
@@ -64,7 +64,7 @@ def page_not_found(_error):
 
     # # TODO: Replace with 404 page
     # return "404: Sorry page not found"
-    return render_template("404.html")
+    return render_template("error.html", error=error)
 
 
 @app.route("/search")
@@ -120,7 +120,14 @@ def genres_list():
     romance = ds.books_search_genre("Romance")
     childrens = ds.books_search_genre("Childrens")
     books = ds.books_search_title("")
-    return render_template("genres.html", fiction=fiction, romance=romance, childrens=childrens, books=books)
+    return render_template(
+        "genres.html",
+        fiction=fiction,
+        romance=romance,
+        childrens=childrens,
+        books=books,
+    )
+
 
 @app.route("/authors/<author>")
 def authors(author):
@@ -147,6 +154,7 @@ def authors_list():
     ds = DataSource()
     books = ds.books_search_title("")
     return render_template("authors.html", books=books)
+
 
 if __name__ == "__main__":
     app.run(port=5132)

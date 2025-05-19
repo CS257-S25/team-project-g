@@ -14,15 +14,15 @@ class TestBook(unittest.TestCase):
         self.book = mock_book
 
         self.mock_book_no_genres = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
+            isbn="1639731067",
+            title="Kingdom of Ash",
+            authors=["Sarah J. Maas"],
             details={
                 "summary": "summary",
                 "cover": "cover.jpg",
                 "genres": [],
-                "publish_date": "2020-10-27",
-                "rating": 3.9,
+                "publish_date": "2019-09-19",
+                "rating": 3.7,
             },
         )
 

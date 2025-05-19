@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Authors</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='authors.css') }}">
+</head>
+    <body>
+      <h3>Authors</h3>
+      <ul>
+        {% set all_authors = [] %}
+        {% for book in books %}
+          {% for author in book.authors %}
+            {% if author not in all_authors %}
+              {% set _ = all_authors.append(author) %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+        {% for author in all_authors|sort %}
+          <li>
+            <a href="/authors/{{author}}">{{author}}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </body>
+</html>

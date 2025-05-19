@@ -111,6 +111,15 @@ def genres(genre):
     return render_template("genre.html", books=book_list, genre=genre)
 
 
+@app.route("/genres")
+def genres_list():
+    ds = DataSource()
+    fiction = ds.books_search_genre("Fiction")
+    romance = ds.books_search_genre("Romance")
+    childrens = ds.books_search_genre("Childrens")
+    books = ds.books_search_title("")
+    return render_template("genres.html", fiction=fiction, romance=romance, childrens=childrens, books=books)
+
 @app.route("/authors/<author>")
 def authors(author):
     """The endpoint for author page"""
@@ -130,6 +139,12 @@ def get_most_banned_states():
     ban_json = json.dumps(most_banned_states, default=lambda obj: obj.__dict__)
     return ban_json
 
+
+@app.route("/authors")
+def authors_list():
+    ds = DataSource()
+    books = ds.books_search_title("")
+    return render_template("authors.html", books=books)
 
 if __name__ == "__main__":
     app.run(port=5132)

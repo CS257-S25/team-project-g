@@ -1,0 +1,23 @@
+<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404: Page Not Found</title>
+    <body>
+        <div class="error-container">
+            <h1>404</h1>
+            <p>Sorry, the page you are looking for was not found.</p>
+            <div class="usage">
+                <h2>Usage Instructions</h2>
+                {{ usage|safe }}
+            </div>
+            <div class="examples">
+                <h2>Examples</h2>
+                {{ examples|safe }}
+            </div>
+            <p>
+                <a href="{{ url_for('index') }}">Return to Home</a>
+            </p>
+        </div>
+    </body>
+    </html>

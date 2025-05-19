@@ -163,12 +163,7 @@ def page_not_found(_error):
 
     return f"404: Sorry page not found<br /><br />{USAGE}<br /><br />{EXAMPLES}"
 
-@app.route("/get-most-banned-states")
-def get_most_banned_states():
-    ds = DataSource()
-    most_banned_states = ds.get_most_banned_states(99)
-    ban_json = json.dumps(most_banned_states, default=lambda obj: obj.__dict__)
-    return ban_json
+
 
 @app.route("/search")
 def search():
@@ -217,5 +212,23 @@ def authors(author):
     books = ds.books_search_author(author)
     return render_template("author.html", books=books, author=author)
 
+#sorry about the bad naming rn
+#TODO: figure out path naming
+@app.route("/authors")
+def most_banned_authors():
+    ds = DataSource()
+    authors = ds.get_most_banned_authors(100)
+    return render_template("authors.html", authors=authors)
+
+# API ENDPOINTS
+
+@app.route("/get-most-banned-states")
+def get_most_banned_states():
+    ds = DataSource()
+    most_banned_states = ds.get_most_banned_states(99)
+    ban_json = json.dumps(most_banned_states, default=lambda obj: obj.__dict__)
+    return ban_json
+
+
 if __name__ == "__main__":
-    app.run(port="5131")
+    app.run(port="5132")

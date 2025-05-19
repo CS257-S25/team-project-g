@@ -1,67 +1,74 @@
-/* genres.css */
-
-/* 1) Import your index.css for all the color vars & base link styles */
-@import url("index.css");
-
-/* 2) Recreate the flex two-column layout */
-div.main {
+/* === Layout === */
+.main {
   display: flex;
-  margin: 0 5% 1em;
-}
-div.sidebar {
-  width: 22.5%;
-  margin-right: 1em;
-}
-div.content {
-  width: 72.5%;
-  margin-left: 1em;
-  display: flex;
-  flex-direction: column;
-}
-
-/* 3) Sidebar (genre list) styling */
-div.sidebar h2 {
-  font-size: 1.7em;
-  margin-top: 0;
-  padding-bottom: 0.2em;
-  border-bottom: 2px solid var(--border);
-}
-div.sidebar ul {
-  list-style: none;
-  margin: 0.5em 0;
-  padding: 0;
-}
-div.sidebar li {
-  margin: 0.2em 0;
-}
-div.sidebar a {
-  display: block;
-  color: var(--link);
-  text-decoration: none;
-}
-div.sidebar a:hover {
-  text-decoration: underline;
-}
-
-/* 4) Each genre section on the right */
-.genre-section {
-  margin-bottom: 2em;
-}
-.genre-section .books-grid {
-  display: flex;
-  flex-wrap: wrap;
+  padding: 1em;
   gap: 1em;
 }
 
-/* 5) Book “card” + hover overlay */
+/* Sidebar */
+.sidebar {
+  flex: 0 0 22%;
+}
+.content {
+  flex: 1;
+}
+
+/* === Genre List (Sidebar) === */
+.sidebar h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+  color: var(--text);
+}
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;          /* adjust as desired */
+  overflow-y: auto;
+  background: var(--lighter);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.sidebar li + li {
+  border-top: 1px solid var(--border);
+}
+.sidebar a {
+  display: block;
+  padding: 0.5em 1em;
+  color: var(--link);
+  text-decoration: none;
+}
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* === Genre Sections === */
+.genre-section {
+  margin-bottom: 2em;
+}
+.genre-section > h2 {
+  font-size: 1.75em;
+  margin-bottom: 0.5em;
+  color: var(--accent);
+}
+
+/* Horizontal row of fixed-size book cards */
+.books-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1em;
+  overflow-x: auto;
+  padding-bottom: 0.5em;
+}
 .book-card {
   position: relative;
-  width: calc(33.333% - 1em);
-  cursor: pointer;
+  flex: 0 0 120px;    /* cover width */
+  height: 180px;      /* cover height */
 }
 .book-card img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   transition: opacity 0.3s ease;
 }
@@ -70,9 +77,11 @@ div.sidebar a:hover {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 0.5em;
+  background: rgba(0,0,0,0.6);
+  color: var(--text);
+  padding: 0.4em;
+  font-size: 0.85em;
+  text-align: center;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -83,7 +92,7 @@ div.sidebar a:hover {
   opacity: 1;
 }
 
-/* 6) “See more…” link styling */
+/* === “See more…” links === */
 a.see-more {
   display: inline-block;
   margin-top: 0.5em;

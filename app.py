@@ -211,6 +211,15 @@ def genres(genre):
     books = ds.books_search_genre(genre)
     return render_template("genre.html", books=books, genre=genre)
 
+@app.route("/genres")
+def genres_list():
+    ds = DataSource()
+    fiction = ds.books_search_genre("Fiction")
+    romance = ds.books_search_genre("Romance")
+    childrens = ds.books_search_genre("Childrens")
+    books = ds.books_search_title("")
+    return render_template("genres.html", fiction=fiction, romance=romance, childrens=childrens, books=books)
+
 @app.route("/authors/<author>")
 def authors(author):
     ds = DataSource()

@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Genres</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='navstyle.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='genresstyle.css') }}">
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='genresstyle.css') }}"> -->
 </head>
 <body>
         {% include 'nav.html' %}
         <br>
-        {% for genres in banned_genres: %}
-        <img src={{ genres[1].details.cover }}>
+        {% for book in fiction: %}
+        <a href="/details/{{book.isbn}}"></a>
+
+        <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}">
+        <p class="title">{{book.title}}</p>
+        <p class="author">{{book.authors_to_string()}}</p>
         {% endfor %}
 </body>
 </html>

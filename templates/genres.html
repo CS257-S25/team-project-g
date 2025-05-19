@@ -11,38 +11,43 @@
         {% include 'nav.html' %}
         <br>
         <!-- LOADS FICTION BOOKS -->
-        {% for book in fiction[:3]: %}
-        <a href="/details/{{book.isbn}}"></a>
-
-        <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}">
+        {% for book in fiction[:7]: %}
+        <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
         <p class="title">{{book.title}}</p>
         <p class="author">{{book.authors_to_string()}}</p>
         {% endfor %}
+        <a href="/genres/Fiction">See more...</a>
         <!-- LOADS ROMANCE BOOKS -->
-        {% for book in romance[:3]: %}
-        <a href="/details/{{book.isbn}}"></a>
-
-        <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}">
+        {% for book in romance[:7]: %}
+        <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
         <p class="title">{{book.title}}</p>
         <p class="author">{{book.authors_to_string()}}</p>
         {% endfor %}
+        <a href="/genres/Romance">See more...</a>
         <!-- LOADS CHILDRENS BOOKS -->
-        {% for book in childrens[:3]: %}
-        <a href="/details/{{book.isbn}}"></a>
-
-        <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}">
+        {% for book in childrens[:7]: %}
+        <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
         <p class="title">{{book.title}}</p>
         <p class="author">{{book.authors_to_string()}}</p>
         {% endfor %}
-
+        <a href="/genres/Childrens">See more...</a>
         <!-- MAKES LIST OF ALL GENRES -->
         <h2>Genres</h2>
-        {% for book in books %}
         <ul>
-          <li>
-            <a href="/genres/{{ book.details.genres }}">{{ book.details.genres }}</a>
-          </li>
+          {% set genres_seen = namespace(genres=[]) %}
+          {% for book in books %}
+            {% if book.details.genres %}
+              {% for genre in book.details.genres %}
+                {% if genre not in genres_seen.genres %}
+                  {% set _ = genres_seen.genres.append(genre) %}
+                  <li>
+                    <a href="/genres/{{ genre }}">{{ genre }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
         </ul>
-        {% endfor %}
+
 </body>
 </html>

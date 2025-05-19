@@ -407,9 +407,19 @@ class DataSource:
     def get_most_banned_authors(self, max_results):
         """Returns the 5 authors with the most bans."""
         query = (
-            "SELECT b.authors, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
-            " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY authors ORDER BY ban_count"
-            " DESC LIMIT %s;"
+            "SELECT "
+            "author, "
+            "COUNT(*) AS ban_count "
+            "FROM ( "
+            "    SELECT "
+            "        UNNEST(b.authors) AS author, "
+            "        ban.isbn "
+            "    FROM books AS b "
+            "    INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) "
+            ") AS subquery "
+            "GROUP BY author "
+            "ORDER BY ban_count DESC "
+            "LIMIT %s;"
         )
 
         args = (max_results,)
@@ -508,11 +518,27 @@ class DataSource:
         Returns:
             (list[Rank]): a list of Rank objects of genres and number of bans
         """
+        # query = (
+        #     "SELECT b.genres, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
+        #     " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY genres ORDER BY ban_count"
+        #     " DESC LIMIT %s;"
+        # )
         query = (
-            "SELECT b.genres, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
-            " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY genres ORDER BY ban_count"
-            " DESC LIMIT %s;"
+            "SELECT "
+            "genre, "
+            "COUNT(*) AS ban_count "
+            "FROM ( "
+            "    SELECT "
+            "        UNNEST(b.genres) AS genre, "
+            "        ban.isbn "
+            "    FROM books AS b "
+            "    INNER JOIN bookbans AS ban ON b.isbn = CAST(ban.isbn AS TEXT) "
+            ") AS subquery "
+            "GROUP BY genre "
+            "ORDER BY ban_count DESC "
+            "LIMIT %s;"
         )
+
         args = (max_results,)
         try:
             cursor = self.connection.cursor()
@@ -550,9 +576,7 @@ class DataSource:
             print("Query error: ", e)
             sys.exit()
 
-        books = list(
-            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
-        )
+        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
         return books
 

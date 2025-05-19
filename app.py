@@ -5,21 +5,21 @@ from flask import Flask, abort, render_template, request
 from ProductionCode.details import get_details
 from ProductionCode.datasource import DataSource
 
-ds = DataSource()
+# ds = DataSource()
 app = Flask(__name__)
 
-database_most_banned_map = {
-    "states": ds.get_most_banned_states,
-    "districts": ds.get_most_banned_districts,
-    "authors": ds.get_most_banned_authors,
-    "titles": ds.get_most_banned_titles,
-}
-
-database_search_map = {
-    "title": ds.books_search_title,
-    "author": ds.books_search_author,
-    "genre": ds.books_search_genre,
-}
+# database_most_banned_map = {
+#     "states": ds.get_most_banned_states,
+#     "districts": ds.get_most_banned_districts,
+#     "authors": ds.get_most_banned_authors,
+#     "titles": ds.get_most_banned_titles,
+# }
+#
+# database_search_map = {
+#     "title": ds.books_search_title,
+#     "author": ds.books_search_author,
+#     "genre": ds.books_search_genre,
+# }
 
 USAGE = (
     'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".<br />'
@@ -42,8 +42,8 @@ EXAMPLES = (
 )
 
 
-def object_list_to_string(object_list):
-    return map(str, object_list)
+# def object_list_to_string(object_list):
+#     return map(str, object_list)
 
 
 @app.route("/")
@@ -53,7 +53,7 @@ def homepage():
     Returns:
         (str): a string of the homepage with line breaks
     """
-
+    ds = DataSource()
     return render_template("index.html", most_banned_books=ds.get_most_banned_books(5))
 
     # return (
@@ -72,7 +72,10 @@ def details(isbn):
         (str): a string of details with line breaks between fields
     """
     # variation on format_list_with_linebreak
-    return render_template("book.html", ban_isbn = ds.bans_from_isbn(isbn), book_isbn = ds.book_from_isbn(isbn))
+    ds = DataSource()
+    return render_template(
+        "book.html", ban_isbn=ds.bans_from_isbn(isbn), book_isbn=ds.book_from_isbn(isbn)
+    )
 
 
 # @app.route("/search/<field>/<query>", strict_slashes=False)
@@ -91,24 +94,25 @@ def details(isbn):
 #     return format_list_with_linebreak(output)
 
 
-@app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
-def most_banned(field, max_results):
-    """The endpoint for the most banned titles
-    Args:
-        field (str): the category to search for; states, districts, authors, or titles
-        max_results (int): the number of results to return
-    Returns:
-        (str): a string of the most banned titles, separated by line breaks
-    """
-    if not max_results.isdigit() or field not in database_most_banned_map:
-        abort(500)
+# @app.route("/most-banned/<field>/<max_results>", strict_slashes=False)
+# def most_banned(field, max_results):
+#     """The endpoint for the most banned titles
+#     Args:
+#         field (str): the category to search for; states, districts, authors, or titles
+#         max_results (int): the number of results to return
+#     Returns:
+#         (str): a string of the most banned titles, separated by line breaks
+#     """
+#     if not max_results.isdigit() or field not in database_most_banned_map:
+#         abort(500)
+#
+#     function = database_most_banned_map[field]
+#     output = function(int(max_results))
+#     return format_list_with_linebreak(output)
 
-    function = database_most_banned_map[field]
-    output = function(int(max_results))
-    return format_list_with_linebreak(output)
 
 @app.route("/map")
-def map():
+def map_page():
     """Route for map page"""
     ds = DataSource()
     most_banned_states = ds.get_most_banned_states(10)
@@ -126,15 +130,16 @@ def python_bug(_error):
     return "500: Bad Request", 500
 
 
-def format_list_with_linebreak(object_list):
-    """Helper method for joining a list of strings with line breaks
-    Args:
-        list_of_strings (str[]): a list of strings
-    Returns:
-        (str): a string composed of each element of the list joined by line breaks
-    """
-    string_list = object_list_to_string(object_list)
-    return "</br>".join(string_list)
+# def format_list_with_linebreak(object_list):
+#     """Helper method for joining a list of strings with line breaks
+#     Args:
+#         list_of_strings (str[]): a list of strings
+#     Returns:
+#         (str): a string composed of each element of the list joined by line breaks
+#     """
+#     string_list = object_list_to_string(object_list)
+#     return "</br>".join(string_list)
+
 
 # @app.route("/search/<query>", strict_slashes=False)
 # def search(query):
@@ -162,7 +167,6 @@ def page_not_found(_error):
     """
 
     return f"404: Sorry page not found<br /><br />{USAGE}<br /><br />{EXAMPLES}"
-
 
 
 @app.route("/search")
@@ -193,6 +197,7 @@ def search():
         results_author=results_author,
     )
 
+
 @app.route("/books")
 def books():
     ds = DataSource()
@@ -200,11 +205,13 @@ def books():
     books = ds.books_search_title("")
     return render_template("books.html", books=books)
 
+
 @app.route("/genres/<genre>")
 def genres(genre):
     ds = DataSource()
     books = ds.books_search_genre(genre)
     return render_template("genre.html", books=books, genre=genre)
+
 
 @app.route("/authors/<author>")
 def authors(author):
@@ -212,15 +219,9 @@ def authors(author):
     books = ds.books_search_author(author)
     return render_template("author.html", books=books, author=author)
 
-#sorry about the bad naming rn
-#TODO: figure out path naming
-@app.route("/authors")
-def most_banned_authors():
-    ds = DataSource()
-    authors = ds.get_most_banned_authors(100)
-    return render_template("authors.html", authors=authors)
 
 # API ENDPOINTS
+
 
 @app.route("/get-most-banned-states")
 def get_most_banned_states():
@@ -231,4 +232,4 @@ def get_most_banned_states():
 
 
 if __name__ == "__main__":
-    app.run(port="5132")
+    app.run(port=5132)

@@ -3,259 +3,248 @@ This file contains the unit tests for the Flask application.
 """
 
 import unittest
+from unittest.mock import MagicMock, patch
+
 from app import app
 
+from ProductionCode.book import Book
+from ProductionCode.bookban import Bookban
+from ProductionCode.rank import Rank
 
-class TestApp(unittest.TestCase):
-    """
-    This class tests the Flask application.
-    """
+mock_book = Book(
+    isbn="440236924",
+    title="Kaleidoscope",
+    authors=["Danielle Steel"],
+    details={
+        "summary": "Kafka on the Shore, a tour de force of metaphysical reality, is powered by two remarkable characters: a teenage boy, Kafka Tamura, who runs away from home either to escape a gruesome oedipal prophecy or to search for his long-missing mother and sister; and an aging simpleton called Nakata, who never recovered from a wartime affliction and now is drawn toward Kafka for reasons that, like the most basic activities of daily life, he cannot fathom. Their odyssey, as mysterious to them as it is to us, is enriched throughout by vivid accomplices and mesmerizing events. Cats and people carry on conversations, a ghostlike pimp employs a Hegel-quoting prostitute, a forest harbors soldiers apparently unaged since World War II, and rainstorms of fish (and worse) fall from the sky. There is a brutal murder, with the identity of both victim and perpetrator a riddle—yet this, along with everything else, is eventually answered, just as the entwined destinies of Kafka and Nakata are gradually revealed, with one escaping his fate entirely and the other given a fresh start on his own.",
+        "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1173371736i/278102.jpg",
+        "genres": ["Mystery", "Fantasy"],
+        "publish_date": "2020-10-27",
+        "rating": 3.9,
+    },
+)
+mock_ban = Bookban(
+    Book(
+        isbn="440236924",
+        title="Kaleidoscope",
+        authors=["Danielle Steel"],
+        details={
+            "summary": "summary",
+            "cover": "url.jpg",
+            "genres": ["Mystery", "Fantasy"],
+            "publish_date": "2020-10-27",
+            "rating": 3.9,
+        },
+    ),
+    state="Florida",
+    district="Martin County Schools",
+    ban_year=2023,
+    ban_month=3,
+    ban_status="Banned from Libraries and Classrooms",
+    ban_origin="Formal Challenge",
+)
+
+
+class TestAppPages(unittest.TestCase):
+    """Tests for webpages"""
 
     def setUp(self):
-        """
-        Arguments: None
-        Return value: None
-        This function sets up the test client for the Flask application.
-        """
+        """Create a mock psql connection and app"""
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
         self.app = app.test_client()
 
-    def test_homepage(self):
-        """
-        Arguments: None
-        Return value: None
-        This function tests the homepage of the Flask application.
-        """
-        response = self.app.get("/")
-        self.assertEqual(response.status_code, 200)
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_index(self, mock_connect):
+        """Tests index page"""
+        mock_connect.return_value = self.mock_conn
 
-        expected_strings = [
-            b"The following addresses can be used to see information about banned books:",
-            b'To search for banned books, go to "/search/&lt;field&gt;/&lt;query&gt;".',
-            b"&lt;field&gt; can be title, author, or genre",
-            b"&lt;query&gt; is the search term",
-            b"To see a list of categories with the most banned books, go to "
-            b'"/most-banned/&lt;field&gt;/&lt;max_results&gt;".',
-            b"&lt;field&gt; can be states, districts, authors, or titles",
-            b"&lt;max_results&gt; is the number of results you want to display",
+        response = self.app.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>The Forbidden Library</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.DataSource.bans_from_isbn")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_details(self, mock_connect, mock_bans_from_isbn, mock_book_from_isbn):
+        """Tests details page"""
+        mock_connect.return_value = self.mock_conn
+        mock_book_from_isbn.return_value = mock_book
+        mock_bans_from_isbn.return_value = [mock_ban]
+
+        response = self.app.get("details/440236924")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'<h2 class="right-title">Kaleidoscope</h2>', response.data)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_map(self, mock_connect):
+        """Tests map page"""
+        mock_connect.return_value = self.mock_conn
+        # mock_book_from_isbn.return_value = mock_book
+        # mock_bans_from_isbn.return_value = [mock_ban]
+
+        response = self.app.get("map")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Banned Books in the United States</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.books_search_author")
+    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search(
+        self,
+        mock_connect,
+        mock_book_from_isbn,
+        mock_books_search_title,
+        mock_books_search_author,
+    ):
+        """Tests search page with no type"""
+        mock_connect.return_value = self.mock_conn
+        mock_book_from_isbn.return_value = mock_book
+        mock_books_search_title.return_value = [mock_book]
+        mock_books_search_author.return_value = [mock_book]
+
+        response = self.app.get("search?searchterm=a")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'<h1>Search Results for "a":</h1>', response.data)
+
+    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search_title(
+        self,
+        mock_connect,
+        mock_books_search_title,
+    ):
+        """Tests search page for title"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_title.return_value = [mock_book]
+
+        response = self.app.get("search?searchterm=Kaleidoscope&type=title")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            b'<p class="book-title"><a href="details/440236924">Kaleidoscope </a>',
+            response.data,
+        )
+
+    @patch("ProductionCode.datasource.DataSource.books_search_author")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search_author(
+        self,
+        mock_connect,
+        mock_books_search_author,
+    ):
+        """Tests search page for author"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_author.return_value = [mock_book]
+
+        response = self.app.get("search?searchterm=Steel&type=author")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'<p class="book-authors">Danielle Steel</p>', response.data)
+
+    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books(
+        self,
+        mock_connect,
+        mock_books_search_title,
+    ):
+        """Tests books page"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_title.return_value = [mock_book]
+
+        response = self.app.get("books")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Banned Books</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.books_search_genre")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_genres(
+        self,
+        mock_connect,
+        mock_books_search_title,
+    ):
+        """Tests genres page"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_title.return_value = [mock_book]
+
+        response = self.app.get("genres/Fiction")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Fiction</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.books_search_author")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_authors(
+        self,
+        mock_connect,
+        mock_books_search_author,
+    ):
+        """Tests authors page"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_author.return_value = [mock_book]
+
+        response = self.app.get("authors/Danielle Steel")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Danielle Steel</h1>", response.data)
+
+
+class TestAppError(unittest.TestCase):
+    @app.route("/mock-error")
+    def mock_error():
+        raise Exception("Mock Error")
+
+    def setUp(self):
+        """Create mock psql connection and app"""
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+        self.app = app.test_client()
+
+    def test_404(self):
+        """Tests 404 page"""
+        response = self.app.get("/not-a-real-page", follow_redirects=True)
+        # TODO: CHANGE WHEN 404 PAGE IS DONE
+        self.assertIn(b"404", response.data)
+
+    @patch("app.map_page", side_effect=Exception("Mock Error"))
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_500(self, mock_connect, mock_map):
+        """Tests 500 page"""
+        response = self.app.get("/mock-error")
+        # TODO: CHANGE WHEN 500 PAGE IS DONE
+        self.assertIn(b"500", response.data)
+
+
+class TestAppAPI(unittest.TestCase):
+    def setUp(self):
+        """Create mock psql connection and app"""
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+        self.app = app.test_client()
+
+    @patch("ProductionCode.datasource.DataSource.get_most_banned_states")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_states(self, mock_connect, mock_get_most_banned_states):
+        """Test get-most-banned-states endpoint"""
+        mock_connect.return_value = self.mock_conn
+        mock_get_most_banned_states.return_value = [
+            Rank("Florida", 500),
+            Rank("Texas", 400),
         ]
 
-        for expected in expected_strings:
-            self.assertIn(expected, response.data)
+        response = self.app.get("get-most-banned-states")
 
-    def test_valid_states_route(self):
-        """
-        Arguments: None
-        Return value: Return true if the test passes.
-        This test grabs the most banned states.
-        """
-        response = self.app.get("/most-banned/states/5")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(
-            b"Florida: 6533</br>Iowa: 3685</br>Texas: 1964</br>"
-            b"Pennsylvania: 664</br>Wisconsin: 480",
-            response.data,
-        )
+        expected = b'[{"name": "Florida", "bans": 500}, {"name": "Texas", "bans": 400}]'
 
-    def test_valid_titles_route(self):
-        """
-        Arguments: None
-        Return value: Return true if the test passes.
-        This test grabs the most banned titles.
-        """
-        response = self.app.get("/most-banned/titles/5")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(
-            b"Looking for Alaska: 135</br>Nineteen Minutes: 126</br>"
-            b"The Perks of Being a Wallflower: 118</br>"
-            b"Sold: 116</br>Thirteen Reasons Why: 112",
-            response.data,
-        )
+        self.assertEqual(response.data, expected)
 
-    def test_valid_districts_route(self):
-        """
-        Arguments: None
-        Return value: Return true if the test passes.
-        This test grabs the most banned districts.
-        """
-        response = self.app.get("/most-banned/districts/5")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(
-            b"Escambia County Public Schools: 1787</br>"
-            b"Clay County School District: 864</br>"
-            b"Orange County Public Schools: 734</br>"
-            b"North East Independent School District: 606</br>"
-            b"Central York School District: 443",
-            response.data,
-        )
-
-    def test_valid_authors_route(self):
-        """
-        Arguments: None
-        Return value: Return true if the test passes.
-        This test grabs the most banned authors.
-        """
-        response = self.app.get("/most-banned/authors/5")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(
-            b"Ellen Hopkins: 791</br>Sarah J. Maas: 657</br>"
-            b"Jodi Picoult: 213</br>John Green: 203</br>Toni Morrison: 197",
-            response.data,
-        )
-
-    def test_invalid_max_results(self):
-        """
-        Arguments: None
-        Return value: Return true if the test passes.
-        This test is for invalid max_results.
-        """
-        response = self.app.get("/most-banned/states/five")
-        self.assertEqual(response.status_code, 500)
-        self.assertIn(b"500: Bad Request", response.data)
-
-    def test_invalid_category(self):
-        """
-        Arguments: None
-        Return value: Return true if the test passes.
-        This test is for invalid category.
-        """
-        response = self.app.get("/most-banned/notareal/5")
-        self.assertEqual(response.status_code, 500)
-        self.assertIn(b"500: Bad Request", response.data)
-
-
-class TestAppSearch(unittest.TestCase):
-    """
-    Tests for search methods for Flask app
-    """
-
-    def setUp(self):
-        """This function sets up the test client for the Flask application.
-        Args:
-            None
-        Returns:
-            None
-        """
-        self.app = app.test_client()
-
-    def test_search_author(self):
-        """Test for a valid author search
-        Args:
-            None
-        Return:
-            None
-        """
-        response = self.app.get("/search/author/Kristin Cast")
-        self.assertEqual(
-            b"Kalona's Fall by Kristin Cast, P.C. Cast (ISBN not found)</br>"
-            b"Kisses from Hell by Francesca Lia Block, Kristin Cast, Alyson Noel"
-            b", Richelle Mead, Kelley Armstrong (ISBN: 0061956961)",
-            response.data,
-        )
-
-    def test_search_title(self):
-        """Test for valid title search
-        Args:
-            None
-        Return:
-            None
-        """
-        response = self.app.get("/search/title/kaleidoscope")
-        self.assertEqual(
-            b"Kaleidoscope by Danielle Steel (ISBN: 0440236924)</br>"
-            b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)",
-            response.data,
-        )
-
-    def test_search_genre(self):
-        """Test for valid genre search
-        Args:
-            None
-        Return:
-            None
-        """
-        response = self.app.get("/search/genre/lgbt")
-        self.assertEqual(
-            b"Kapaemahu by Joe Wilson, Daniel Sousa, Hinaleimoana Wong-Kalu, Dean Hamer "
-            b"(ISBN: 0593530063)</br>"
-            b"Kaleidoscope Song by Fox Benwell (ISBN: 1481477676)</br>"
-            b"Kate in Waiting by Becky Albertalli (ISBN: 0062643835)</br>"
-            b"Keeping You a Secret by Julie Anne Peters (ISBN: 0316009857)</br>"
-            b"King and the Dragonflies by Kacen Callender (ISBN: 1338129333)</br>"
-            b"King of the Screwups by K.L. Going (ISBN: 0152062580)</br>"
-            b"King of Scars by Leigh Bardugo (ISBN: 125014227X)</br>"
-            b"Kingsbane by Claire Legrand (ISBN: 1492656666)</br>"
-            b"Kings of B'more by R. Eric Thomas (ISBN: 0593326180)</br>"
-            b"Kings, Queens, and In-Betweens by Tanya Boteju (ISBN: 1534430652)</br>"
-            b"Kiss & Tell by Adib Khorram (ISBN: 0593325265)</br>"
-            b"Kings Rising by C.S. Pacat (ISBN: 174348495X)</br>"
-            b"Kiss Number 8 by Ellen T. Crenshaw, Colleen A.F. Venable (ISBN: 1250196930)</br>"
-            b"Kissing Kate by Lauren Myracle (ISBN: 0142408697)",
-            response.data,
-        )
-
-    def test_search_invalid_field(self):
-        """Test for invalid field search
-        Args:
-            None
-        Return:
-            None
-        """
-        response = self.app.get("/search/bad-field/search")
-        self.assertEqual(400, response.status_code)
-
-class TestAppDetails(unittest.TestCase):
-    """
-    Tests for details methods for Flask app
-    """
-    def setUp(self):
-        """This function sets up the test client for the Flask application.
-        Args:
-            None
-        Returns:
-            None
-        """
-        self.app = app.test_client()
-
-    def test_valid_details_route(self):
-        """Details for ISBN 1250142202 should include all the expected fields."""
-        response = self.app.get("/details/1250142202")
-        self.assertEqual(response.status_code, 200)
-
-        data = response.data
-
-        header = (
-            b"Details for Killing Jesus: A History by "
-            b"Martin Dugard, Bill O'Reilly (2017, ISBN: 1250142202)"
-        )
-        self.assertIn(header, data)
-
-        summary = (
-            b"Book details from Goodreads: Millions of readers have thrilled "
-            b"to bestselling authors Bill O'Reilly and historian Martin Dugard's "
-            b"Killing Kennedy and Killing Lincoln"
-        )
-        self.assertIn(summary, data)
-
-        genres = (
-            b"Genres: Historical, Christianity, Faith, Biography, Book Club, "
-            b"Nonfiction, History, Religion, Christian, Audiobook"
-        )
-        self.assertIn(genres, data)
-
-        self.assertIn(b"Average review: 4.0 stars", data)
-
-        self.assertIn(
-            b"Banned in Escambia County Public Schools, Florida in August 2023",
-            data
-        )
-
-        self.assertIn(b"<br /><br />", data)
-
-    def test_invalid_details_route(self):
-        """An unknown ISBN should return a 400 with the correct error message."""
-        response = self.app.get("/details/0000000000")
-        self.assertEqual(response.status_code, 400)
-        self.assertIn(b"No book with that ISBN found!", response.data)
 
 if __name__ == "__main__":
     unittest.main()

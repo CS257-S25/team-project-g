@@ -1051,6 +1051,11 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
 
+    def test_connect_error(self):
+        """Test connection error"""
+        with self.assertRaises(SystemExit):
+            ds = DataSource()
+
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_book_from_isbn_error(self, mock_connect):
         """If the SELECT fails, we sys.exit() in book_from_isbn."""

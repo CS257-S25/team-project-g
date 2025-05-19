@@ -62,7 +62,7 @@ div.book div.hover:hover {
 
 div.book div.hover p.title {
     text-align: center;
-    margin-left: 0.2em
+    margin-left: 0.2em;
 }
 div.book div.hover p.author{
     text-align: center;

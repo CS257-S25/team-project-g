@@ -10,12 +10,16 @@
 </head>
     <body>
         <h3>Authors</h3>
-        {% for book in books %}
         <ul>
-          <li>
-            <a href="/authors/{{book.authors}}">{{book.authors}}</a>
-          </li>
+            {% set seen_authors = [] %}
+            {% for book in books %}
+                {% if book.authors not in seen_authors %}
+                    <li>
+                        <a href="/authors/{{book.authors}}">{{book.authors}}</a>
+                    </li>
+                    {% set _ = seen_authors.append(book.authors) %}
+                {% endif %}
+            {% endfor %}
         </ul>
-        {% endfor %}
     </body>
 </html>

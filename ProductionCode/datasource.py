@@ -129,7 +129,7 @@ class DataSource:
         rank = Rank(name=row[0], bans=row[1])
         return rank
 
-    def book_from_isbn(self, isbn):
+    def book_from_isbn(self, isbn) -> Book | None:
         """Queries book database based on ISBN
         Args:
             isbn (str): a book's isbn number
@@ -147,11 +147,8 @@ class DataSource:
         except psycopg2.Error as e:
             print("Query error: ", e)
             sys.exit()
-        if results:
-            book = self.database_row_to_book(results)
-            return book
-        else:
-            return None
+        book = self.database_row_to_book(results)
+        return book
 
     def bans_from_isbn(self, isbn) -> list[Bookban]:
         """Queries book database based on ISBN
@@ -576,7 +573,9 @@ class DataSource:
             print("Query error: ", e)
             sys.exit()
 
-        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
+        books = list(
+            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
+        )
 
         return books
 

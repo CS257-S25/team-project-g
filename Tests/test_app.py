@@ -149,6 +149,22 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Fiction</h1>", response.data)
 
+    @patch("ProductionCode.datasource.DataSource.books_search_genre")
+    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_genres_list(
+        self, mock_connect, mock_books_search_title, mock_books_search_genre
+    ):
+        """Tests overall genres page"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_title.return_value = [mock_book]
+        mock_books_search_genre.return_value = [mock_book]
+
+        response = self.app.get("genres")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h2>Genres</h2>", response.data)
+
     @patch("ProductionCode.datasource.DataSource.books_search_author")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_authors(
@@ -164,6 +180,22 @@ class TestAppPages(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Danielle Steel</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_authors_list(
+        self,
+        mock_connect,
+        mock_books_search_title,
+    ):
+        """Tests authors page"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_title.return_value = [mock_book]
+
+        response = self.app.get("authors")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h3>Authors</h3>", response.data)
 
 
 class TestAppError(unittest.TestCase):

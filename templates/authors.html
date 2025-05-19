@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ book_isbn.title }}</title>
+  <title>Authors</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='authors.css') }}">
@@ -13,8 +13,9 @@
         {% for book in books %}
         <ul>
           <li>
-            <a href="/authors/book.author">{{book.author}}</a>
+            <a href="/authors/{{book.authors}}">{{book.authors}}</a>
           </li>
+        </ul>
         {% endfor %}
     </body>
 </html>

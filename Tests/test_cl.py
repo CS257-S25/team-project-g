@@ -251,6 +251,17 @@ class testCommandLine(unittest.TestCase):
         printed = sys.stdout.getvalue()
         self.assertEqual(printed, "Kaleidoscope by Danielle Steel (ISBN: 440236924)\n")
 
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_help(self, mock_connect):
+        """Test for help message"""
+        mock_connect.return_value = self.mock_conn
+
+        sys.argv = ["cl.py"]
+        sys.stdout = StringIO()
+        with self.assertRaises(SystemExit) as cm:
+            cl.main()
+        self.assertEqual(cm.exception.code, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

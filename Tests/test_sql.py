@@ -632,6 +632,22 @@ class TestSQLFromISBNMethods(unittest.TestCase):
 
         self.assertEqual(str(results), str(expected))
 
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_book_from_isbn_no_results(self, mock_connect):
+        """Tests search book by isbn method for book database"""
+        mock_connect.return_value = self.mock_conn
+
+        ds = DataSource()
+
+        response = None
+
+        expected = None
+        self.mock_cursor.fetchone.return_value = response
+
+        results = ds.book_from_isbn("440236924")
+
+        self.assertEqual(str(results), str(expected))
+
     @patch("ProductionCode.datasource.DataSource.database_row_list_to_bookban_list")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_bans_from_isbn(self, mock_connect, mock_database_row_list_to_bookban_list):
@@ -965,49 +981,41 @@ class TestSQLMostBannedMethods(unittest.TestCase):
     def test_get_most_banned_authors(self, mock_connect):
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
-        response = [(
-            ["Sarah J. Maas"],
-            52
-        )]
+        response = [(["Sarah J. Maas"], 52)]
+        expected = ["['Sarah J. Maas']: 52"]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_authors(1)
-        self.assertEqual(list(map(str, results)), list(map(str, response)))
+        self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_districts(self, mock_connect):
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
-        response = [(
-            "Escambia County Public Schools",
-            23
-        )]
+        response = [("Escambia County Public Schools", 23)]
+        expected = ["Escambia County Public Schools: 23"]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_districts(1)
-        self.assertEqual(list(map(str, results)), list(map(str, response)))
+        self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_states(self, mock_connect):
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
-        response = [(
-            "Florida",
-            87
-        )]
+        response = [("Florida", 87)]
+        expected = ["Florida: 87"]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_states(1)
-        self.assertEqual(list(map(str, results)), list(map(str, response)))
+        self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_titles(self, mock_connect):
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
-        response = [(
-            "Kingdom of Ash",
-            52
-        )]
+        response = [("Kingdom of Ash", 52)]
+        expected = ["Kingdom of Ash: 52"]
         self.mock_cursor.fetchall.return_value = response
         results = ds.get_most_banned_titles(1)
-        self.assertEqual(list(map(str, results)), list(map(str, response)))
+        self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
     @patch("ProductionCode.datasource.DataSource.book_from_isbn")
     @patch("ProductionCode.datasource.psycopg2.connect")
@@ -1016,11 +1024,27 @@ class TestSQLMostBannedMethods(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
         response = [("1639731067", 52)]
+        expected = [(52, "Kingdom of Ash by Sarah J. Maas (ISBN: 1639731067)")]
         self.mock_cursor.fetchall.return_value = response
-        expected_str = "Kingdom of Ash by Sarah J. Maas (ISBN: 1639731067)"
-        mock_book_from_isbn.return_value = expected_str
+        mock_book_from_isbn.return_value = (
+            "Kingdom of Ash by Sarah J. Maas (ISBN: 1639731067)"
+        )
         results = ds.get_most_banned_books(1)
-        self.assertEqual(list(map(str, results)), [expected_str])
+
+        self.assertEqual(results, expected)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_genres(self, mock_connect):
+        """Test get_most_banned_genres with a limit of 1."""
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [("Fiction", 120)]
+        expected = ["Fiction: 120"]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_genres(1)
+
+        self.assertEqual(list(map(str, results)), expected)
+
 
 class TestSQLExceptionBranches(unittest.TestCase):
     def setUp(self):
@@ -1109,3 +1133,11 @@ class TestSQLExceptionBranches(unittest.TestCase):
         ds = DataSource()
         with self.assertRaises(SystemExit):
             ds.get_most_banned_books(1)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_genres_error(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.get_most_banned_genres(1)

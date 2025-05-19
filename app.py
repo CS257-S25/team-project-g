@@ -226,5 +226,11 @@ def authors(author):
     books = ds.books_search_author(author)
     return render_template("author.html", books=books, author=author)
 
+@app.route("/authors")
+def authors_list():
+    ds = DataSource()
+    books = ds.books_search_title("")
+    return render_template("authors.html", books=books)
+
 if __name__ == "__main__":
     app.run(port="5131")

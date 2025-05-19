@@ -13,22 +13,22 @@
         <!-- LOADS FICTION BOOKS -->
         {% for book in fiction[:7]: %}
         <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
-        <p class="title">{{book.title}}</p>
-        <p class="author">{{book.authors_to_string()}}</p>
+        <p>{{book.title}}</p>
+        <p>{{book.authors_to_string()}}</p>
         {% endfor %}
         <a href="/genres/Fiction">See more...</a>
         <!-- LOADS ROMANCE BOOKS -->
         {% for book in romance[:7]: %}
         <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
-        <p class="title">{{book.title}}</p>
-        <p class="author">{{book.authors_to_string()}}</p>
+        <p>{{book.title}}</p>
+        <p>{{book.authors_to_string()}}</p>
         {% endfor %}
         <a href="/genres/Romance">See more...</a>
         <!-- LOADS CHILDRENS BOOKS -->
         {% for book in childrens[:7]: %}
         <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
-        <p class="title">{{book.title}}</p>
-        <p class="author">{{book.authors_to_string()}}</p>
+        <p>{{book.title}}</p>
+        <p>{{book.authors_to_string()}}</p>
         {% endfor %}
         <a href="/genres/Childrens">See more...</a>
         <!-- MAKES LIST OF ALL GENRES -->

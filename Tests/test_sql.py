@@ -1,13 +1,15 @@
 """This file contains the unit tests for the SQL queries."""
 
-import psycopg2
 import unittest
 from unittest.mock import MagicMock, patch
+import psycopg2
+
 from ProductionCode.datasource import DataSource
 
-from ProductionCode.book import Book
-from ProductionCode.bookban import Bookban
 from ProductionCode.rank import Rank
+
+from Tests.mock_data import mock_book
+from Tests.mock_data import mock_ban
 
 
 class TestSQLSearchMethods(unittest.TestCase):
@@ -38,20 +40,7 @@ class TestSQLSearchMethods(unittest.TestCase):
             )
         ]
 
-        expected = [
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            ),
-        ]
+        expected = [mock_book]
 
         self.mock_cursor.fetchall.return_value = response
 
@@ -79,20 +68,7 @@ class TestSQLSearchMethods(unittest.TestCase):
             )
         ]
 
-        expected = [
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            ),
-        ]
+        expected = [mock_book]
 
         self.mock_cursor.fetchall.return_value = response
 
@@ -121,20 +97,7 @@ class TestSQLSearchMethods(unittest.TestCase):
             )
         ]
 
-        expected = [
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            ),
-        ]
+        expected = [mock_book]
 
         self.mock_cursor.fetchall.return_value = response
 
@@ -169,18 +132,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
             3.9,
         )
 
-        expected = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
-            details={
-                "summary": "summary",
-                "cover": "url.jpg",
-                "genres": ["Mystery", "Fantasy"],
-                "publish_date": "2020-10-27",
-                "rating": 3.9,
-            },
-        )
+        expected = mock_book
 
         self.mock_cursor.fetchone.return_value = response
 
@@ -210,28 +162,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
         """Tests search book bans by isbn method for bookbans database"""
         mock_connect.return_value = self.mock_conn
 
-        mock_database_row_list_to_bookban_list.return_value = [
-            Bookban(
-                Book(
-                    isbn="440236924",
-                    title="Kaleidoscope",
-                    authors=["Danielle Steel"],
-                    details={
-                        "summary": "summary",
-                        "cover": "url.jpg",
-                        "genres": ["Mystery", "Fantasy"],
-                        "publish_date": "2020-10-27",
-                        "rating": 3.9,
-                    },
-                ),
-                state="Florida",
-                district="Martin County Schools",
-                ban_year=2023,
-                ban_month=3,
-                ban_status="Banned from Libraries and Classrooms",
-                ban_origin="Formal Challenge",
-            )
-        ]
+        mock_database_row_list_to_bookban_list.return_value = [mock_ban]
 
         ds = DataSource()
 
@@ -247,28 +178,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
             )
         ]
 
-        expected = [
-            Bookban(
-                Book(
-                    isbn="440236924",
-                    title="Kaleidoscope",
-                    authors=["Danielle Steel"],
-                    details={
-                        "summary": "summary",
-                        "cover": "url.jpg",
-                        "genres": ["Mystery", "Fantasy"],
-                        "publish_date": "2020-10-27",
-                        "rating": 3.9,
-                    },
-                ),
-                state="Florida",
-                district="Martin County Schools",
-                ban_year=2023,
-                ban_month=3,
-                ban_status="Banned from Libraries and Classrooms",
-                ban_origin="Formal Challenge",
-            )
-        ]
+        expected = [mock_ban]
         self.mock_cursor.fetchall.return_value = response
 
         results = ds.bans_from_isbn("440236924")
@@ -290,18 +200,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         ds = DataSource()
 
-        expected = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
-            details={
-                "summary": "summary",
-                "cover": "url.jpg",
-                "genres": ["Mystery", "Fantasy"],
-                "publish_date": "2020-10-27",
-                "rating": 3.9,
-            },
-        )
+        expected = mock_book
 
         results = ds.database_row_to_book(
             (
@@ -326,47 +225,11 @@ class TestSQLHelperMethods(unittest.TestCase):
         """Converting database row to book object list test"""
         mock_connect.return_value = self.mock_conn
 
-        mock_database_row_to_book.return_value = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
-            details={
-                "summary": "summary",
-                "cover": "url.jpg",
-                "genres": ["Mystery", "Fantasy"],
-                "publish_date": "2020-10-27",
-                "rating": 3.9,
-            },
-        )
+        mock_database_row_to_book.return_value = mock_book
 
         ds = DataSource()
 
-        expected = [
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            ),
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            ),
-        ]
+        expected = [mock_book, mock_book]
 
         results = ds.database_row_list_to_book_list(
             [
@@ -401,18 +264,7 @@ class TestSQLHelperMethods(unittest.TestCase):
         """Test for helper method converting database row to bookban"""
         mock_connect.return_value = self.mock_conn
 
-        mock_book_from_isbn.return_value = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
-            details={
-                "summary": "summary",
-                "cover": "url.jpg",
-                "genres": ["Mystery", "Fantasy"],
-                "publish_date": "2020-10-27",
-                "rating": 3.9,
-            },
-        )
+        mock_book_from_isbn.return_value = mock_book
 
         ds = DataSource()
 
@@ -443,26 +295,7 @@ class TestSQLHelperMethods(unittest.TestCase):
         """Test for helper method converting database row to bookban"""
         mock_connect.return_value = self.mock_conn
 
-        mock_database_row_to_bookban.return_value = Bookban(
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            ),
-            state="Florida",
-            district="Martin County Schools",
-            ban_year=2023,
-            ban_month=3,
-            ban_status="Banned from Libraries and Classrooms",
-            ban_origin="Formal Challenge",
-        )
+        mock_database_row_to_bookban.return_value = mock_ban
 
         ds = DataSource()
 
@@ -528,6 +361,8 @@ class TestSQLHelperMethods(unittest.TestCase):
 
 
 class TestSQLMostBannedMethods(unittest.TestCase):
+    """Tests for most_banned methods"""
+
     def setUp(self):
         """Create a mock prostgres connection"""
         self.mock_conn = MagicMock()
@@ -535,6 +370,7 @@ class TestSQLMostBannedMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_authors(self, mock_connect):
+        """Test get_most_banned_authors"""
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
         response = [(["Sarah J. Maas"], 52)]
@@ -545,6 +381,7 @@ class TestSQLMostBannedMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_districts(self, mock_connect):
+        """Test get_most_banned_districts"""
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
         response = [("Escambia County Public Schools", 23)]
@@ -555,6 +392,7 @@ class TestSQLMostBannedMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_states(self, mock_connect):
+        """Test get_most_banned_states"""
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
         response = [("Florida", 87)]
@@ -565,6 +403,7 @@ class TestSQLMostBannedMethods(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_titles(self, mock_connect):
+        """Test get_most_banned_titles"""
         mock_connect.return_value = self.mock_conn
         ds = DataSource()
         response = [("Kingdom of Ash", 52)]
@@ -603,20 +442,23 @@ class TestSQLMostBannedMethods(unittest.TestCase):
 
 
 class TestSQLExceptionBranches(unittest.TestCase):
+    """Tests for Errors"""
+
     def setUp(self):
+        """Setup mock psql connection"""
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
 
     def test_connect_error(self):
         """Test connection error"""
         with self.assertRaises(SystemExit):
-            ds = DataSource()
+            DataSource()
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_book_from_isbn_error(self, mock_connect):
-        """If the SELECT fails, we sys.exit() in book_from_isbn."""
+        """If the SELECT fails, we sys.exit() in book_from_isbn"""
         mock_connect.return_value = self.mock_conn
-        # make cursor.execute raise
+
         self.mock_cursor.execute.side_effect = psycopg2.Error("boom")
         ds = DataSource()
         with self.assertRaises(SystemExit):
@@ -624,7 +466,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_title_error(self, mock_connect):
-        """Trigger the except-clause in books_search_title."""
+        """Trigger the except-clause in books_search_title"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("oh no")
         ds = DataSource()
@@ -633,6 +475,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_author_error(self, mock_connect):
+        """Trigger the except-clause in books_search_author"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("fail")
         ds = DataSource()
@@ -641,6 +484,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_genre_error(self, mock_connect):
+        """Trigger the except-clause in books_search_genre"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("oops")
         ds = DataSource()
@@ -649,6 +493,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_bans_from_isbn_error(self, mock_connect):
+        """Trigger the except-clause in bans_from_isbn"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("nope")
         ds = DataSource()
@@ -657,6 +502,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_author_error(self, mock_connect):
+        """Trigger the except-clause in get_most_banned_authors"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
@@ -665,6 +511,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_districts_error(self, mock_connect):
+        """Trigger the except-clause in get_most_banned_districts"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
@@ -673,6 +520,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_states_error(self, mock_connect):
+        """Trigger the except-clause in get_most_banned_states"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
@@ -681,6 +529,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_titles_error(self, mock_connect):
+        """Trigger the except-clause in get_most_banned_titles"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
@@ -689,6 +538,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_books_error(self, mock_connect):
+        """Trigger the except-clause in get_most_banned_books"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
@@ -697,6 +547,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_genres_error(self, mock_connect):
+        """Trigger the except-clause in get_most_banned_genres"""
         mock_connect.return_value = self.mock_conn
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()

@@ -2,39 +2,14 @@
 
 import unittest
 
-from ProductionCode.book import Book
-from ProductionCode.bookban import Bookban
+from Tests.mock_data import mock_ban
 
 
 class TestBookban(unittest.TestCase):
     """Tests for Bookban class"""
 
     def setUp(self):
-        book = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
-            details={
-                "summary": "summary",
-                "cover": "cover.jpg",
-                "genres": [
-                    "Adult Fiction",
-                    "Contemporary Romance",
-                ],
-                "publish_date": "2000-10-28",
-                "rating": 4.0,
-            },
-        )
-
-        self.bookban = Bookban(
-            book=book,
-            state="Florida",
-            district="Martin County Schools",
-            ban_year=2023,
-            ban_month=3,
-            ban_status="Banned from Libraries and Classrooms",
-            ban_origin="Formal Challenge",
-        )
+        self.bookban = mock_ban
 
     def test_string(self):
         """Tests __str__ method"""

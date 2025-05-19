@@ -5,44 +5,14 @@ This file contains the unit tests for the Flask application.
 import unittest
 from unittest.mock import MagicMock, patch
 
+import psycopg2
+
 from app import app
 
-from ProductionCode.book import Book
-from ProductionCode.bookban import Bookban
 from ProductionCode.rank import Rank
 
-mock_book = Book(
-    isbn="440236924",
-    title="Kaleidoscope",
-    authors=["Danielle Steel"],
-    details={
-        "summary": "Kafka on the Shore, a tour de force of metaphysical reality, is powered by two remarkable characters: a teenage boy, Kafka Tamura, who runs away from home either to escape a gruesome oedipal prophecy or to search for his long-missing mother and sister; and an aging simpleton called Nakata, who never recovered from a wartime affliction and now is drawn toward Kafka for reasons that, like the most basic activities of daily life, he cannot fathom. Their odyssey, as mysterious to them as it is to us, is enriched throughout by vivid accomplices and mesmerizing events. Cats and people carry on conversations, a ghostlike pimp employs a Hegel-quoting prostitute, a forest harbors soldiers apparently unaged since World War II, and rainstorms of fish (and worse) fall from the sky. There is a brutal murder, with the identity of both victim and perpetrator a riddle—yet this, along with everything else, is eventually answered, just as the entwined destinies of Kafka and Nakata are gradually revealed, with one escaping his fate entirely and the other given a fresh start on his own.",
-        "cover": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1173371736i/278102.jpg",
-        "genres": ["Mystery", "Fantasy"],
-        "publish_date": "2020-10-27",
-        "rating": 3.9,
-    },
-)
-mock_ban = Bookban(
-    Book(
-        isbn="440236924",
-        title="Kaleidoscope",
-        authors=["Danielle Steel"],
-        details={
-            "summary": "summary",
-            "cover": "url.jpg",
-            "genres": ["Mystery", "Fantasy"],
-            "publish_date": "2020-10-27",
-            "rating": 3.9,
-        },
-    ),
-    state="Florida",
-    district="Martin County Schools",
-    ban_year=2023,
-    ban_month=3,
-    ban_status="Banned from Libraries and Classrooms",
-    ban_origin="Formal Challenge",
-)
+from Tests.mock_data import mock_book
+from Tests.mock_data import mock_ban
 
 
 class TestAppPages(unittest.TestCase):
@@ -197,9 +167,12 @@ class TestAppPages(unittest.TestCase):
 
 
 class TestAppError(unittest.TestCase):
+    """Tests for Errors"""
+
     @app.route("/mock-error")
-    def mock_error():
-        raise Exception("Mock Error")
+    def mock_error(self):
+        """Helper method to raise a mock error"""
+        raise psycopg2.Error("Mock Error")
 
     def setUp(self):
         """Create mock psql connection and app"""
@@ -215,7 +188,7 @@ class TestAppError(unittest.TestCase):
 
     @patch("app.map_page", side_effect=Exception("Mock Error"))
     @patch("ProductionCode.datasource.psycopg2.connect")
-    def test_500(self, mock_connect, mock_map):
+    def test_500(self, _mock_connect, _mock_map):
         """Tests 500 page"""
         response = self.app.get("/mock-error")
         # TODO: CHANGE WHEN 500 PAGE IS DONE
@@ -223,6 +196,8 @@ class TestAppError(unittest.TestCase):
 
 
 class TestAppAPI(unittest.TestCase):
+    """Tests for API endpoints"""
+
     def setUp(self):
         """Create mock psql connection and app"""
         self.mock_conn = MagicMock()

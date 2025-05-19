@@ -17,8 +17,7 @@ from ProductionCode.most_banned import (
     most_banned_titles,
 )
 
-from ProductionCode.book import Book
-from ProductionCode.rank import Rank
+from Tests.mock_data import mock_book
 
 
 class TestCL(unittest.TestCase):
@@ -170,7 +169,9 @@ class TestMostBannedFunctions(unittest.TestCase):
     #     self.assertEqual(printed, "Florida: 6533\n")
 
 
-class testCommandLine(unittest.TestCase):
+class TestCommandLine(unittest.TestCase):
+    """Tests for Command Line Functionality"""
+
     def setUp(self):
         """Create a mock postgress connection"""
         self.mock_conn = MagicMock()
@@ -181,20 +182,7 @@ class testCommandLine(unittest.TestCase):
     def test_search_title(self, mock_connect, mock_books_search_title):
         """Tests for title search"""
         mock_connect.return_value = self.mock_conn
-        mock_books_search_title.return_value = [
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            )
-        ]
+        mock_books_search_title.return_value = [mock_book]
         sys.argv = ["cl.py", "--st", "Kaleidoscope"]
         sys.stdout = StringIO()
         cl.main()
@@ -206,20 +194,7 @@ class testCommandLine(unittest.TestCase):
     def test_search_author(self, mock_connect, mock_books_search_author):
         """Tests for author search"""
         mock_connect.return_value = self.mock_conn
-        mock_books_search_author.return_value = [
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            )
-        ]
+        mock_books_search_author.return_value = [mock_book]
         sys.argv = ["cl.py", "--sa", "Danielle Steel"]
         sys.stdout = StringIO()
         cl.main()
@@ -231,20 +206,7 @@ class testCommandLine(unittest.TestCase):
     def test_search_genre(self, mock_connect, mock_books_search_genre):
         """Tests for genre search"""
         mock_connect.return_value = self.mock_conn
-        mock_books_search_genre.return_value = [
-            Book(
-                isbn="440236924",
-                title="Kaleidoscope",
-                authors=["Danielle Steel"],
-                details={
-                    "summary": "summary",
-                    "cover": "url.jpg",
-                    "genres": ["Mystery", "Fantasy"],
-                    "publish_date": "2020-10-27",
-                    "rating": 3.9,
-                },
-            )
-        ]
+        mock_books_search_genre.return_value = [mock_book]
         sys.argv = ["cl.py", "--sg", "Mystery"]
         sys.stdout = StringIO()
         cl.main()

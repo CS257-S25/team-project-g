@@ -2,28 +2,14 @@
 
 import unittest
 
-from ProductionCode.book import Book
+from Tests.mock_data import mock_book
 
 
 class TestBook(unittest.TestCase):
     """Tests for Book class"""
 
     def setUp(self):
-        self.book = Book(
-            isbn="440236924",
-            title="Kaleidoscope",
-            authors=["Danielle Steel"],
-            details={
-                "summary": "summary",
-                "cover": "cover.url",
-                "genres": [
-                    "Adult Fiction",
-                    "Contemporary Romance",
-                ],
-                "publish_date": "2000-10-28",
-                "rating": 4.0,
-            },
-        )
+        self.book = mock_book
 
     def test_string(self):
         """Tests __str__ method"""
@@ -37,6 +23,4 @@ class TestBook(unittest.TestCase):
 
     def test_genres_to_string(self):
         """Tests to string method for genres"""
-        self.assertEqual(
-            str(self.book.genres_to_string()), "Adult Fiction, Contemporary Romance"
-        )
+        self.assertEqual(str(self.book.genres_to_string()), "Mystery, Fantasy")

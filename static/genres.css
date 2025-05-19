@@ -1,4 +1,10 @@
 /* === Layout === */
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
 .main {
   display: flex;
   padding: 1em;
@@ -23,7 +29,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 300px;          /* adjust as desired */
+  max-height: 300px;
   overflow-y: auto;
   background: var(--lighter);
   border: 1px solid var(--border);
@@ -35,7 +41,7 @@
 .sidebar a {
   display: block;
   padding: 0.5em 1em;
-  color: var(--link);
+  color: var(--text);
   text-decoration: none;
 }
 .sidebar a:hover {
@@ -62,8 +68,8 @@
 }
 .book-card {
   position: relative;
-  flex: 0 0 120px;    /* cover width */
-  height: 180px;      /* cover height */
+  flex: 0 0 120px;
+  height: 180px;
 }
 .book-card img {
   width: 100%;

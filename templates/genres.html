@@ -1,54 +1,96 @@
-<html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Genres</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='navstyle.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='genres.css') }}">
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='genresstyle.css') }}"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='genres.css') }}">
 </head>
 <body>
-        {% include 'nav.html' %}
-        <!-- LOADS FICTION BOOKS -->
-        {% for book in fiction[:7]: %}
-        <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
-        <p>{{book.title}}</p>
-        <p>{{book.authors_to_string()}}</p>
+  {% include 'nav.html' %}
+
+  <div class="main">
+    <!-- Sidebar: Genre List -->
+    <div class="sidebar">
+      <h2>Genres</h2>
+      <ul>
+        {% set genres_seen = namespace(genres=[]) %}
+        {% for book in books %}
+          {% if book.details.genres %}
+            {% for genre in book.details.genres %}
+              {% if genre not in genres_seen.genres %}
+                {% set _ = genres_seen.genres.append(genre) %}
+                <li><a href="/genres/{{ genre }}">{{ genre }}</a></li>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         {% endfor %}
-        <a href="/genres/Fiction">See more...</a>
-        <!-- LOADS ROMANCE BOOKS -->
-        {% for book in romance[:7]: %}
-        <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
-        <p>{{book.title}}</p>
-        <p>{{book.authors_to_string()}}</p>
-        {% endfor %}
-        <a href="/genres/Romance">See more...</a>
-        <!-- LOADS CHILDRENS BOOKS -->
-        {% for book in childrens[:7]: %}
-        <a href="/details/{{book.isbn}}"><img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}"></a>
-        <p>{{book.title}}</p>
-        <p>{{book.authors_to_string()}}</p>
-        {% endfor %}
-        <a href="/genres/Childrens">See more...</a>
-        <!-- MAKES LIST OF ALL GENRES -->
-        <h2>Genres</h2>
-        <ul>
-          {% set genres_seen = namespace(genres=[]) %}
-          {% for book in books %}
-            {% if book.details.genres %}
-              {% for genre in book.details.genres %}
-                {% if genre not in genres_seen.genres %}
-                  {% set _ = genres_seen.genres.append(genre) %}
-                  <li>
-                    <a href="/genres/{{ genre }}">{{ genre }}</a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            {% endif %}
+      </ul>
+    </div>
+
+    <!-- Content: Genre Sections -->
+    <div class="content">
+
+      <!-- Fiction Section -->
+      <div class="genre-section">
+        <h2>Fiction</h2>
+        <div class="books-grid">
+          {% for book in fiction[:7] %}
+          <div class="book-card">
+            <a href="/details/{{ book.isbn }}">
+              <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}" alt="{{ book.title }} cover">
+              <div class="overlay">
+                <p>{{ book.title }}</p>
+                <p>{{ book.authors_to_string() }}</p>
+              </div>
+            </a>
+          </div>
           {% endfor %}
-        </ul>
+        </div>
+        <a class="see-more" href="/genres/Fiction">See more…</a>
+      </div>
+
+      <!-- Romance Section -->
+      <div class="genre-section">
+        <h2>Romance</h2>
+        <div class="books-grid">
+          {% for book in romance[:7] %}
+          <div class="book-card">
+            <a href="/details/{{ book.isbn }}">
+              <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}" alt="{{ book.title }} cover">
+              <div class="overlay">
+                <p>{{ book.title }}</p>
+                <p>{{ book.authors_to_string() }}</p>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        <a class="see-more" href="/genres/Romance">See more…</a>
+      </div>
+
+      <!-- Childrens Section -->
+      <div class="genre-section">
+        <h2>Childrens</h2>
+        <div class="books-grid">
+          {% for book in childrens[:7] %}
+          <div class="book-card">
+            <a href="/details/{{ book.isbn }}">
+              <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}" alt="{{ book.title }} cover">
+              <div class="overlay">
+                <p>{{ book.title }}</p>
+                <p>{{ book.authors_to_string() }}</p>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        <a class="see-more" href="/genres/Childrens">See more…</a>
+      </div>
+
+    </div>
+  </div>
 
 </body>
 </html>

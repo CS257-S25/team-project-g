@@ -5,13 +5,7 @@ This will be the entry point for the project when run from the command line.
 
 import sys
 import argparse
-from ProductionCode.search import search_title, search_author, search_genre
-from ProductionCode.most_banned import (
-    most_banned_districts,
-    most_banned_authors,
-    most_banned_states,
-    most_banned_titles,
-)
+
 from ProductionCode.datasource import DataSource
 
 

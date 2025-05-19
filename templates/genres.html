@@ -10,12 +10,39 @@
 <body>
         {% include 'nav.html' %}
         <br>
-        {% for book in fiction: %}
+        <!-- LOADS FICTION BOOKS -->
+        {% for book in fiction[:3]: %}
         <a href="/details/{{book.isbn}}"></a>
 
         <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}">
         <p class="title">{{book.title}}</p>
         <p class="author">{{book.authors_to_string()}}</p>
+        {% endfor %}
+        <!-- LOADS ROMANCE BOOKS -->
+        {% for book in romance[:3]: %}
+        <a href="/details/{{book.isbn}}"></a>
+
+        <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}">
+        <p class="title">{{book.title}}</p>
+        <p class="author">{{book.authors_to_string()}}</p>
+        {% endfor %}
+        <!-- LOADS CHILDRENS BOOKS -->
+        {% for book in childrens[:3]: %}
+        <a href="/details/{{book.isbn}}"></a>
+
+        <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}">
+        <p class="title">{{book.title}}</p>
+        <p class="author">{{book.authors_to_string()}}</p>
+        {% endfor %}
+
+        <!-- MAKES LIST OF ALL GENRES -->
+        <h2>Genres</h2>
+        {% for book in books %}
+        <ul>
+          <li>
+            <a href="/genres/{{ book.details.genres }}">{{ book.details.genres }}</a>
+          </li>
+        </ul>
         {% endfor %}
 </body>
 </html>

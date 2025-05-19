@@ -37,15 +37,15 @@
         <h2>Fiction</h2>
         <div class="books-grid">
           {% for book in fiction[:7] %}
-          <div class="book-card">
             <a href="/details/{{ book.isbn }}">
+          <div class="book-card">
               <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}" alt="{{ book.title }} cover">
               <div class="overlay">
-                <p>{{ book.title }}</p>
-                <p>{{ book.authors_to_string() }}</p>
+                <p class="title">{{ book.title }}</p>
+                <p class="author">{{ book.authors_to_string() }}</p>
               </div>
-            </a>
           </div>
+            </a>
           {% endfor %}
         </div>
         <a class="see-more" href="/genres/Fiction">See more…</a>
@@ -56,15 +56,15 @@
         <h2>Romance</h2>
         <div class="books-grid">
           {% for book in romance[:7] %}
-          <div class="book-card">
             <a href="/details/{{ book.isbn }}">
+          <div class="book-card">
               <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}" alt="{{ book.title }} cover">
               <div class="overlay">
-                <p>{{ book.title }}</p>
-                <p>{{ book.authors_to_string() }}</p>
+                <p class="title">{{ book.title }}</p>
+                <p class="author">{{ book.authors_to_string() }}</p>
               </div>
-            </a>
           </div>
+            </a>
           {% endfor %}
         </div>
         <a class="see-more" href="/genres/Romance">See more…</a>
@@ -75,20 +75,19 @@
         <h2>Childrens</h2>
         <div class="books-grid">
           {% for book in childrens[:7] %}
-          <div class="book-card">
             <a href="/details/{{ book.isbn }}">
+          <div class="book-card">
               <img src="{{ book.details.cover if book.details.cover else url_for('static', filename='no-cover.png') }}" alt="{{ book.title }} cover">
               <div class="overlay">
-                <p>{{ book.title }}</p>
-                <p>{{ book.authors_to_string() }}</p>
+                <p class="title">{{ book.title }}</p>
+                <p class="author">{{ book.authors_to_string() }}</p>
               </div>
-            </a>
           </div>
+            </a>
           {% endfor %}
         </div>
         <a class="see-more" href="/genres/Childrens">See more…</a>
       </div>
-
     </div>
   </div>
 

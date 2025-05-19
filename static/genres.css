@@ -75,27 +75,38 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  aspect-ratio: 6/9;
   display: block;
-  transition: opacity 0.3s ease;
 }
 .book-card .overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.6);
-  color: var(--text);
-  padding: 0.4em;
-  font-size: 0.85em;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0,0,0,0.7);
+    visibility: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    color: var(--text)
 }
-.book-card:hover img {
-  opacity: 0.3;
+div.book-card div.overlay:hover {
+    visibility: visible;
+    opacity: 1;
 }
-.book-card:hover .overlay {
-  opacity: 1;
+div.book-card div.overlay p.title {
+    text-align: center;
+    margin-left: 0.2em
+}
+div.book-card div.overlay p.author{
+    text-align: center;
+    font-size: 0.8em;
+    margin-left: 0.2em
 }
 
 /* === “See more…” links === */

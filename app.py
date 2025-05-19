@@ -49,7 +49,8 @@ def python_bug(_error):
     Returns:
         (str): 500: Bad Request
     """
-    return "500: Bad Request", 500
+
+    return render_template("/404.html")
 
 
 @app.errorhandler(404)
@@ -61,8 +62,9 @@ def page_not_found(_error):
         (str): 404: Sorry page not found with usage instructions
     """
 
-    # TODO: Replace with 404 page
-    return "404: Sorry page not found"
+    # # TODO: Replace with 404 page
+    # return "404: Sorry page not found"
+    return render_template("404.html")
 
 
 @app.route("/search")

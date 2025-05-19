@@ -11,14 +11,13 @@ async function main() {
   const banRes = await fetch(banEndpoint)
   const banList = await banRes.json();
 
-const states = topojson.feature(us, us.objects.states)
+  const states = topojson.feature(us, us.objects.states)
   const statesFeatures = states.features
 
   const banMap = new Map(banList.map(({ name, bans }) => [name, bans]))
 
 
   const plot = Plot.plot({
-    className: "map-plot",
     projection: "albers-usa",
     marks: [
       Plot.geo(
@@ -27,16 +26,14 @@ const states = topojson.feature(us, us.objects.states)
           stroke: "#f9f9f9",
           strokeWidth: 0.4,
           fill: (d) => banMap.get(d.properties.name),
-          title: (d) => `${d.properties.name} \n ${banMap.get(d.properties.name) ? banMap.get(d.properties.name) : 0} bans`,
-          tip: true,
         }
       )],
     color: {
       range: ["#F9D6D6", "#F1AFAF", "#E98282", "#D14F4F", "#B22E2E"],
       unknown: "#464548",
       type: "log",
-      label: "Number of book bans",
-      legend: true,
+      // label: "Number of book bans",
+      // legend: true,
     }
 
   })

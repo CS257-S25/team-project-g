@@ -88,10 +88,10 @@ def main():
         "search_title": ds.books_search_title,
         "search_author": ds.books_search_author,
         "search_genre": ds.books_search_genre,
-        "most_banned_districts": most_banned_districts,
-        "most_banned_authors": most_banned_authors,
-        "most_banned_states": most_banned_states,
-        "most_banned_titles": most_banned_titles,
+        "most_banned_districts": ds.get_most_banned_districts,
+        "most_banned_authors": ds.get_most_banned_authors,
+        "most_banned_states": ds.get_most_banned_states,
+        "most_banned_titles": ds.get_most_banned_titles,
     }
 
     for user_option, corresponding_function in cl_map.items():

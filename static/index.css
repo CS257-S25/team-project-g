@@ -1,244 +1,265 @@
-:root {
-    --accent: #7f1d1d;
-    --link: #0369a1;
-    --bg: #fafafa;
-    --lighter: #e7e5e4;
-    --light: #d6d3d1;
-    --border: #d6d3d1;
-    --black: #1c1917;
-  
-    /* --lighter: #bb2e2e; */
-    /* --bg: #2b2a2d; */
-  }
-  
-  body {
-    margin: 0;
-    background-color: var(--bg);
-    font-family: Garamond
-  }
-  
-  a.logo {
-    font-size: 1.2em;
-    font-family: Georgia;
-    color: var(--accent);
-    text-align: center;
-    text-decoration: none;
-  }
-  
-  h1 {
-    font-size: 3em;
-    margin-top: 0;
-  }
-  
-  h2 {
-    font-size: 1.7em;
-    margin: 0;
-  }
-  
-  h3 {
-    margin: 0;
-  }
-  
-  p {
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav {
-    display: flex;
-    background-color: var(--lighter);
-    height: 36px;
-    justify-content: space-between;
-    padding-right: 2%;
-    padding-left: 2%;
-    border-bottom: 2px solid var(--border)
-  }
-  
-  nav div {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  nav div ul {
-    height: 100%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-  
-  nav div ul li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    float: left;
-    height: 100%;
-    padding-left: 1em;
-    padding-right: 1em;
-    /* border-right: 2px solid var(--border) */
-  }
-  
-  nav li a {
-    display: block;
-    color: var(--black);
-    text-align: center;
-    text-decoration: none;
-  }
-  
-  nav li:hover {
-    background-color: var(--light);
-  }
-  
-  div.search {
-    margin-left: auto;
-  }
-  
-  div.header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 10em;
-    background-color: var(--bg);
-    padding-top: 2em;
-    padding-bottom: 2em;
-  }
-  
-  div.main {
-    display: flex;
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-  
-  div.main div.content {
-    width: 72.5%;
-    margin-left: 1em;
-    padding: 1em;
-    background-color: var(--lighter);
-    border: 2px solid var(--border)
-  }
-  
-  div.main div.sidebar {
-    width: 22.5%;
-  
-    margin-right: 1em;
-  }
-  
-  div.main div.sidebar div.navigation {
-  
-    padding: 1em;
-    background-color: var(--lighter);
-    border: 2px solid var(--border);
-    margin-bottom: 1em
-  }
-  
-  div.main div.sidebar div.map {
-  
-    padding: 1em;
-    background-color: var(--lighter);
-    border: 2px solid var(--border)
-  }
-  
-  div.book {
-    height: 128px;
-    width: 100%;
-    /* background-color: red; */
-    display: flex;
-    padding-bottom: 2px;
-    padding-top: 2px;
-    border-top: 2px solid var(--border);
-  }
-  
-  div.cover-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 6em;
-    /* background-color: red; */
-    aspect-ratio: 6 / 9;
-  }
-  
-  div.book div.book-content {
-    padding: 0.5em;
-    flex-grow: 1;
-    /* background-color: green; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  div.book div.ban-content {
-    /* display: flex; */
-    /* flex-direction: column; */
-    text-align: right;
-    padding: 0.5em;
-    width: 6em;
-    /* background-color: yellow; */
-  }
-  
-  img.cover {
-    height: 95%;
-    aspect-ratio: 6 / 9;
-    object-fit: cover;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-  }
-  
-  a.book-title {
-    font-weight: bolder;
-    font-size: 1.5em;
-    color: black;
-  }
-  
-  p.book-authors {
-    font-weight: bold;
-  }
-  
-  p.book-publish_date {
-    font-weight: lighter;
-    /* font-size: 0.7em */
-  }
-  
-  p.book-genres {
-    overflow: hidden;
-    /* font-size: 0.7em */
-  }
-  
-  p.book-bans {
-    font-weight: normal;
-    font-size: 1.5em;
-  }
-  
-  p.book-bans span {
-    font-weight: bolder;
-    color: var(--accent)
-  }
-  
-  div.sidebar h2 {
-    border-bottom: 2px solid var(--border);
-  }
-  
-  div.sidebar ul {
-    list-style-type: none;
-    margin: 0.5em;
-    padding: 0;
-  
-  }
-  
-  div.sidebar ul li {
-    list-style-type: none;
-    margin: 0.2em;
-    padding: 0;
-  
-  }
-  
-  div.sidebar ul li a {
-    display: block;
-    color: var(--link);
-    text-decoration: none;
-  
-  }
-  
+/* Variables */
+
+/* :root {
+  --accent: #7f1d1d;
+  --link: #0369a1;
+  --bg: #fafafa;
+  --lighter: #e7e5e4;
+  --light: #d6d3d1;
+  --border: #d6d3d1;
+  --text: #1c1917;
+
+  --accent: #BB2E2E;
+  --link: #0369a1;
+  --bg: #2B2A2D;
+  --lighter: rgba(255,255,255,0.05);
+  --light: rgba(225, 225, 225, 0.15);
+  --text: white;
+
+   
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+} */
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+
+h1 {
+  font-size: 3em;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.7em;
+  margin-top: 0;
+  margin-bottom: 0.2em;
+}
+
+h3 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+
+div.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10em;
+  background-color: var(--bg);
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+div.header div.search form {
+  display: flex;
+  height: 36px;
+}
+
+div.header div.search input[type="text"] {
+  flex-grow: 1;
+}
+
+div.header div.search input[type="submit"] {
+  margin-left: 4px;
+  width: 10%
+}
+
+/* Main*/
+
+div.main {
+  display: flex;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 1em
+}
+
+
+/* Main - Sidebar */
+
+div.main div.sidebar {
+  width: 22.5%;
+
+  margin-right: 1em;
+}
+
+div.main div.sidebar h2 {
+  padding-bottom: 0.2em;
+  border-bottom: 2px solid var(--border);
+}
+
+div.main div.sidebar ul {
+  list-style-type: none;
+  margin: 0.5em;
+  padding: 0;
+
+}
+
+div.main div.sidebar ul li {
+  list-style-type: none;
+  margin: 0.2em;
+  padding: 0;
+
+}
+
+div.main div.sidebar a {
+  display: block;
+  color: var(--link);
+  text-decoration: none;
+}
+
+div.main div.sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* Main - Sidebar - Navigation */
+
+div.main div.sidebar div.navigation {
+
+  padding: 1em;
+  background-color: var(--lighter);
+  /* border: 2px solid var(--border); */
+  margin-bottom: 1em;
+  border-radius: 4px;
+  border: 1px solid var(--text);
+}
+
+/* Main - Sidebar - Map*/
+
+div.main div.sidebar div.map-section {
+  padding: 1em;
+  border-radius: 4px;
+  border: 1px solid var(--text);
+  background-color: var(--lighter);
+  /* border: 2px solid var(--border) */
+}
+
+div.map {
+  padding-top: 1em
+}
+
+div.map-section div.map-details {
+  padding-top: 0.5em;
+}
+
+/* Main - Content */
+
+div.main div.content {
+  width: 72.5%;
+  margin-left: 1em;
+  padding: 1em;
+  /* background-color: var(--lighter);
+  border: 2px solid var(--border) */
+}
+
+/* Book */
+
+div.book {
+  height: 128px;
+  width: 100%;
+  /* background-color: red; */
+  display: flex;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  /* border-top: 2px solid var(--border); */
+  background-color: var(--lighter);
+  border: 1px solid var(--text);
+  border-radius: 4px;
+  margin-top: 1em;
+}
+
+div.book div.cover-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6em;
+  /* background-color: red; */
+  aspect-ratio: 6 / 9;
+}
+
+div.book div.book-content {
+  padding: 0.5em;
+  flex-grow: 1;
+  /* background-color: green; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+div.book div.ban-content {
+  /* display: flex; */
+  /* flex-direction: column; */
+  text-align: right;
+  padding: 0.5em;
+  width: 6em;
+  /* background-color: yellow; */
+}
+
+div.book img.cover {
+  height: 95%;
+  aspect-ratio: 6 / 9;
+  object-fit: cover;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+div.book p.book-title {
+  font-weight: bolder;
+  font-size: 1.5em
+}
+
+div.book p.book-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+div.book p.book-title span {
+  font-size:1em;
+  font-weight: lighter;
+}
+
+div.book p.book-title a:hover {
+  text-decoration: underline;
+}
+div.book p.book-authors {
+  font-weight: bold;
+}
+.book-author-link {
+  color: inherit;
+  text-decoration: none;
+}
+.book-author-link:hover {
+  text-decoration: underline;
+}
+div.book p.book-publish_date {
+  font-weight: lighter;
+  /* font-size: 0.7em */
+}
+
+div.book p.book-genres {
+  /* font-size: 0.7em */
+  overflow: hidden;
+}
+
+div.book p.book-bans {
+  font-weight: normal;
+  font-size: 1.5em;
+}
+
+div.book p.book-bans span {
+  font-weight: bolder;
+  color: var(--accent)
+}
+
+/* test */

@@ -34,6 +34,9 @@ class TestBook(unittest.TestCase):
     def test_authors_to_string(self):
         """Tests to string method for authors"""
         self.assertEqual(str(self.book.authors_to_string()), "Danielle Steel")
+
     def test_genres_to_string(self):
-        """Tests to string method for authors"""
-        self.assertEqual(str(self.book.genres_to_string()), "Adult Fiction, Contemporary Romance")
+        """Tests to string method for genres"""
+        self.assertEqual(
+            str(self.book.genres_to_string()), "Adult Fiction, Contemporary Romance"
+        )

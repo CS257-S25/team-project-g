@@ -129,7 +129,7 @@ class DataSource:
         rank = Rank(name=row[0], bans=row[1])
         return rank
 
-    def book_from_isbn(self, isbn) -> Book:
+    def book_from_isbn(self, isbn):
         """Queries book database based on ISBN
         Args:
             isbn (str): a book's isbn number
@@ -172,8 +172,6 @@ class DataSource:
             print("Query error: ", e)
             sys.exit()
 
-
-        
         bans = self.database_row_list_to_bookban_list(results)
         return bans
 
@@ -207,12 +205,14 @@ class DataSource:
             (list[Book]): a list of Book objects where search_term is in authors
         """
         # query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
-        query = ("SELECT * FROM books "
-"WHERE EXISTS ("
-  "SELECT 1 "
-  "FROM unnest(authors) AS author "
-  "WHERE author ILIKE %s"
-");")
+        query = (
+            "SELECT * FROM books "
+            "WHERE EXISTS ("
+            "SELECT 1 "
+            "FROM unnest(authors) AS author "
+            "WHERE author ILIKE %s"
+            ");"
+        )
         args = ("%" + search_term + "%",)
 
         try:
@@ -549,10 +549,12 @@ class DataSource:
         except psycopg2.Error as e:
             print("Query error: ", e)
             sys.exit()
-        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
+
+        books = list(
+            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
+        )
 
         return books
-
 
 
 # if __name__ == "__main__":

@@ -4,7 +4,7 @@
 class Rank:
     """Rank class to represent the number of bans a item has"""
 
-    def __init__(self, name: str, bans: int):
+    def __init__(self, name, bans: int):
         self.name = name
         self.bans = bans
 

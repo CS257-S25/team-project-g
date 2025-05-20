@@ -197,6 +197,70 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h3>Authors</h3>", response.data)
 
+    @patch("ProductionCode.datasource.DataSource.get_most_banned_authors")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_most_banned_authors(
+        self,
+        mock_connect,
+        mock_get_most_banned_authors,
+    ):
+        """Tests most banned authors page"""
+        mock_connect.return_value = self.mock_conn
+        mock_get_most_banned_authors.return_value = [Rank("Danielle Steel", 50)]
+
+        response = self.app.get("most-banned-authors")
+
+        # self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Most Banned Authors</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.get_most_banned_states")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_most_banned_states(
+        self,
+        mock_connect,
+        mock_get_most_banned_states,
+    ):
+        """Tests most banned states page"""
+        mock_connect.return_value = self.mock_conn
+        mock_get_most_banned_states.return_value = [Rank("Florida", 50)]
+
+        response = self.app.get("most-banned-states")
+
+        # self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Most Banned States</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.get_most_banned_districts")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_most_banned_districts(
+        self,
+        mock_connect,
+        mock_get_most_banned_districts,
+    ):
+        """Tests most banned districts page"""
+        mock_connect.return_value = self.mock_conn
+        mock_get_most_banned_districts.return_value = [Rank("Florida County", 50)]
+
+        response = self.app.get("most-banned-districts")
+
+        # self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Most Banned Districts</h1>", response.data)
+
+    @patch("ProductionCode.datasource.DataSource.get_most_banned_books")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_most_banned_books(
+        self,
+        mock_connect,
+        mock_get_most_banned_books,
+    ):
+        """Tests most banned books page"""
+        mock_connect.return_value = self.mock_conn
+        mock_get_most_banned_books.return_value = [(50, mock_book)]
+
+        response = self.app.get("most-banned-books")
+
+        # self.assertEqual(response.status_code, 200)
+        self.assertIn(b"<h1>Most Banned Books</h1>", response.data)
+
 
 class TestAppError(unittest.TestCase):
     """Tests for Errors"""

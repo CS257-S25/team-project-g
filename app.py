@@ -134,32 +134,39 @@ def authors(author):
     return render_template("author.html", books=book_list, author=author)
 
 
-@app.route("/most-banned-authors/")
+@app.route("/most-banned-authors")
 def most_banned_authors():
     """The endpoint for most_banned_authors page"""
     ds = DataSource()
     authors = ds.get_most_banned_authors(30)
-    return render_template("most-banned-authors.html", authors = authors)
+    return render_template("most-banned-authors.html", authors=authors)
 
-@app.route("/most-banned-states/")
+
+@app.route("/most-banned-states")
 def most_banned_states():
     """The endpoint for most_banned_authors page"""
     ds = DataSource()
     states = ds.get_most_banned_states(30)
-    return render_template("most-banned-states.html", states = states)
+    return render_template("most-banned-states.html", states=states)
 
-@app.route("/most-banned-districts/")
+
+@app.route("/most-banned-districts")
 def most_banned_districts():
     """The endpoint for most_banned_districts page"""
     ds = DataSource()
     districts = ds.get_most_banned_districts(30)
-    return render_template("most-banned-districts.html", districts = districts)
+    return render_template("most-banned-districts.html", districts=districts)
 
-@app.route("/most-banned-books/")
+
+@app.route("/most-banned-books")
 def most_banned_books():
     """The endpoint for most_banned_books page"""
     ds = DataSource()
-    return render_template("most-banned-books.html", most_banned_books=ds.get_most_banned_books(30))
+    return render_template(
+        "most-banned-books.html", most_banned_books=ds.get_most_banned_books(30)
+    )
+
+
 # API ENDPOINTS
 
 

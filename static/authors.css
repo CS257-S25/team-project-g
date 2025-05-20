@@ -1,0 +1,42 @@
+/* authors.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font, sans-serif);
+}
+
+h3 {
+  text-align: center;
+  margin: 1.5em 0;
+  font-size: 1.75rem;
+}
+
+body > ul {
+  list-style: none;
+  margin: 0 auto 2em;
+  padding: 0;
+  max-width: 800px;
+  column-count: 3;
+  column-gap: 2em;
+}
+
+body > ul li {
+  break-inside: avoid;
+  margin-bottom: 0.75em;
+}
+
+body > ul li a {
+  display: block;
+  padding: 0.25em 0;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+body > ul li a:hover {
+  border-color: var(--text);
+}

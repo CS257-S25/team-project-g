@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='authors.css') }}">
 </head>
     <body>
+      {% include 'nav.html' %}
       <h3>Authors</h3>
       <ul>
         {% set all_authors = [] %}

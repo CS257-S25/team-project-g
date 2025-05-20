@@ -1,6 +1,8 @@
 # The Forbidden Library
 See various information about banned books.
-<!-- ## Usage
+
+## Usage
+
 ```
 usage: cl.py [options] [args]
 
@@ -22,7 +24,7 @@ options:
                         Get the most banned states in the database
   --most-banned-titles, --mbt, -mbt LIMIT
                         Get the most banned titles in the database
-``` -->
+```
 
 ## Usability Principles
 

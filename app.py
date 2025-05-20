@@ -37,8 +37,8 @@ def details(isbn):
 def map_page():
     """Route for map page"""
     ds = DataSource()
-    most_banned_states = ds.get_most_banned_states(10)
-    return render_template("map.html", most_banned_states=most_banned_states)
+    most_banned = ds.get_most_banned_states(10)
+    return render_template("map.html", most_banned_states=most_banned)
 
 
 @app.errorhandler(500)
@@ -112,6 +112,7 @@ def genres(genre):
 
 @app.route("/genres")
 def genres_list():
+    """The endpoint for the overall genres page"""
     ds = DataSource()
     fiction = ds.books_search_genre("Fiction")
     romance = ds.books_search_genre("Romance")
@@ -138,8 +139,8 @@ def authors(author):
 def most_banned_authors():
     """The endpoint for most_banned_authors page"""
     ds = DataSource()
-    authors = ds.get_most_banned_authors(30)
-    return render_template("most-banned-authors.html", authors=authors)
+    banned_authors = ds.get_most_banned_authors(30)
+    return render_template("most-banned-authors.html", authors=banned_authors)
 
 
 @app.route("/most-banned-states")
@@ -167,6 +168,14 @@ def most_banned_books():
     )
 
 
+@app.route("/authors")
+def authors_list():
+    """The endpoint for the overall authors page"""
+    ds = DataSource()
+    book_list = ds.books_search_title("")
+    return render_template("authors.html", books=book_list)
+
+
 # API ENDPOINTS
 
 
@@ -174,16 +183,9 @@ def most_banned_books():
 def get_most_banned_states():
     """The endpoint for get-most-banned-states api call"""
     ds = DataSource()
-    most_banned_states = ds.get_most_banned_states(99)
-    ban_json = json.dumps(most_banned_states, default=lambda obj: obj.__dict__)
+    most_banned = ds.get_most_banned_states(99)
+    ban_json = json.dumps(most_banned, default=lambda obj: obj.__dict__)
     return ban_json
-
-
-@app.route("/authors")
-def authors_list():
-    ds = DataSource()
-    book_list = ds.books_search_title("")
-    return render_template("authors.html", books=book_list)
 
 
 if __name__ == "__main__":

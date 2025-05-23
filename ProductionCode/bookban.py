@@ -39,7 +39,7 @@ class Bookban:
         """
         return (
             f"{self.book} banned in {self.location['district']}, {self.location['state']}"
-            " as of {self.date_to_str()}"
+            f" as of {self.date_to_str()}"
         )
 
     def date_to_str(self) -> str:

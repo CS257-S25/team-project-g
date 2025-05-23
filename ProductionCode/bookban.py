@@ -8,23 +8,28 @@ from ProductionCode.book import Book
 class Bookban:
     """Bookban class to represent bookban data"""
 
-    def __init__(
-        self,
-        book: Book,
-        state: str,
-        district: str,
-        ban_year: int,
-        ban_month: int,
-        ban_status: str,
-        ban_origin: str,
-    ) -> None:
+    # def __init__(
+    #     self,
+    #     book: Book,
+    #     state: str,
+    #     district: str,
+    #     ban_year: int,
+    #     ban_month: int,
+    #     ban_status: str,
+    #     ban_origin: str,
+    # ) -> None:
+    #     self.book: Book = book
+    #     self.state: str = state
+    #     self.district: str = district
+    #     self.ban_year: int = ban_year
+    #     self.ban_month: int = ban_month
+    #     self.ban_status: str = ban_status
+    #     self.ban_origin: str = ban_origin
+
+    def __init__(self, book: Book, location, details) -> None:
         self.book: Book = book
-        self.state: str = state
-        self.district: str = district
-        self.ban_year: int = ban_year
-        self.ban_month: int = ban_month
-        self.ban_status: str = ban_status
-        self.ban_origin: str = ban_origin
+        self.location = location
+        self.details = details
 
     def __str__(self) -> str:
         """Method for displaying basic bookban information
@@ -32,11 +37,11 @@ class Bookban:
         Returns:
             string with information on book, location, and date
         """
-        return f"{self.book} banned in {self.district}, {self.state} as of {self.date_to_str()}"
+        return f"{self.book} banned in {self.location["district"]}, {self.location["state"]} as of {self.date_to_str()}"
 
     def date_to_str(self) -> str:
         """Helper method for printing date"""
-        return f"{self.ban_month}, {self.ban_year}"
+        return f"{self.details["ban_month"]}, {self.details["ban_year"]}"
 
 
 # def main():

@@ -30,10 +30,14 @@ mock_ban = Bookban(
             "rating": 3.9,
         },
     ),
-    state="Florida",
-    district="Martin County Schools",
-    ban_year=2023,
-    ban_month=3,
-    ban_status="Banned from Libraries and Classrooms",
-    ban_origin="Formal Challenge",
+    location={
+        "state": "Florida",
+        "district": "Martin County Schools",
+    },
+    details={
+        "ban_year": 2023,
+        "ban_month": 3,
+        "ban_status": "Banned from Libraries and Classrooms",
+        "ban_origin": "Formal Challenge",
+    },
 )

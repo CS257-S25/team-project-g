@@ -38,11 +38,11 @@
           {% if ban_isbn %}
             {% for ban in ban_isbn %}
               <div class="ban-record">
-                <p><strong>Date:</strong> {{ ban.ban_month }}/{{ ban.ban_year }}</p>
-                <p><strong>State:</strong> {{ ban.state }}</p>
-                <p><strong>District:</strong> {{ ban.district }}</p>
-                <p><strong>Status:</strong> {{ ban.ban_status }}</p>
-                <p><strong>Origin:</strong> {{ ban.ban_origin }}</p>
+                <p><strong>Date:</strong> {{ ban.details.ban_month }}/{{ ban.details.ban_year }}</p>
+                <p><strong>State:</strong> {{ ban.location.state }}</p>
+                <p><strong>District:</strong> {{ ban.location.district }}</p>
+                <p><strong>Status:</strong> {{ ban.details.ban_status }}</p>
+                <p><strong>Origin:</strong> {{ ban.details.ban_origin }}</p>
               </div>
             {% endfor %}
           {% else %}

@@ -101,12 +101,16 @@ class DataSource:
         book = self.book_from_isbn(isbn)
         bookban = Bookban(
             book=book,
-            state=row[1],
-            district=row[2],
-            ban_year=row[3],
-            ban_month=row[4],
-            ban_status=row[5],
-            ban_origin=row[6],
+            location={
+                "state": row[1],
+                "district": row[2],
+            },
+            details={
+                "ban_year": row[3],
+                "ban_month": row[4],
+                "ban_status": row[5],
+                "ban_origin": row[6],
+            },
         )
         return bookban
 

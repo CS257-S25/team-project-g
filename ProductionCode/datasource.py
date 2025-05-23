@@ -145,7 +145,7 @@ class DataSource:
             results = cursor.fetchone()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Couldn't find a book with that ISBN: ", e)
             sys.exit()
         if results:
             book = self.database_row_to_book(results)
@@ -168,7 +168,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Couldn't find banned book from that ISBN ", e)
             sys.exit()
 
         bans = self.database_row_list_to_bookban_list(results)
@@ -190,7 +190,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Couldn't find a book with that title: ", e)
             sys.exit()
 
         books = self.database_row_list_to_book_list(results)
@@ -220,7 +220,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Couldn't find book with that author: ", e)
             sys.exit()
 
         books = self.database_row_list_to_book_list(results)
@@ -242,7 +242,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Couldn't find book with that genre: ", e)
             sys.exit()
 
         books = self.database_row_list_to_book_list(results)

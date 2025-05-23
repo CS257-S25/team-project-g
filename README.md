@@ -38,3 +38,12 @@ We provide straightforward search and filter options so users can efficiently ge
 The navigation and controls are forgiving, allowing users to try different searches or filters without penalty. Users can experiment with commands and options, learning the system as they go, and easily recover from mistakes.
 
 Made by Joe Borncamp, Cooper Evans, Devin Gulliver, Marco Pina
+
+## Design Improvements
+
+### Code Design
+Repeated Code
+- Originally in our books, genres, authors pages, we used the same book cover html and css. Now, we moved it into a separate template so we repeat our code less.
+### Front End Design
+Improved link color for visibility
+- Our link colors previously used a dark blue, we changed to a light blue to increase readability on dark background

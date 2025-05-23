@@ -15,3 +15,18 @@ class Rank:
             string with name and number of bans formatted
         """
         return f"{self.name}: {self.bans}"
+
+    def get_name(self):
+        """Get method for name instance attribute
+        Args: None
+        Returns:
+            name object
+        """
+        return self.name
+    def get_bans(self):
+        """Get method for bans instance attribute
+        Args: None
+        Returns:
+           bans int 
+        """
+        return self.bans

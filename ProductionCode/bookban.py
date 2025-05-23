@@ -37,11 +37,11 @@ class Bookban:
         Returns:
             string with information on book, location, and date
         """
-        return f"{self.book} banned in {self.location["district"]}, {self.location["state"]} as of {self.date_to_str()}"
+        return f"{self.book} banned in {self.location['district']}, {self.location['state']} as of {self.date_to_str()}"
 
     def date_to_str(self) -> str:
         """Helper method for printing date"""
-        return f"{self.details["ban_month"]}, {self.details["ban_year"]}"
+        return f"{self.details['ban_month']}, {self.details['ban_year']}"
 
 
 # def main():

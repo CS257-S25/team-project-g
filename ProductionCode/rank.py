@@ -23,10 +23,11 @@ class Rank:
             name object
         """
         return self.name
+
     def get_bans(self):
         """Get method for bans instance attribute
         Args: None
         Returns:
-           bans int 
+           bans int
         """
         return self.bans

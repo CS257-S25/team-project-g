@@ -1,0 +1,46 @@
+
+<html lang="en">
+
+<head>
+  <title>Most Banned Books</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='most-banned-books.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+   {% include 'nav.html' %}
+  <div class="header">
+      <h1>Most Banned Books</h1>
+  </div>
+  <div class="main">
+         <div class="most_banned">
+        <div>
+          {% for book in most_banned_books: %}
+          <div class="book">
+            <div class="cover-wrapper">
+              <img src={{ book[1].details.cover }} alt={{book[1].title}} class="cover">
+            </div>
+            <div class="book-content">
+              <p class="book-title"><a href="/details/{{book[1].isbn}}">{{ book[1].title }} </a><span
+                  >({{book[1].isbn}})</span></p>
+              <p class="book-authors">
+                {% for author in book[1].authors %}
+                  <a href="{{ url_for('authors', author=author) }}"
+                    class="book-author-link">{{ author }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+              </p>
+              <p class="book-publish_date">{{ book[1].details.publish_date}}</p>
+              <p class="book-genres">{{ book[1].genres_to_string() }}</p>
+            </div>
+            <div class="ban-content">
+              <p class="book-bans"><span>{{book[0]}} </span>bans</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div> 
+  </div>
+</body>
+
+</html>

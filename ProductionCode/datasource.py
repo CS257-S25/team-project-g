@@ -428,7 +428,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Error getting most banned authors: ", e)
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
@@ -453,7 +453,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Error getting most banned districts: ", e)
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
@@ -478,7 +478,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Error getting most banned states: ", e)
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
@@ -503,7 +503,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Error getting most banned titles: ", e)
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
@@ -545,7 +545,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Error getting most banned genres: ", e)
             sys.exit()
 
         ranks = self.database_row_list_to_rank_list(results)
@@ -572,7 +572,7 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Query error: ", e)
+            print("Error getting most banned books error: ", e)
             sys.exit()
 
         books = list(

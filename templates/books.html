@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
   <link rel="stylesheet" href="{{url_for('static', filename='books.css') }}">
   <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='book-cover.css')}}">
 </head>
 
 <body>
@@ -17,15 +18,7 @@
       <!-- Content -->
        <div class="main">
               {% for book in books[:300] %}
-              <a href="/details/{{book.isbn}}">
-      <div class="book">
-        <img src="{{book.details.cover if book.details.cover else url_for('static', filename='no-cover.png')}}" alt="{{book.title}}">
-        <div class="hover">
-            <p class="title">{{book.title}}</p>
-            <p class="author">{{book.authors_to_string()}}</p>
-        </div>
-        <!-- <p>{{book.title}}</p> -->
-      </div></a>
+            {% include 'book-cover.html' %}
 
       {% endfor %}
            </div>

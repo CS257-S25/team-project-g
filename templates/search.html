@@ -42,7 +42,7 @@
       <div class="result-section">
         <div class="heading">
           <h2>Title</h2>
-          {% if not type %}
+          {% if type == 'all'%}
           <div class="a-wrapper"><a href="/search?searchterm={{query}}&type=title">Search only Titles</a></div>
           {% endif %}
         </div>
@@ -71,7 +71,7 @@
       <div class="result-section">
         <div class="heading">
           <h2>Authors</h2>
-          {% if not type %}
+          {% if type == 'all'%}
           <div class="a-wrapper"><a href="/search?searchterm={{query}}&type=title">Search only Authors</a></div>
           {% endif %}
         </div>

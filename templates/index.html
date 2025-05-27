@@ -16,8 +16,13 @@
       <h1>The Forbidden Library</h1>
       <div class="search">
         <form action="/search">
-          <input aria-label="Search" name="searchterm" type="text" placeholder="Search..">
-          <input aria-label=" Submit Search" type="submit" value="Go">
+          <button aria-label="Submit Search" type="submit"> Search </button>
+          <input aria-label="Search" id="search" name="searchterm" type="text" placeholder="Search..">
+          <select aria-label="Select Search Type" name="type">
+            <option value="all">All</option>
+            <option value="author">Author</option>
+            <option value="title">Title</option>
+          </select>
         </form>
       </div>
       </div>

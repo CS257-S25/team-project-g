@@ -1,21 +1,26 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 import * as topojson from "https://cdn.jsdelivr.net/npm/topojson-client@3/+esm";
 
-
-async function main() {
+async function loadMapData() {
   const stateRes = await fetch('static/states-10m.json')
   const us = await stateRes.json();
+  const states = topojson.feature(us, us.objects.states)
+  return states
+}
 
-
+async function loadBanData() {
   const banEndpoint = `${window.location.origin}/get-most-banned-states`;
   const banRes = await fetch(banEndpoint)
   const banList = await banRes.json();
-
-  const states = topojson.feature(us, us.objects.states)
-  const statesFeatures = states.features
-
   const banMap = new Map(banList.map(({ name, bans }) => [name, bans]))
+  return banMap
+}
 
+function createPlot(states, banMap, opts = {}) {
+  const {
+    withLegend = false,
+    withTooltip = false,
+  } = opts;
 
   const plot = Plot.plot({
     className: "map-plot",
@@ -28,15 +33,15 @@ async function main() {
           strokeWidth: 0.4,
           fill: (d) => banMap.get(d.properties.name),
           title: (d) => `${d.properties.name} \n ${banMap.get(d.properties.name) ? banMap.get(d.properties.name) : 0} bans`,
-          tip: true,
+          tip: withTooltip,
         }
       )],
     color: {
       range: ["#F9D6D6", "#F1AFAF", "#E98282", "#D14F4F", "#B22E2E"],
       unknown: "#464548",
       type: "log",
-      label: "Number of book bans",
-      legend: true,
+      label: withLegend ? "Number of book bans" : null,
+      legend: withLegend,
     }
 
   })
@@ -46,9 +51,19 @@ async function main() {
 
 }
 
+async function renderMap(opts = {}) {
+   const [states, banMap] = await Promise.all([loadMapData(), loadBanData()]); 
+   createPlot(states, banMap, opts)
+}
+
+function renderSimpleMap() {
+  return renderMap()
+}
+
+function renderDetailedMap() {
+  return renderMap({withLegend:true, withTooltip:true})
+}
+
 window.addEventListener("DOMContentLoaded", async (_evt) => {
-  await main();
+  renderDetailedMap()
 })
-
-
-// test

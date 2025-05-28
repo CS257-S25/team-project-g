@@ -21,15 +21,5 @@
       </ul>
     </div>
   </div>
-  <div class="search">
-    <form action="/search">
-      <button aria-label="Submit Search" type="submit"> Search </button>
-      <input aria-label="Search" id="search" name="searchterm" type="text" placeholder="Search..">
-      <select aria-label="Select Search Type" name="type">
-        <option value="all">All</option>
-        <option value="author">Author</option>
-        <option value="title">Title</option>
-      </select>
-    </form>
-  </div>
+  {% include 'search-bar.html' %}
 </nav>

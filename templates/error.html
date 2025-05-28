@@ -1,19 +1,25 @@
 <html lang="en">
+
 <head>
     <title>Error: {{code}}</title>
-  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
-  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
-  <link rel="stylesheet" href="{{url_for('static', filename='error.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='error.css') }}">
 </head>
-    <body>
-        {% include "nav.html" %}
-        <div class="error-container">
-            <h1>{{code}}</h1>
-            <p>{{error}}</p>
-            <!-- <p>Sorry, the page you are looking for was not found.</p> -->
-            <p>
-                <a href="/">Return to Home</a>
-            </p>
+
+<body>
+    {% include "nav.html" %}
+    <div class="error-container">
+        <h1>{{code}}</h1>
+        <p>{{error}}</p>
+        <p>
+            <a href="/">Return to Home</a>
+        </p>
+            <h3> Or Try Searching Again</h3>
+        <div class="search-container">
+            {% include "search-bar.html" %}
         </div>
-    </body>
-    </html>
+    </div>
+</body>
+
+</html>

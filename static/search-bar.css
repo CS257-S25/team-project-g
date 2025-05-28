@@ -1,66 +1,10 @@
-/* Nav */
 
-nav {
-  display: flex;
-  background-color: var(--accent);
-  height: 48px;
-  justify-content: space-between;
-  padding-right: 2%;
-  padding-left: 2%;
-  /* border-bottom: 2px solid var(--border) */
-}
-
-nav div {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-nav a.logo {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: var(--text);
-  text-align: center;
-  text-decoration: none;
-  margin-right: 0.2em;
-}
-
-nav div ul {
-  height: 100%;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-nav div ul li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  float: left;
-  height: 100%;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-nav li a {
-  display: block;
-  color: var(--black);
-  text-align: center;
-  text-decoration: none;
-}
-
-nav li:hover {
-  background-color: var(--light)
-}
-
-/* nav div.search {
+/* div.search {
   margin-left: auto;
 } */
 
 
-/* nav div.search form {
+div.search form {
   background-color: var(--text);
   border-radius: 4px;
   padding: 0;
@@ -69,25 +13,27 @@ nav li:hover {
   display: flex;
 }
 
-nav div.search select {
+div.search select {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   border: none;
   background-color: transparent;
 }
 
-nav div.search input[type="text"] {
+div.search input[type="text"] {
   border: none
 }
 
-nav div.search input[type="submit"] {
+div.search input[type="submit"] {
+  /* margin-left: 4px; */
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   border: none;
   background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 13px center;
+  /* background-color: var(--text); */
 }
 
-button[type="submit"] {
+div.search button[type="submit"] {
   text-indent: -999px;
   overflow: hidden;
   width: 40px;
@@ -100,7 +46,7 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
+div.search button[type="submit"]:hover {
   background-color: var(--lighter);
   opacity: 1;
-} */
+}

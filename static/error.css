@@ -23,12 +23,12 @@ h1 {
   margin-bottom: 0.2em;
 }
 
-a {
+.error-container a {
   text-decoration: none;
   color: var(--link)
 }
 
-a:hover {
+.error-container a:hover {
   text-decoration: underline;
 }
 

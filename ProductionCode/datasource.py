@@ -9,8 +9,21 @@ from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban
 from ProductionCode.rank import Rank
 
+class DataSourceMeta(type):
+    """
+    DataSource metaclass for implementing Singleton
+    """
+    _instances = {}
 
-class DataSource:
+    def __call__(cls, *args, **kwargs):
+        """
+        """
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+class DataSource(metaclass=DataSourceMeta):
     """Class for connecting to and interacting with psql database"""
 
     def __init__(self):

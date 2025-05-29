@@ -1,6 +1,6 @@
 <a href="/details/{{book.isbn}}">
   <div class="book">
-    <img src="{{book.details.cover if book.details.cover else url_for('static', filename='no-cover.png')}}"
+    <img src="{{url_for('static', filename='no-cover.png')}}"
       alt="{{book.title}}">
     <div class="hover">
       <p class="title">{{book.title}}</p>

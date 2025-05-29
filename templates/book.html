@@ -18,7 +18,7 @@
       <div class="left">
         <div class="cover">
           <img
-            src="{{ book_isbn.details.cover }}"
+            src="{{url_for('static', filename='no-cover.png')}}"
             alt="Cover of {{ book_isbn.title }}"
           />
         </div>

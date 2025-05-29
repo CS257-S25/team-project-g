@@ -57,7 +57,7 @@
           {% for book in most_banned_books: %}
           <div class="book">
             <div class="cover-wrapper">
-              <img src={{ book[1].details.cover }} alt={{book[1].title}} class="cover">
+              <img src="{{url_for('static', filename='no-cover.png')}}" alt={{book[1].title}} class="cover">
             </div>
             <div class="book-content">
               <p class="book-title"><a href="/details/{{book[1].isbn}}">{{ book[1].title }} </a><span

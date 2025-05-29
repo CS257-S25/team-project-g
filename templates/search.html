@@ -20,7 +20,7 @@
         <h2>ISBN</h2>
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ results_isbn.details.cover }} alt="{{ results_isbn.title }}" class="cover">
+            <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{ results_isbn.title }}" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title"><a href="/details/{{results_isbn.isbn}}">{{ results_isbn.title }} </a><span
@@ -49,7 +49,7 @@
         {% for book in results_title: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
+            <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title"><a href="details/{{book.isbn}}">{{ book.title }} </a><span
@@ -78,7 +78,7 @@
         {% for book in results_author: %}
         <div class="book">
           <div class="cover-wrapper">
-            <img src={{ book.details.cover }} alt="{{book.title}}" class="cover">
+            <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}" class="cover">
           </div>
           <div class="book-content">
             <p class="book-title"> <a href="/details/{{book.isbn}}">{{ book.title }} </a><span></span>({{book.isbn}})</span></p>

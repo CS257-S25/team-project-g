@@ -553,3 +553,20 @@ class TestSQLExceptionBranches(unittest.TestCase):
         ds = DataSource()
         with self.assertRaises(SystemExit):
             ds.get_most_banned_genres(1)
+
+
+class TestSingleton(unittest.TestCase):
+    """This class tests singleton functionality of datasource"""
+
+    def setUp(self):
+        """Create a mock prostgres connection"""
+        self.mock_conn = MagicMock()
+        self.mock_cursor = self.mock_conn.cursor.return_value
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_singleton(self, mock_connect):
+        mock_connect.return_value = self.mock_conn
+
+        ds1 = DataSource()
+        ds2 = DataSource()
+        self.assertEqual(id(ds1), id(ds2))

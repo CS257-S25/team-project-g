@@ -70,6 +70,7 @@ def search():
     query = request.args.get("searchterm")
     search_type = request.args.get("type")
     ds = DataSource()
+    print(ds)
 
     if search_type == "title":
         results_isbn = None

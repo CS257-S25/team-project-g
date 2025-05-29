@@ -9,22 +9,33 @@ from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban
 from ProductionCode.rank import Rank
 
-class DataSourceMeta(type):
-    """
-    DataSource metaclass for implementing Singleton
-    """
-    _instances = {}
 
-    def __call__(cls, *args, **kwargs):
-        """
-        """
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
+# class SingletonMeta(type):
+#     """
+#     Singleton metaclass for datasource
+#     """
+#
+#     _instances = {}
+#
+#     def __call__(cls, *args, **kwargs):
+#         """ """
+#         if cls not in cls._instances:
+#             instance = super().__call__(*args, **kwargs)
+#             cls._instances[cls] = instance
+#         return cls._instances[cls]
+#
 
-class DataSource(metaclass=DataSourceMeta):
+
+class DataSource:
     """Class for connecting to and interacting with psql database"""
+
+    instance = None
+
+    def __new__(cls):
+        """method insures there is only one DataSource instance"""
+        if DataSource.instance is None:
+            DataSource.instance = object.__new__(cls)
+        return DataSource.instance
 
     def __init__(self):
         """Constructor that initiates connection to database"""

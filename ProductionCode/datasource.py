@@ -336,6 +336,31 @@ class DataSource:
         ranks = self.database_row_list_to_rank_list(results)
         return ranks
 
+    def get_most_banned_states_with_isbn(self, max_results, isbn):
+        """Searches bookban database for states with the most bans for a book with a certain isbn
+        Args:
+            max_results (int): the number of results to display
+            isbn (str): the isbn number of the book
+        Returns:
+            (list[Rank]): a list of Rank objects of states and number of bans
+        """
+        query = (
+            "SELECT ban_state, COUNT(*) AS ban_count FROM bookbans WHERE isbn = %s GROUP BY ban_state"
+            " ORDER BY ban_count DESC LIMIT %s;"
+        )
+        args = (isbn, max_results)
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Error getting most banned states: ", e)
+            sys.exit()
+
+        ranks = self.database_row_list_to_rank_list(results)
+        return ranks
+
     def get_most_banned_titles(self, max_results):
         """Searches bookban database for titles with the most bans
         Args:
@@ -427,9 +452,7 @@ class DataSource:
             print("Error getting most banned books: ", e)
             sys.exit()
 
-        books = list(
-            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
-        )
+        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
         return books
 

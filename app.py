@@ -1,7 +1,7 @@
 """This is the main file for the Flask application."""
 
 import json
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request 
 from ProductionCode.datasource import DataSource
 
 app = Flask(__name__)
@@ -186,8 +186,17 @@ def get_most_banned_states():
     ds = DataSource()
     most_banned = ds.get_most_banned_states(99)
     ban_json = json.dumps(most_banned, default=lambda obj: obj.__dict__)
-    return ban_json
+    return ban_json 
 
+@app.route("/get-most-banned-states-with-isbn")
+def get_most_banned_states_with_isbn():
+    """The endpoint for the get-book-banned-in-states api call"""
+    isbn = request.args.get("isbn")
+
+    ds = DataSource()
+    bans = ds.get_most_banned_states_with_isbn(99, isbn)
+    ban_json = json.dumps(bans , default=lambda obj: obj.__dict__)
+    return ban_json
 
 if __name__ == "__main__":
     app.run(port=5132)

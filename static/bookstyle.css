@@ -138,3 +138,51 @@ body {
 .genre-btn:hover {
   background: rgba(255, 255, 255, 0.15);
 }
+
+/* map */
+
+section.map-section {
+  padding-top: 2em;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+div.map {
+  padding: 1em;
+  width: 70%;
+  background-color: var(--lighter);
+  border: 1px solid var(--text);
+  border-radius: 4px;
+  margin-right: 1em;
+
+}
+
+div.map-info {
+  height: 30%;
+  width: 30%;
+  padding: 1em;
+  background-color: var(--lighter);
+  margin-left: 1em;
+  border: 1px solid var(--text);
+  border-radius: 4px;
+}
+
+div.map figure {
+  margin: 0px;
+  width: 100%
+}
+
+div.map figure svg:nth-of-type(1) {
+  width: 30%
+}
+
+div.map figure svg:nth-of-type(2) {
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.map-plot {
+  --plot-background: #313033;
+}

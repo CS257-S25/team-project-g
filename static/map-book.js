@@ -1,7 +1,9 @@
-import { BanMap, AllContent, SimpleRender } from "./map.js";
+import { BanMap, OneBookContent, DetailedRender, SimpleRender } from "./map.js";
 
 window.addEventListener("DOMContentLoaded", async (_evt) => {
-    const allContent = new AllContent()
+    const isbn = document.getElementsByName("isbn")[0].content
+
+    const allContent = new OneBookContent(isbn)
     const simpleRender = new SimpleRender()
 
     const map = new BanMap(allContent, simpleRender)

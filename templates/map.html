@@ -9,19 +9,19 @@
 
 <body>
   <!-- Navbar -->
-   {% include 'nav.html' %}
+  {% include 'nav.html' %}
   <!-- Header -->
   <div class="header">
-      <h1>Banned Books in the United States</h1>
+    <h1>Banned Books in the United States</h1>
   </div>
   <div class="main">
     <div class="map" id="map">
     </div>
-    <script type="module" src="{{url_for('static', filename='map.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='map-detailed.js')}}"></script>
     <div class="map-info">
       <h2>Most Banned States</h2>
       <ol>
-        {% for state in most_banned_states: %}
+        {% for state in most_banned_states %}
         <li>
           <p>{{state.name}}: {{state.bans}}</p>
         </li>

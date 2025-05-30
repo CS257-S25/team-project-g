@@ -96,9 +96,8 @@ def main():
                 for result in search_results:
                     print(result)
                 break
-            else:
-                print("No results found")
-                break
+            print("No results found")
+            break
     else:
         parser.print_help()
         sys.exit(1)

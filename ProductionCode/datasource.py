@@ -345,7 +345,8 @@ class DataSource:
             (list[Rank]): a list of Rank objects of states and number of bans
         """
         query = (
-            "SELECT ban_state, COUNT(*) AS ban_count FROM bookbans WHERE isbn = %s GROUP BY ban_state"
+            "SELECT ban_state, COUNT(*) AS ban_count FROM bookbans"
+            " WHERE isbn = %s GROUP BY ban_state"
             " ORDER BY ban_count DESC LIMIT %s;"
         )
         args = (isbn, max_results)
@@ -452,7 +453,9 @@ class DataSource:
             print("Error getting most banned books: ", e)
             sys.exit()
 
-        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
+        books = list(
+            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
+        )
 
         return books
 

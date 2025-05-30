@@ -585,6 +585,7 @@ class TestSingleton(unittest.TestCase):
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_singleton(self, mock_connect):
+        """Test singleton functionality of datasource"""
         mock_connect.return_value = self.mock_conn
 
         ds1 = DataSource()

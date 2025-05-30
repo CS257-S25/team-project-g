@@ -5,14 +5,14 @@ body {
 }
 
 div.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 div.main {
-    margin-left: 15%;
-    margin-right: 15%;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 div.most-banned {
@@ -28,21 +28,21 @@ div.most-banned ol {
 }
 
 div.most-banned li {
-    margin-bottom: 1em;
-    padding-right:2em;
+  margin-bottom: 1em;
+  padding-right: 2em;
 }
 
 div.most-banned p {
   font-weight: bold;
-    margin: 0
+  margin: 0
 }
 
 div.most-banned a {
   font-weight: normal;
-    color: inherit;
-    text-decoration:none;
+  color: inherit;
+  text-decoration: none;
 }
 
 div.most-banned a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

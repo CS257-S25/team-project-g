@@ -5,7 +5,7 @@ h2 {
 
 h3 {
   margin: 0;
-  padding:0;
+  padding: 0;
 }
 
 p {
@@ -20,14 +20,14 @@ body {
 }
 
 div.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 div.main {
-    margin-left: 15%;
-    margin-right: 15%;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 /* Book */

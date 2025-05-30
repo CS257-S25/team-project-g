@@ -1,7 +1,6 @@
 <a href="/details/{{book.isbn}}">
   <div class="book">
-    <img src="{{url_for('static', filename='no-cover.png')}}"
-      alt="{{book.title}}">
+    <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}">
     <div class="hover">
       <p class="title">{{book.title}}</p>
       <p class="author">{{book.authors_to_string()}}</p>

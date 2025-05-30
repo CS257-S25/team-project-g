@@ -14,7 +14,7 @@ h3 {
   font-size: 1.75rem;
 }
 
-body > ul {
+body>ul {
   list-style: none;
   margin: 0 auto 2em;
   padding: 0;
@@ -23,12 +23,12 @@ body > ul {
   column-gap: 2em;
 }
 
-body > ul li {
+body>ul li {
   break-inside: avoid;
   margin-bottom: 0.75em;
 }
 
-body > ul li a {
+body>ul li a {
   display: block;
   padding: 0.25em 0;
   color: inherit;
@@ -37,6 +37,6 @@ body > ul li a {
   transition: border-color 0.2s;
 }
 
-body > ul li a:hover {
+body>ul li a:hover {
   border-color: var(--text);
 }

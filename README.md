@@ -44,6 +44,8 @@ Made by Joe Borncamp, Cooper Evans, Devin Gulliver, Marco Pina
 ### Code Design
 Repeated Code
 - Originally in our books, genres, authors pages, we used the same book cover html and css. Now, we moved it into a separate template so we repeat our code less.
+Design Pattern: Strategies
+- Originally we had repeated code for displaying different variations of our maps. Now, we refactored it to use use strategies so it is easy to specify with type of map we want to use for each page
 ### Front End Design
 Improved link color for visibility
 - Our link colors previously used a dark blue, we changed to a light blue to increase readability on dark background

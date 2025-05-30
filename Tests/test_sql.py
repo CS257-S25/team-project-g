@@ -402,6 +402,17 @@ class TestSQLMostBannedMethods(unittest.TestCase):
         self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
     @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_states_with_isbn(self, mock_connect):
+        """Test get_most_banned_states"""
+        mock_connect.return_value = self.mock_conn
+        ds = DataSource()
+        response = [("Florida", 2)]
+        expected = ["Florida: 2"]
+        self.mock_cursor.fetchall.return_value = response
+        results = ds.get_most_banned_states_with_isbn(1, "1534430652")
+        self.assertEqual(list(map(str, results)), list(map(str, expected)))
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_titles(self, mock_connect):
         """Test get_most_banned_titles"""
         mock_connect.return_value = self.mock_conn
@@ -526,6 +537,15 @@ class TestSQLExceptionBranches(unittest.TestCase):
         ds = DataSource()
         with self.assertRaises(SystemExit):
             ds.get_most_banned_states(1)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_states_with_isbn_error(self, mock_connect):
+        """Trigger the except-clause in get_most_banned_states"""
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.get_most_banned_states_with_isbn(1, "1534430652")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_titles_error(self, mock_connect):

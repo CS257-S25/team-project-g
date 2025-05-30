@@ -314,6 +314,24 @@ class TestAppAPI(unittest.TestCase):
 
         self.assertEqual(response.data, expected)
 
+    @patch("ProductionCode.datasource.DataSource.get_most_banned_states_with_isbn")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_get_most_banned_states_with_isbn(
+        self, mock_connect, mock_get_most_banned_states_with_isbn
+    ):
+        """Test get-most-banned-states endpoint"""
+        mock_connect.return_value = self.mock_conn
+        mock_get_most_banned_states_with_isbn.return_value = [
+            Rank("Florida", 2),
+            Rank("Texas", 1),
+        ]
+
+        response = self.app.get("get-most-banned-states-with-isbn?1534430652")
+
+        expected = b'[{"name": "Florida", "bans": 2}, {"name": "Texas", "bans": 1}]'
+
+        self.assertEqual(response.data, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

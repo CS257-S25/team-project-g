@@ -10,22 +10,6 @@ from ProductionCode.bookban import Bookban
 from ProductionCode.rank import Rank
 
 
-# class SingletonMeta(type):
-#     """
-#     Singleton metaclass for datasource
-#     """
-#
-#     _instances = {}
-#
-#     def __call__(cls, *args, **kwargs):
-#         """ """
-#         if cls not in cls._instances:
-#             instance = super().__call__(*args, **kwargs)
-#             cls._instances[cls] = instance
-#         return cls._instances[cls]
-#
-
-
 class DataSource:
     """Class for connecting to and interacting with psql database"""
 
@@ -210,7 +194,6 @@ class DataSource:
         Returns:
             (list[Book]): a list of Book objects where search_term is in authors
         """
-        # query = "SELECT * FROM books WHERE authors @> ARRAY[%s];"
         query = (
             "SELECT * FROM books "
             "WHERE EXISTS ("
@@ -395,11 +378,6 @@ class DataSource:
         Returns:
             (list[Rank]): a list of Rank objects of genres and number of bans
         """
-        # query = (
-        #     "SELECT b.genres, COUNT(*) AS ban_count FROM books AS b INNER JOIN bookbans"
-        #     " AS ban ON b.isbn = CAST(ban.isbn AS TEXT) GROUP BY genres ORDER BY ban_count"
-        #     " DESC LIMIT %s;"
-        # )
         query = (
             "SELECT "
             "genre, "
@@ -458,11 +436,3 @@ class DataSource:
         )
 
         return books
-
-
-# if __name__ == "__main__":
-#     my_ds = DataSource()
-#     # results = my_ds.search_author("Haruki Murakami")
-#     output = my_ds.books_search_title("killing")
-#     for result in output:
-#         print(result)

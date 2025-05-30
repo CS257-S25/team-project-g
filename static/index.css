@@ -120,7 +120,6 @@ div.main div.sidebar div.navigation {
 
   padding: 1em;
   background-color: var(--lighter);
-  /* border: 2px solid var(--border); */
   margin-bottom: 1em;
   border-radius: 4px;
   border: 1px solid var(--text);
@@ -133,7 +132,6 @@ div.main div.sidebar div.map-section {
   border-radius: 4px;
   border: 1px solid var(--text);
   background-color: var(--lighter);
-  /* border: 2px solid var(--border) */
 }
 
 div.map {
@@ -150,8 +148,6 @@ div.main div.content {
   width: 72.5%;
   margin-left: 1em;
   padding: 1em;
-  /* background-color: var(--lighter);
-  border: 2px solid var(--border) */
 }
 
 /* Book */
@@ -159,11 +155,9 @@ div.main div.content {
 div.book {
   height: 128px;
   width: 100%;
-  /* background-color: red; */
   display: flex;
   padding-bottom: 2px;
   padding-top: 2px;
-  /* border-top: 2px solid var(--border); */
   background-color: var(--lighter);
   border: 1px solid var(--text);
   border-radius: 4px;
@@ -175,26 +169,21 @@ div.book div.cover-wrapper {
   align-items: center;
   justify-content: center;
   width: 6em;
-  /* background-color: red; */
   aspect-ratio: 6 / 9;
 }
 
 div.book div.book-content {
   padding: 0.5em;
   flex-grow: 1;
-  /* background-color: green; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 div.book div.ban-content {
-  /* display: flex; */
-  /* flex-direction: column; */
   text-align: right;
   padding: 0.5em;
   width: 6em;
-  /* background-color: yellow; */
 }
 
 div.book img.cover {
@@ -241,11 +230,9 @@ div.book p.book-authors {
 
 div.book p.book-publish_date {
   font-weight: lighter;
-  /* font-size: 0.7em */
 }
 
 div.book p.book-genres {
-  /* font-size: 0.7em */
   overflow: hidden;
 }
 

@@ -1,9 +1,5 @@
 """Module containing a book class for representing data on a book"""
 
-# from datetime import datetime
-# from statistics import fmean
-# from psycopg2 import DATETIME
-
 
 class Book:
     """Book class to represent book data"""
@@ -37,41 +33,3 @@ class Book:
         if self.details["genres"]:
             return ", ".join(self.details["genres"])
         return ""
-
-
-# class BookDetails:
-#     def __init__(
-#         self,
-#         summary: str,
-#         cover: str,
-#         genres: list[str],
-#         publish_date,
-#         rating: float,
-#     ):
-#         self.summary: str = summary
-#         self.cover: str = cover
-#         self.genres: list[str] = genres
-#         self.publish_date = publish_date
-#         self.rating: float = rating
-
-
-# def main() -> None:
-#     """Main function for informal testing."""
-#     book: Book = Book(
-#         "to kill a mockingbird",
-#         ["author a", "author b"],
-#         "fjaskdhflahsf",
-#         "url",
-#         [
-#             "fiction",
-#             "historical fiction",
-#         ],
-#         "12481841",
-#         84189471,
-#         [10, 0, 1, 10, 50],
-#     )
-#     print(book)
-#
-#
-# if __name__ == "__main__":
-#     main()

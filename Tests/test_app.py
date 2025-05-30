@@ -52,8 +52,6 @@ class TestAppPages(unittest.TestCase):
     def test_map(self, mock_connect):
         """Tests map page"""
         mock_connect.return_value = self.mock_conn
-        # mock_book_from_isbn.return_value = mock_book
-        # mock_bans_from_isbn.return_value = [mock_ban]
 
         response = self.app.get("map")
 
@@ -210,7 +208,6 @@ class TestAppPages(unittest.TestCase):
 
         response = self.app.get("most-banned-authors")
 
-        # self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Most Banned Authors</h1>", response.data)
 
     @patch("ProductionCode.datasource.DataSource.get_most_banned_states")
@@ -226,7 +223,6 @@ class TestAppPages(unittest.TestCase):
 
         response = self.app.get("most-banned-states")
 
-        # self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Most Banned States</h1>", response.data)
 
     @patch("ProductionCode.datasource.DataSource.get_most_banned_districts")
@@ -242,7 +238,6 @@ class TestAppPages(unittest.TestCase):
 
         response = self.app.get("most-banned-districts")
 
-        # self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Most Banned Districts</h1>", response.data)
 
     @patch("ProductionCode.datasource.DataSource.get_most_banned_books")
@@ -258,7 +253,6 @@ class TestAppPages(unittest.TestCase):
 
         response = self.app.get("most-banned-books")
 
-        # self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Most Banned Books</h1>", response.data)
 
 

@@ -42,7 +42,6 @@ div.result-section {
   padding: 1em;
   margin-bottom: 1em;
 
-  /* border: 2px solid var(--border); */
 }
 
 div.result-section div.heading {
@@ -69,11 +68,9 @@ div.result-section div.heading div.a-wrapper a:hover {
 div.book {
   height: 128px;
   width: 100%;
-  /* background-color: red; */
   display: flex;
   padding-bottom: 2px;
   padding-top: 2px;
-  /* border-top: 2px solid var(--border); */
 
   background-color: var(--lighter);
   border: 1px solid var(--text);
@@ -86,26 +83,21 @@ div.cover-wrapper {
   align-items: center;
   justify-content: center;
   width: 6em;
-  /* background-color: red; */
   aspect-ratio: 6 / 9;
 }
 
 div.book div.book-content {
   padding: 0.5em;
   flex-grow: 1;
-  /* background-color: green; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 div.book div.ban-content {
-  /* display: flex; */
-  /* flex-direction: column; */
   text-align: right;
   padding: 0.5em;
   width: 6em;
-  /* background-color: yellow; */
 }
 
 img.cover {
@@ -143,12 +135,10 @@ p.book-authors {
 
 p.book-publish_date {
   font-weight: lighter;
-  /* font-size: 0.7em */
 }
 
 p.book-genres {
   overflow: hidden;
-  /* font-size: 0.7em */
 }
 
 p.book-bans {
@@ -160,5 +150,3 @@ p.book-bans span {
   font-weight: bolder;
   color: var(--accent)
 }
-
-/* test */

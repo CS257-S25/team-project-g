@@ -92,9 +92,13 @@ def main():
         user_input = getattr(args, user_option)
         if user_input is not None:
             search_results = corresponding_function(user_input)
-            for result in search_results:
-                print(result)
-            break
+            if search_results:
+                for result in search_results:
+                    print(result)
+                break
+            else:
+                print("No results found")
+                break
     else:
         parser.print_help()
         sys.exit(1)

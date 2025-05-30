@@ -23,7 +23,10 @@ class TestCommandLine(unittest.TestCase):
     @patch("ProductionCode.datasource.DataSource.books_search_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_title(self, mock_connect, mock_books_search_title):
-        """Tests for title search"""
+        """
+        Tests for title search
+        Acceptance test for search by title User Story
+        """
         mock_connect.return_value = self.mock_conn
         mock_books_search_title.return_value = [mock_book]
         sys.argv = ["cl.py", "--st", "Kaleidoscope"]
@@ -35,7 +38,10 @@ class TestCommandLine(unittest.TestCase):
     @patch("ProductionCode.datasource.DataSource.books_search_author")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_author(self, mock_connect, mock_books_search_author):
-        """Tests for author search"""
+        """
+        Tests for author search
+        Acceptance test for search by author User Story
+        """
         mock_connect.return_value = self.mock_conn
         mock_books_search_author.return_value = [mock_book]
         sys.argv = ["cl.py", "--sa", "Danielle Steel"]
@@ -47,7 +53,10 @@ class TestCommandLine(unittest.TestCase):
     @patch("ProductionCode.datasource.DataSource.books_search_genre")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_genre(self, mock_connect, mock_books_search_genre):
-        """Tests for genre search"""
+        """
+        Tests for genre search
+        Acceptance test for search by genre User Story
+        """
         mock_connect.return_value = self.mock_conn
         mock_books_search_genre.return_value = [mock_book]
         sys.argv = ["cl.py", "--sg", "Mystery"]

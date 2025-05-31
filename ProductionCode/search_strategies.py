@@ -16,8 +16,10 @@ class SearchStrategy(ABC):
 
 class ConcreteSearchStrategyAll(SearchStrategy):
     def search(self, query) -> list[SearchSection]:
+        MAX_RESULTS = 5
         search_component = SearchConcreteDecoratorAuthor(SearchConcreteDecoratorTitle(SearchConcreteDecoratorISBN(SearchConcreteComponent())))
         results = search_component.operation(query)
+        [setattr(result, 'results', result.results[:MAX_RESULTS]) for result in results]
         return results
 
 

@@ -3,6 +3,12 @@
 import json
 from flask import Flask, render_template, request
 from ProductionCode.datasource import DataSource
+from ProductionCode.search_strategies import (
+    ConcreteSearchStrategyAll,
+    ConcreteSearchStrategyAuthor,
+    ConcreteSearchStrategyTitle,
+    SearchContext,
+)
 
 app = Flask(__name__)
 
@@ -71,6 +77,7 @@ def page_not_found(error):
 #     search_type = request.args.get("type")
 #     ds = DataSource()
 
+
 #     if search_type == "title":
 #         results_isbn = None
 #         results_title = ds.books_search_title(query)
@@ -95,6 +102,18 @@ def page_not_found(error):
 def search():
     query = request.args.get("searchterm")
     search_type = request.args.get("type")
+    search_strategy = (
+        ConcreteSearchStrategyTitle()
+        if search_type == "title"
+        else ConcreteSearchStrategyAuthor()
+        if search_type == "author"
+        else ConcreteSearchStrategyAll()
+    )
+    search_context = SearchContext(search_strategy)
+    results = search_context.search(query)
+    print(results)
+    return render_template("search.html",query=query,type=search_type, results=results)
+
 
 @app.route("/books")
 def books():
@@ -166,9 +185,7 @@ def most_banned_districts():
 def most_banned_books():
     """The endpoint for most_banned_books page"""
     ds = DataSource()
-    return render_template(
-        "most-banned-books.html", most_banned_books=ds.get_most_banned_books(30)
-    )
+    return render_template("most-banned-books.html", most_banned_books=ds.get_most_banned_books(30))
 
 
 @app.route("/authors")

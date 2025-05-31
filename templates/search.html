@@ -9,12 +9,46 @@
 
 <body>
   <!-- Navbar -->
-   {% include 'nav.html' %}
+  {% include 'nav.html' %}
   <!-- Content -->
   <div class="main">
     <div class="results">
       <h1>Search Results for "{{query}}":</h1>
-      <!-- ISBN -->
+      {% for result_section in results %}
+      {% if result_section.results %}
+      <div class="result-section">
+        <div class="heading">
+
+          <h2>{{result_section.heading}}</h2>
+          {% if type == 'all'%}
+          <div class="a-wrapper"><a href="/search?searchterm={{query}}&type={{result_section.type}}">Search only {{result_section.heading}}s</a></div>
+          {% endif %}
+        </div>
+
+        {% for book in result_section.results %}
+        <div class="book">
+          <div class="cover-wrapper">
+            <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}" class="cover">
+          </div>
+          <div class="book-content">
+            <p class="book-title"><a href="details/{{book.isbn}}">{{ book.title }} </a><span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endfor %}
+
+    </div>
+    <!-- <div class="results">
+      <h1>Search Results for "{{query}}":</h1>
+      ISBN
       {% if results_isbn %}
       <div class="result-section">
         <h2>ISBN</h2>
@@ -37,7 +71,7 @@
 
 
 
-      <!-- Title -->
+      Title
       {% if results_title%}
       <div class="result-section">
         <div class="heading">
@@ -66,7 +100,7 @@
       {% endif %}
 
 
-      <!-- Authors-->
+      Author
       {% if results_author %}
       <div class="result-section">
         <div class="heading">
@@ -92,7 +126,7 @@
         {% endfor %}
       </div>
       {% endif %}
-    </div>
+    </div> -->
   </div>
 </body>
 

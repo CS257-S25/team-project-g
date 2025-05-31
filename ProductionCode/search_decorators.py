@@ -2,8 +2,9 @@ from ProductionCode.book import Book
 from ProductionCode.datasource import DataSource
 
 class SearchSection:
-    def __init__(self, heading: str, results: list[Book]):
+    def __init__(self, heading: str, type: str, results: list[Book]):
         self.heading = heading
+        self.type = type
         self.results = results
 
 class SearchComponent:
@@ -56,7 +57,7 @@ class SearchConcreteDecoratorAuthor(SearchDecorator):
     def search_author(self, query):
         ds = DataSource()
         results = ds.books_search_author(query)
-        section = SearchSection("Author", results)
+        section = SearchSection("Author", "author", results)
         return section 
 
 
@@ -73,9 +74,9 @@ class SearchConcreteDecoratorISBN(SearchDecorator):
         ds = DataSource()
         results = ds.book_from_isbn(query)
         if results:
-            return SearchSection("ISBN", [results])
+            return SearchSection("ISBN", "isbn", [results])
         else:
-            return SearchSection("ISBN", [])
+            return SearchSection("ISBN", "isbn", [])
 
 
 class SearchConcreteDecoratorTitle(SearchDecorator):
@@ -90,7 +91,7 @@ class SearchConcreteDecoratorTitle(SearchDecorator):
     def search_title(self, query):
         ds = DataSource()
         results = ds.books_search_title(query)
-        section = SearchSection("Title", results)
+        section = SearchSection("Title", "title", results)
         return section 
 
 

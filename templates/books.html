@@ -1,0 +1,27 @@
+<html lang="en">
+
+<head>
+  <title>Books</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='books.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='book-cover.css')}}">
+</head>
+
+<body>
+    <!-- Navbar -->
+     {% include 'nav.html' %}
+     <!-- Header -->
+      <div class="header">
+        <h1>Banned Books</h1>
+      </div>
+      <!-- Content -->
+       <div class="main">
+              {% for book in books[:300] %}
+            {% include 'book-cover.html' %}
+
+      {% endfor %}
+           </div>
+</body>
+
+</html>

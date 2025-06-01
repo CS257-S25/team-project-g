@@ -1,23 +1,7 @@
 """Decorators for modifying search functionality"""
 
-from ProductionCode.book import Book
 from ProductionCode.datasource import DataSource
-
-
-class SearchSection:
-    """Defines a section of the search results"""
-
-    def __init__(self, heading: str, search_type: str, results: list[Book]) -> None:
-        """
-        Constructor for SearchSection
-        Arguments:
-            heading (str) - heading of the section (displayed)
-            type (str) - type of the section (internal)
-            results (list[Book]) - list of books in the section
-        """
-        self.heading = heading
-        self.search_type = search_type
-        self.results = results
+from ProductionCode.search_section import SearchSection
 
 
 class SearchComponent:

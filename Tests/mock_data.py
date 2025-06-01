@@ -2,6 +2,7 @@
 
 from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban
+from ProductionCode.search_section import SearchSection
 
 mock_book = Book(
     isbn="440236924",
@@ -41,3 +42,5 @@ mock_ban = Bookban(
         "ban_origin": "Formal Challenge",
     },
 )
+
+mock_search_section = SearchSection("Title", "title", [mock_book, mock_book])

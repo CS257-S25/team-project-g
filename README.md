@@ -42,10 +42,16 @@ Made by Joe Borncamp, Cooper Evans, Devin Gulliver, Marco Pina
 ## Design Improvements
 
 ### Code Design
-Repeated Code
+#### Repeated Code
 - Originally in our books, genres, authors pages, we used the same book cover html and css. Now, we moved it into a separate template so we repeat our code less.
+#### Map:
 Design Pattern: Strategies
 - Originally we had repeated code for displaying different variations of our maps. Now, we refactored it to use use strategies so it is easy to specify with type of map we want to use for each page
+#### Search:
+Design Pattern: Decorators
+- We added decorators to extend the functionality of searching
+Design Pattern: Strategies
+- We added strategies for searching based on the search type
 ### Front End Design
 Improved link color for visibility
 - Our link colors previously used a dark blue, we changed to a light blue to increase readability on dark background

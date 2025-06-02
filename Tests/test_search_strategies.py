@@ -3,13 +3,6 @@
 import unittest
 from unittest.mock import patch
 
-from ProductionCode.search_decorators import (
-    SearchConcreteComponent,
-    SearchConcreteDecoratorAuthor,
-    SearchConcreteDecoratorISBN,
-    SearchConcreteDecoratorLimitResults,
-    SearchConcreteDecoratorTitle,
-)
 from ProductionCode.search_strategies import (
     ConcreteSearchStrategyAuthor,
     ConcreteSearchStrategyTitle,
@@ -17,7 +10,7 @@ from ProductionCode.search_strategies import (
     ConcreteSearchStrategyAll,
 )
 
-from mock_data import mock_search_section
+from Tests.mock_data import mock_search_section
 
 
 class SearchContextTest(unittest.TestCase):
@@ -47,6 +40,7 @@ class ConcreteSearchStrategyAllTest(unittest.TestCase):
     @patch("ProductionCode.search_decorators.SearchConcreteDecoratorTitle.search_title")
     @patch("ProductionCode.search_decorators.SearchConcreteDecoratorISBN.search_isbn")
     def test_search(self, mock_search_isbn, mock_search_title, mock_search_author):
+        """Tests for search method"""
         mock_search_isbn.return_value = mock_search_section
         mock_search_title.return_value = mock_search_section
         mock_search_author.return_value = mock_search_section
@@ -69,6 +63,7 @@ class ConcreteSearchStrategyTitleTest(unittest.TestCase):
 
     @patch("ProductionCode.search_decorators.SearchConcreteDecoratorTitle.search_title")
     def test_search(self, mock_search_title):
+        """Tests for search method"""
         mock_search_title.return_value = mock_search_section
 
         results = self.search_context.search("")
@@ -89,6 +84,7 @@ class ConcreteSearchStrategyAuthorTest(unittest.TestCase):
         "ProductionCode.search_decorators.SearchConcreteDecoratorAuthor.search_author"
     )
     def test_search(self, mock_search_author):
+        """Tests for search method"""
         mock_search_author.return_value = mock_search_section
 
         results = self.search_context.search("")

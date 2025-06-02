@@ -70,36 +70,9 @@ def page_not_found(error):
     return render_template("error.html", error=error, code=404)
 
 
-# @app.route("/search")
-# def search():
-#     """The endpoint for search page"""
-#     query = request.args.get("searchterm")
-#     search_type = request.args.get("type")
-#     ds = DataSource()
-
-
-#     if search_type == "title":
-#         results_isbn = None
-#         results_title = ds.books_search_title(query)
-#         results_author = None
-#     elif search_type == "author":
-#         results_isbn = None
-#         results_title = None
-#         results_author = ds.books_search_author(query)
-#     else:
-#         results_isbn = ds.book_from_isbn(query)
-#         results_title = ds.books_search_title(query)[:5]
-#         results_author = ds.books_search_author(query)[:5]
-#     return render_template(
-#         "search.html",
-#         query=query,
-#         type=search_type,
-#         results_isbn=results_isbn,
-#         results_title=results_title,
-#         results_author=results_author,
-#     )
 @app.route("/search")
 def search():
+    """The endpoint for the search page"""
     query = request.args.get("searchterm")
     search_type = request.args.get("type")
     search_strategy = (
@@ -112,7 +85,9 @@ def search():
     search_context = SearchContext(search_strategy)
     results = search_context.search(query)
     print(results)
-    return render_template("search.html",query=query,type=search_type, results=results)
+    return render_template(
+        "search.html", query=query, type=search_type, results=results
+    )
 
 
 @app.route("/books")
@@ -185,7 +160,9 @@ def most_banned_districts():
 def most_banned_books():
     """The endpoint for most_banned_books page"""
     ds = DataSource()
-    return render_template("most-banned-books.html", most_banned_books=ds.get_most_banned_books(30))
+    return render_template(
+        "most-banned-books.html", most_banned_books=ds.get_most_banned_books(30)
+    )
 
 
 @app.route("/authors")

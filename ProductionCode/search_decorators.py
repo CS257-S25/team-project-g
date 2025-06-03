@@ -1,7 +1,7 @@
 """Decorators for modifying search functionality"""
 
 from ProductionCode.datasource import DataSource
-from ProductionCode.search_section import SearchSection
+from ProductionCode.search_section import SearchSection, SearchSectionBook, SearchSectionPage
 
 
 class SearchComponent:  # pylint: disable=too-few-public-methods
@@ -83,8 +83,8 @@ class SearchConcreteDecoratorAuthor(SearchDecorator):
             (SearchSection) - author search section
         """
         ds = DataSource()
-        results = ds.books_search_author(query)
-        section = SearchSection("Author", "author", results)
+        results = ds.search_author(query)
+        section = SearchSectionPage("Author", "author", results)
         return section
 
 
@@ -113,8 +113,8 @@ class SearchConcreteDecoratorGenre(SearchDecorator):
             (SearchSection) - author search section
         """
         ds = DataSource()
-        results = ds.books_search_genre(query)
-        section = SearchSection("Genre", "genre", results)
+        results = ds.search_genre(query)
+        section = SearchSectionPage("Genre", "genre", results)
         return section
 
 
@@ -145,8 +145,8 @@ class SearchConcreteDecoratorISBN(SearchDecorator):
         ds = DataSource()
         results = ds.book_from_isbn(query)
         if results:
-            return SearchSection("ISBN", "isbn", [results])
-        return SearchSection("ISBN", "isbn", [])
+            return SearchSectionBook("ISBN", "isbn", [results])
+        return SearchSectionBook("ISBN", "isbn", [])
 
 
 class SearchConcreteDecoratorTitle(SearchDecorator):
@@ -175,7 +175,7 @@ class SearchConcreteDecoratorTitle(SearchDecorator):
         """
         ds = DataSource()
         results = ds.books_search_title(query)
-        section = SearchSection("Title", "title", results)
+        section = SearchSectionBook("Title", "title", results)
         return section
 
 

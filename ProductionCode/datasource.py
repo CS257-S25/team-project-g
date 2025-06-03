@@ -217,14 +217,21 @@ class DataSource:
         return books
 
     def books_search_genre(self, search_term) -> list[Book]:
-        """Searches books database for genres that match search term
+        """Searches books database for authors that match search term
         Args:
-            search_term (str): the genre being searched for
+            search_term (str): the author being searched for
         Returns:
-            (list[Book]): a list of Book objects where search_term is in genres
+            (list[Book]): a list of Book objects where search_term is in authors
         """
-        query = "SELECT * FROM books WHERE genres @> ARRAY[%s];"
-        args = (search_term,)
+        query = (
+            "SELECT * FROM books "
+            "WHERE EXISTS ("
+            "SELECT 1 "
+            "FROM unnest(genres) AS genre "
+            "WHERE genre ILIKE %s"
+            ");"
+        )
+        args = ("%" + search_term + "%",)
 
         try:
             cursor = self.connection.cursor()
@@ -232,11 +239,32 @@ class DataSource:
             results = cursor.fetchall()
 
         except psycopg2.Error as e:
-            print("Couldn't find book with that genre: ", e)
+            print("Couldn't find book with that author: ", e)
             sys.exit()
 
         books = self.database_row_list_to_book_list(results)
         return books
+    # def books_search_genre(self, search_term) -> list[Book]:
+    #     """Searches books database for genres that match search term
+    #     Args:
+    #         search_term (str): the genre being searched for
+    #     Returns:
+    #         (list[Book]): a list of Book objects where search_term is in genres
+    #     """
+    #     query = "SELECT * FROM books WHERE genres @> ARRAY[%s];"
+    #     args = (search_term,)
+
+    #     try:
+    #         cursor = self.connection.cursor()
+    #         cursor.execute(query, args)
+    #         results = cursor.fetchall()
+
+    #     except psycopg2.Error as e:
+    #         print("Couldn't find book with that genre: ", e)
+    #         sys.exit()
+
+    #     books = self.database_row_list_to_book_list(results)
+    #     return books
 
     def get_most_banned_authors(self, max_results):
         """Returns the 5 authors with the most bans."""

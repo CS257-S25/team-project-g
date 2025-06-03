@@ -1,7 +1,7 @@
 """Module for Search Strategies"""
 
 from abc import ABC, abstractmethod
-from ProductionCode.search_decorators import SearchSection
+from ProductionCode.search_decorators import SearchConcreteDecoratorGenre, SearchSection
 from ProductionCode.search_decorators import (
     SearchConcreteComponent,
     SearchConcreteDecoratorAuthor,
@@ -49,10 +49,14 @@ class SearchContext:
         """
         return self._search_strategy.search(query)
 
+    # def get_search_strategy(self) -> SearchStrategy:
+    #     """Get method for search strategy"""
+    #     return self._search_strategy
+
 
 class ConcreteSearchStrategyAll(SearchStrategy):
     """
-    Strategy that searches for authors, titles, and isbn
+    Strategy that searches by authors, titles, genres, and isbn
     """
 
     def search(self, query) -> list[SearchSection]:
@@ -64,14 +68,15 @@ class ConcreteSearchStrategyAll(SearchStrategy):
             (list[SearchSection]) - search results, divided into sections
         """
         search_component = SearchConcreteDecoratorLimitResults(
-            SearchConcreteDecoratorAuthor(
-                SearchConcreteDecoratorTitle(
-                    SearchConcreteDecoratorISBN(SearchConcreteComponent())
+            SearchConcreteDecoratorGenre(
+                SearchConcreteDecoratorAuthor(
+                    SearchConcreteDecoratorTitle(
+                        SearchConcreteDecoratorISBN(SearchConcreteComponent())
+                    )
                 )
             )
         )
         results = search_component.operation(query)
-        # [setattr(result, "results", result.results[:MAX_RESULTS]) for result in results]
         return results
 
 
@@ -107,5 +112,23 @@ class ConcreteSearchStrategyAuthor(SearchStrategy):
             (list[SearchSection]) - search results, divided into sections
         """
         search_component = SearchConcreteDecoratorAuthor(SearchConcreteComponent())
+        results = search_component.operation(query)
+        return results
+
+
+class ConcreteSearchStrategyGenre(SearchStrategy):
+    """
+    Strategy that searches for genres
+    """
+
+    def search(self, query) -> list[SearchSection]:
+        """
+        Searches books database
+        Arguments:
+            query (str) - the search query
+        Returns:
+            (list[SearchSection]) - search results, divided into sections
+        """
+        search_component = SearchConcreteDecoratorGenre(SearchConcreteComponent())
         results = search_component.operation(query)
         return results

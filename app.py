@@ -6,6 +6,7 @@ from ProductionCode.datasource import DataSource
 from ProductionCode.search_strategies import (
     ConcreteSearchStrategyAll,
     ConcreteSearchStrategyAuthor,
+    ConcreteSearchStrategyGenre,
     ConcreteSearchStrategyTitle,
     SearchContext,
 )
@@ -80,6 +81,8 @@ def search():
         if search_type == "title"
         else ConcreteSearchStrategyAuthor()
         if search_type == "author"
+        else ConcreteSearchStrategyGenre()
+        if search_type == "genre"
         else ConcreteSearchStrategyAll()
     )
     search_context = SearchContext(search_strategy)

@@ -25,7 +25,7 @@ class SearchConcreteComponent(SearchComponent):
         return []
 
 
-class SearchDecorator:
+class SearchDecorator(SearchComponent):
     """
     SearchDecorator defines wrapping interface for all Concrete Decorators
     """
@@ -85,6 +85,36 @@ class SearchConcreteDecoratorAuthor(SearchDecorator):
         ds = DataSource()
         results = ds.books_search_author(query)
         section = SearchSection("Author", "author", results)
+        return section
+
+
+class SearchConcreteDecoratorGenre(SearchDecorator):
+    """
+    Appends author search to the list
+    """
+
+    def operation(self, query) -> list[SearchSection]:
+        """
+        Author search
+        Arguments:
+            query (str) - the search query
+        Returns:
+            (list[SearchSection]) - search results divided into sections
+        """
+        search_genre = self.search_genre(query)
+        return self.search_component.operation(query) + [search_genre]
+
+    def search_genre(self, query):
+        """
+        Author search database call
+        Arguments:
+            query (str) - the search query
+        Returns:
+            (SearchSection) - author search section
+        """
+        ds = DataSource()
+        results = ds.books_search_genre(query)
+        section = SearchSection("Genre", "genre", results)
         return section
 
 

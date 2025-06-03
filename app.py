@@ -3,6 +3,7 @@
 import json
 from flask import Flask, render_template, request
 from ProductionCode.datasource import DataSource
+from ProductionCode.search_section import SearchSection, SearchSectionBook
 from ProductionCode.search_strategies import (
     ConcreteSearchStrategyAll,
     ConcreteSearchStrategyAuthor,
@@ -98,11 +99,18 @@ def books():
     """The endpoint for books page"""
     ds = DataSource()
     # replace later
-    book_list = ds.books_search_title("")
-    return render_template("books.html", books=book_list)
+    sections = ds.books_search_titles_to_sections("")
 
+    return render_template("books.html", results = sections)
 
-@app.route("/genres/<genre>")
+@app.route("/books/<letter>")
+def books_starts_with(letter):
+    """The endpoint for books page"""
+    ds = DataSource()
+    sections = ds.books_search_titles_to_sections(letter)
+    return render_template("books.html", results = sections)
+
+@app.route("/genre/<genre>")
 def genres(genre):
     """The endpoint for genre page"""
     ds = DataSource()
@@ -127,7 +135,7 @@ def genres_list():
     )
 
 
-@app.route("/authors/<author>")
+@app.route("/author/<author>")
 def authors(author):
     """The endpoint for author page"""
     ds = DataSource()

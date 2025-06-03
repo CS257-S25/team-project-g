@@ -8,6 +8,7 @@ import ProductionCode.psql_config as config
 from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban
 from ProductionCode.rank import Rank
+from ProductionCode.search_section import SearchSectionBook
 
 
 class DataSource:
@@ -172,7 +173,7 @@ class DataSource:
         Returns:
             (list[Book]): a list of Book objects where titles contain search_term
         """
-        query = "SELECT * FROM books WHERE title ILIKE %s"
+        query = "SELECT * FROM books WHERE title ILIKE %s ORDER BY title ASC"
         args = ("%" + search_term + "%",)
 
         try:
@@ -216,6 +217,53 @@ class DataSource:
         books = self.database_row_list_to_book_list(results)
         return books
 
+    def search_author(self, search_term) -> list[str]:
+        """Searches books database for authors that match search term
+        Args:
+            search_term (str): the author being searched for
+        Returns:
+            list (str): a list of authors that match the search term
+        """
+        query = (
+            "SELECT DISTINCT author FROM books, unnest(authors) AS author WHERE author ILIKE %s;"
+        )
+        args = ("%" + search_term + "%",)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find book with that author: ", e)
+            sys.exit()
+
+        authors = list(map(lambda result: result[0], results))
+        return authors
+    def search_genre(self, search_term) -> list[str]:
+        """Searches books database for genres that match search term
+        Args:
+            search_term (str): the genre being searched for
+        Returns:
+            list (str): a list of genres that match the search term
+        """
+        query = (
+            "SELECT DISTINCT genre FROM books, unnest(genres) AS genre WHERE genre ILIKE %s;"
+        )
+        args = ("%" + search_term + "%",)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find book with that genre: ", e)
+            sys.exit()
+
+        genres = list(map(lambda result: result[0], results))
+        return genres
+
     def books_search_genre(self, search_term) -> list[Book]:
         """Searches books database for authors that match search term
         Args:
@@ -244,6 +292,7 @@ class DataSource:
 
         books = self.database_row_list_to_book_list(results)
         return books
+
     # def books_search_genre(self, search_term) -> list[Book]:
     #     """Searches books database for genres that match search term
     #     Args:
@@ -459,8 +508,39 @@ class DataSource:
             print("Error getting most banned books: ", e)
             sys.exit()
 
-        books = list(
-            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
-        )
+        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
         return books
+
+    def books_search_titles_to_sections(self, search_term) -> list[Book]:
+        """Searches books database for titles containing search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            (list[Book]): a list of Book objects where titles contain search_term
+        """
+        query = "SELECT * FROM books WHERE title ILIKE %s ORDER BY title ASC"
+        args = (search_term + "%",)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find a book with that title: ", e)
+            sys.exit()
+
+        books = self.database_row_list_to_book_list(results)
+        sections = self.books_to_sections(books)
+        return sections 
+    
+    def books_to_sections(self, books) -> list[SearchSectionBook]:
+        sections = {}
+        for book in books:
+            letter = book.title[0]
+            section = sections.setdefault(letter, SearchSectionBook(letter, letter, []))
+            section.results.append(book)
+
+        sections_list = list(sections.values())
+        return sections_list

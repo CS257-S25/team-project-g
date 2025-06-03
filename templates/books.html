@@ -5,23 +5,80 @@
   <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
   <link rel="stylesheet" href="{{url_for('static', filename='books.css') }}">
   <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
-  <link rel="stylesheet" href="{{url_for('static', filename='book-cover.css')}}">
 </head>
 
 <body>
-    <!-- Navbar -->
-     {% include 'nav.html' %}
-     <!-- Header -->
-      <div class="header">
-        <h1>Banned Books</h1>
-      </div>
-      <!-- Content -->
-       <div class="main">
-              {% for book in books[:300] %}
-            {% include 'book-cover.html' %}
+  <!-- Navbar -->
+  {% include 'nav.html' %}
+  <!-- Header -->
+  <div class="header">
+    <h1>Banned Books</h1>
+  </div>
+  <!-- Content -->
+  <div class="main">
+    <!-- <div class="alphabet"> -->
+    <ul class="alphabet">
+      <li class="{{ 'active' if request.path == '/books/a' else '' }}"><a href="/books/a">A</a></li>
+      <li class="{{ 'active' if request.path == '/books/b' else '' }}"><a href="/books/b">B</a></li>
+      <li class="{{ 'active' if request.path == '/books/c' else '' }}"><a href="/books/c">C</a></li>
+      <li class="{{ 'active' if request.path == '/books/d' else '' }}"><a href="/books/d">D</a></li>
+      <li class="{{ 'active' if request.path == '/books/e' else '' }}"><a href="/books/e">E</a></li>
+      <li class="{{ 'active' if request.path == '/books/f' else '' }}"><a href="/books/f">F</a></li>
+      <li class="{{ 'active' if request.path == '/books/g' else '' }}"><a href="/books/g">G</a></li>
+      <li class="{{ 'active' if request.path == '/books/h' else '' }}"><a href="/books/h">H</a></li>
+      <li class="{{ 'active' if request.path == '/books/i' else '' }}"><a href="/books/i">I</a></li>
+      <li class="{{ 'active' if request.path == '/books/j' else '' }}"><a href="/books/j">J</a></li>
+      <li class="{{ 'active' if request.path == '/books/k' else '' }}"><a href="/books/k">K</a></li>
+      <li class="{{ 'active' if request.path == '/books/l' else '' }}"><a href="/books/l">L</a></li>
+      <li class="{{ 'active' if request.path == '/books/m' else '' }}"><a href="/books/m">M</a></li>
+      <li class="{{ 'active' if request.path == '/books/n' else '' }}"><a href="/books/n">N</a></li>
+      <li class="{{ 'active' if request.path == '/books/o' else '' }}"><a href="/books/o">O</a></li>
+      <li class="{{ 'active' if request.path == '/books/p' else '' }}"><a href="/books/p">P</a></li>
+      <li class="{{ 'active' if request.path == '/books/q' else '' }}"><a href="/books/q">Q</a></li>
+      <li class="{{ 'active' if request.path == '/books/r' else '' }}"><a href="/books/r">R</a></li>
+      <li class="{{ 'active' if request.path == '/books/s' else '' }}"><a href="/books/s">S</a></li>
+      <li class="{{ 'active' if request.path == '/books/t' else '' }}"><a href="/books/t">T</a></li>
+      <li class="{{ 'active' if request.path == '/books/u' else '' }}"><a href="/books/u">U</a></li>
+      <li class="{{ 'active' if request.path == '/books/v' else '' }}"><a href="/books/v">V</a></li>
+      <li class="{{ 'active' if request.path == '/books/w' else '' }}"><a href="/books/w">W</a></li>
+      <li class="{{ 'active' if request.path == '/books/x' else '' }}"><a href="/books/x">X</a></li>
+      <li class="{{ 'active' if request.path == '/books/y' else '' }}"><a href="/books/y">Y</a></li>
+      <li class="{{ 'active' if request.path == '/books/z' else '' }}"><a href="/books/z">Z</a></li>
+    </ul>
 
+    <!-- </div> -->
+    <div class="results">
+      {% for result_section in results %}
+      {% if result_section.results %}
+      <div class="result-section">
+        <div class="heading">
+
+          <h2>{{result_section.heading}}</h2>
+          {% if type == 'all'%}
+          <div class="a-wrapper"><a href="/search?searchterm={{query}}&type={{result_section.search_type}}">Search only
+              {{result_section.heading}}s</a></div>
+          {% endif %}
+        </div>
+        {% for book in result_section.results %}
+        <div class="book">
+          <div class="cover-wrapper">
+            <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}" class="cover">
+          </div>
+          <div class="book-content">
+            <p class="book-title"><a href="details/{{book.isbn}}">{{ book.title }} </a><span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
       {% endfor %}
-           </div>
+    </div>
 </body>
 
 </html>

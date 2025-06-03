@@ -21,7 +21,7 @@
             {% for genre in book.details.genres %}
               {% if genre not in genres_seen.genres %}
                 {% set _ = genres_seen.genres.append(genre) %}
-                <li><a href="/genres/{{ genre }}">{{ genre }}</a></li>
+                <li><a href="/genre/{{ genre }}">{{ genre }}</a></li>
               {% endif %}
             {% endfor %}
           {% endif %}
@@ -48,7 +48,7 @@
             </a>
           {% endfor %}
         </div>
-        <a class="see-more" href="/genres/Fiction">See more…</a>
+        <a class="see-more" href="/genre/Fiction">See more…</a>
       </div>
 
       <!-- Romance Section -->
@@ -67,7 +67,7 @@
             </a>
           {% endfor %}
         </div>
-        <a class="see-more" href="/genres/Romance">See more…</a>
+        <a class="see-more" href="/genre/Romance">See more…</a>
       </div>
 
       <!-- Childrens Section -->
@@ -86,7 +86,7 @@
             </a>
           {% endfor %}
         </div>
-        <a class="see-more" href="/genres/Childrens">See more…</a>
+        <a class="see-more" href="/genre/Childrens">See more…</a>
       </div>
     </div>
   </div>

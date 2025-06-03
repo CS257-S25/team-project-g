@@ -8,6 +8,7 @@ import ProductionCode.psql_config as config
 from ProductionCode.book import Book
 from ProductionCode.bookban import Bookban
 from ProductionCode.rank import Rank
+from ProductionCode.search_section import SearchSectionBook
 
 
 class DataSource:
@@ -41,17 +42,17 @@ class DataSource:
             sys.exit()
         return connection
 
-    def database_row_list_to_book_list(self, row_list) -> list[Book]:
+    def _database_row_list_to_book_list(self, row_list) -> list[Book]:
         """Helper method for converting database results to a list of Book objects
         Args:
             row_list (list[Tuple]): a list of rows from an sql query
         Returns:
             (list[Book]): a list of Book objects
         """
-        books = list(map(self.database_row_to_book, row_list))
+        books = list(map(self._database_row_to_book, row_list))
         return books
 
-    def database_row_to_book(self, row) -> Book:
+    def _database_row_to_book(self, row) -> Book:
         """Helper method for converting a database row to a Book object
         Args:
             row (Tuple): a row from the sql query
@@ -68,16 +69,16 @@ class DataSource:
         book = Book(isbn=row[0], title=row[1], authors=row[2], details=details)
         return book
 
-    def database_row_list_to_bookban_list(self, row_list) -> list[Bookban]:
+    def _database_row_list_to_bookban_list(self, row_list) -> list[Bookban]:
         """Helper method for converting database results to a list of Bookban objects
         Args:
             row_list (list[Tuple]): a list of rows from an sql query
         Returns:
             (list[Bookban]): a list of Bookban objects
         """
-        return list(map(self.database_row_to_bookban, row_list))
+        return list(map(self._database_row_to_bookban, row_list))
 
-    def database_row_to_bookban(self, row) -> Bookban:
+    def _database_row_to_bookban(self, row) -> Bookban:
         """Helper method for converting a database row to a Bookban object
         Args:
             row (Tuple): a row from the sql query
@@ -101,16 +102,16 @@ class DataSource:
         )
         return bookban
 
-    def database_row_list_to_rank_list(self, row_list) -> list[Rank]:
+    def _database_row_list_to_rank_list(self, row_list) -> list[Rank]:
         """Helper method for converting a list of rank tuple to a list of Ranks
         Args:
             row (str,int): a name and the number of associated bans
         Returns:
             (Rank): a Rank object
         """
-        return list(map(self.database_row_to_rank, row_list))
+        return list(map(self._database_row_to_rank, row_list))
 
-    def database_row_to_rank(self, row) -> Rank:
+    def _database_row_to_rank(self, row) -> Rank:
         """Helper method for converting a rank tuple to a Rank object
         Args:
             row (str,int): a name and the number of associated bans
@@ -119,6 +120,23 @@ class DataSource:
         """
         rank = Rank(name=row[0], bans=row[1])
         return rank
+
+    def _books_to_sections(self, books) -> list[SearchSectionBook]:
+        """Helper method to convert a list of books into a list of sections for each letter
+        Args:
+            books (list[Book]): a list of books
+        Returns:
+            (list[SearchSectionBook]): a list of SearchSectionBooks
+
+        """
+        sections = {}
+        for book in books:
+            letter = book.title[0]
+            section = sections.setdefault(letter, SearchSectionBook(letter, letter, []))
+            section.results.append(book)
+
+        sections_list = list(sections.values())
+        return sections_list
 
     def book_from_isbn(self, isbn):
         """Queries book database based on ISBN
@@ -139,7 +157,7 @@ class DataSource:
             print("Couldn't find a book with that ISBN: ", e)
             sys.exit()
         if results:
-            book = self.database_row_to_book(results)
+            book = self._database_row_to_book(results)
             return book
         return None
 
@@ -162,7 +180,7 @@ class DataSource:
             print("Couldn't find banned book from that ISBN ", e)
             sys.exit()
 
-        bans = self.database_row_list_to_bookban_list(results)
+        bans = self._database_row_list_to_bookban_list(results)
         return bans
 
     def books_search_title(self, search_term) -> list[Book]:
@@ -172,7 +190,7 @@ class DataSource:
         Returns:
             (list[Book]): a list of Book objects where titles contain search_term
         """
-        query = "SELECT * FROM books WHERE title ILIKE %s"
+        query = "SELECT * FROM books WHERE title ILIKE %s ORDER BY title ASC"
         args = ("%" + search_term + "%",)
 
         try:
@@ -184,7 +202,7 @@ class DataSource:
             print("Couldn't find a book with that title: ", e)
             sys.exit()
 
-        books = self.database_row_list_to_book_list(results)
+        books = self._database_row_list_to_book_list(results)
         return books
 
     def books_search_author(self, search_term) -> list[Book]:
@@ -213,8 +231,55 @@ class DataSource:
             print("Couldn't find book with that author: ", e)
             sys.exit()
 
-        books = self.database_row_list_to_book_list(results)
+        books = self._database_row_list_to_book_list(results)
         return books
+
+    def search_author(self, search_term) -> list[str]:
+        """Searches books database for authors that match search term
+        Args:
+            search_term (str): the author being searched for
+        Returns:
+            list (str): a list of authors that match the search term
+        """
+        query = (
+            "SELECT DISTINCT author FROM books, unnest(authors)"
+            " AS author WHERE author ILIKE %s;"
+        )
+        args = ("%" + search_term + "%",)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find book with that author: ", e)
+            sys.exit()
+
+        authors = list(map(lambda result: result[0], results))
+        return authors
+
+    def search_genre(self, search_term) -> list[str]:
+        """Searches books database for genres that match search term
+        Args:
+            search_term (str): the genre being searched for
+        Returns:
+            list (str): a list of genres that match the search term
+        """
+        query = "SELECT DISTINCT genre FROM books, unnest(genres) AS genre WHERE genre ILIKE %s;"
+        args = ("%" + search_term + "%",)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find book with that genre: ", e)
+            sys.exit()
+
+        genres = list(map(lambda result: result[0], results))
+        return genres
 
     def books_search_genre(self, search_term) -> list[Book]:
         """Searches books database for authors that match search term
@@ -242,8 +307,9 @@ class DataSource:
             print("Couldn't find book with that author: ", e)
             sys.exit()
 
-        books = self.database_row_list_to_book_list(results)
+        books = self._database_row_list_to_book_list(results)
         return books
+
     # def books_search_genre(self, search_term) -> list[Book]:
     #     """Searches books database for genres that match search term
     #     Args:
@@ -294,7 +360,7 @@ class DataSource:
             print("Error getting most banned authors: ", e)
             sys.exit()
 
-        ranks = self.database_row_list_to_rank_list(results)
+        ranks = self._database_row_list_to_rank_list(results)
 
         return ranks
 
@@ -319,7 +385,7 @@ class DataSource:
             print("Error getting most banned districts: ", e)
             sys.exit()
 
-        ranks = self.database_row_list_to_rank_list(results)
+        ranks = self._database_row_list_to_rank_list(results)
 
         return ranks
 
@@ -344,7 +410,7 @@ class DataSource:
             print("Error getting most banned states: ", e)
             sys.exit()
 
-        ranks = self.database_row_list_to_rank_list(results)
+        ranks = self._database_row_list_to_rank_list(results)
         return ranks
 
     def get_most_banned_states_with_isbn(self, max_results, isbn):
@@ -370,7 +436,7 @@ class DataSource:
             print("Error getting most banned states: ", e)
             sys.exit()
 
-        ranks = self.database_row_list_to_rank_list(results)
+        ranks = self._database_row_list_to_rank_list(results)
         return ranks
 
     def get_most_banned_titles(self, max_results):
@@ -395,7 +461,7 @@ class DataSource:
             print("Error getting most banned titles: ", e)
             sys.exit()
 
-        ranks = self.database_row_list_to_rank_list(results)
+        ranks = self._database_row_list_to_rank_list(results)
 
         return ranks
 
@@ -432,7 +498,7 @@ class DataSource:
             print("Error getting most banned genres: ", e)
             sys.exit()
 
-        ranks = self.database_row_list_to_rank_list(results)
+        ranks = self._database_row_list_to_rank_list(results)
 
         return ranks
 
@@ -464,3 +530,27 @@ class DataSource:
         )
 
         return books
+
+    def books_search_titles_to_sections(self, search_term) -> list[SearchSectionBook]:
+        """Searches books database for titles beginning with search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            (list[SearchSectionBook]): a list of SearchSectionBook objects where each section
+            begins with the letter in the alphabet
+        """
+        query = "SELECT * FROM books WHERE title ILIKE %s ORDER BY title ASC"
+        args = (search_term + "%",)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find a book with that title: ", e)
+            sys.exit()
+
+        books = self._database_row_list_to_book_list(results)
+        sections = self._books_to_sections(books)
+        return sections

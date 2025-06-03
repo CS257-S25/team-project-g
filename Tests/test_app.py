@@ -11,8 +11,7 @@ from app import app
 
 from ProductionCode.rank import Rank
 
-from Tests.mock_data import mock_book
-from Tests.mock_data import mock_ban
+from Tests.mock_data import mock_book, mock_ban, mock_search_section
 
 
 class TestAppPages(unittest.TestCase):
@@ -98,7 +97,9 @@ class TestAppPages(unittest.TestCase):
             b'<p class="book-title"><a href="details/440236924">Kaleidoscope </a>',
             response.data,
         )
+        print(response.data.decode())
 
+    # TODO: FIX THIS TEST
     @patch("ProductionCode.datasource.DataSource.books_search_author")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_author(
@@ -142,7 +143,7 @@ class TestAppPages(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
         mock_books_search_title.return_value = [mock_book]
 
-        response = self.app.get("genres/Fiction")
+        response = self.app.get("genre/Fiction")
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Fiction</h1>", response.data)
@@ -174,7 +175,7 @@ class TestAppPages(unittest.TestCase):
         mock_connect.return_value = self.mock_conn
         mock_books_search_author.return_value = [mock_book]
 
-        response = self.app.get("authors/Danielle Steel")
+        response = self.app.get("author/Danielle Steel")
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Danielle Steel</h1>", response.data)

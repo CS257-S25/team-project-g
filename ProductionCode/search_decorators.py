@@ -4,7 +4,7 @@ from ProductionCode.datasource import DataSource
 from ProductionCode.search_section import SearchSection
 
 
-class SearchComponent:
+class SearchComponent:  # pylint: disable=too-few-public-methods
     """
     The base SearchComponent interface defines operations that can be altered by
     decorators.
@@ -15,7 +15,7 @@ class SearchComponent:
         return []
 
 
-class SearchConcreteComponent(SearchComponent):
+class SearchConcreteComponent(SearchComponent):  # pylint: disable=too-few-public-methods
     """
     SearchConcreteComponent provides default implimentation for SearchComponent interface
     """

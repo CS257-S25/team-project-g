@@ -11,7 +11,7 @@ from ProductionCode.search_decorators import (
 )
 
 
-class SearchStrategy(ABC):
+class SearchStrategy(ABC):  # pylint: disable=too-few-public-methods
     """Interface for defining search functionality of sections"""
 
     @abstractmethod
@@ -25,7 +25,7 @@ class SearchStrategy(ABC):
         """
 
 
-class SearchContext:
+class SearchContext:  # pylint: disable=too-few-public-methods
     """
     Defines the interface that is interacted with by the client
     """
@@ -54,12 +54,12 @@ class SearchContext:
     #     return self._search_strategy
 
 
-class ConcreteSearchStrategyAll(SearchStrategy):
+class ConcreteSearchStrategyAll(SearchStrategy):  # pylint: disable=too-few-public-methods
     """
     Strategy that searches by authors, titles, genres, and isbn
     """
 
-    def search(self, query) -> list[SearchSection]:
+    def search(self, query) -> list[SearchSection]:  # pylint: disable=too-few-public-methods
         """
         Searches books database
         Arguments:
@@ -80,7 +80,7 @@ class ConcreteSearchStrategyAll(SearchStrategy):
         return results
 
 
-class ConcreteSearchStrategyTitle(SearchStrategy):
+class ConcreteSearchStrategyTitle(SearchStrategy):  # pylint: disable=too-few-public-methods
     """
     Strategy that searches for titles
     """
@@ -98,7 +98,7 @@ class ConcreteSearchStrategyTitle(SearchStrategy):
         return results
 
 
-class ConcreteSearchStrategyAuthor(SearchStrategy):
+class ConcreteSearchStrategyAuthor(SearchStrategy):  # pylint: disable=too-few-public-methods
     """
     Strategy that searches for authors
     """
@@ -116,7 +116,7 @@ class ConcreteSearchStrategyAuthor(SearchStrategy):
         return results
 
 
-class ConcreteSearchStrategyGenre(SearchStrategy):
+class ConcreteSearchStrategyGenre(SearchStrategy):  # pylint: disable=too-few-public-methods
     """
     Strategy that searches for genres
     """

@@ -88,7 +88,6 @@ def search():
     )
     search_context = SearchContext(search_strategy)
     results = search_context.search(query)
-    print(results)
     return render_template(
         "search.html", query=query, type=search_type, results=results
     )
@@ -101,14 +100,16 @@ def books():
     # replace later
     sections = ds.books_search_titles_to_sections("")
 
-    return render_template("books.html", results = sections)
+    return render_template("books.html", results=sections)
+
 
 @app.route("/books/<letter>")
 def books_starts_with(letter):
     """The endpoint for books page"""
     ds = DataSource()
     sections = ds.books_search_titles_to_sections(letter)
-    return render_template("books.html", results = sections)
+    return render_template("books.html", results=sections)
+
 
 @app.route("/genre/<genre>")
 def genres(genre):

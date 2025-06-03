@@ -156,7 +156,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
 
         self.assertEqual(str(results), str(expected))
 
-    @patch("ProductionCode.datasource.DataSource.database_row_list_to_bookban_list")
+    @patch("ProductionCode.datasource.DataSource._database_row_list_to_bookban_list")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_bans_from_isbn(self, mock_connect, mock_database_row_list_to_bookban_list):
         """Tests search book bans by isbn method for bookbans database"""
@@ -202,7 +202,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = mock_book
 
-        results = ds.database_row_to_book(
+        results = ds._database_row_to_book(
             (
                 "440236924",
                 "Kaleidoscope",
@@ -217,7 +217,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         self.assertEqual(str(results), str(expected))
 
-    @patch("ProductionCode.datasource.DataSource.database_row_to_book")
+    @patch("ProductionCode.datasource.DataSource._database_row_to_book")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_database_row_list_to_book_list(
         self, mock_connect, mock_database_row_to_book
@@ -231,7 +231,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [mock_book, mock_book]
 
-        results = ds.database_row_list_to_book_list(
+        results = ds._database_row_list_to_book_list(
             [
                 (
                     "440236924",
@@ -273,7 +273,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             " banned in Martin County Schools, Florida as of 3, 2023"
         )
 
-        result = ds.database_row_to_bookban(
+        result = ds._database_row_to_bookban(
             (
                 "440236924",
                 "Florida",
@@ -287,7 +287,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         self.assertEqual(str(result), expected)
 
-    @patch("ProductionCode.datasource.DataSource.database_row_to_bookban")
+    @patch("ProductionCode.datasource.DataSource._database_row_to_bookban")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_database_row_list_to_bookban_list(
         self, mock_connect, mock_database_row_to_bookban
@@ -306,7 +306,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             " banned in Martin County Schools, Florida as of 3, 2023",
         ]
 
-        result = ds.database_row_list_to_bookban_list(
+        result = ds._database_row_list_to_bookban_list(
             [
                 (
                     "440236924",
@@ -338,11 +338,11 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = Rank("Florida", 50)
 
-        result = ds.database_row_to_rank(("Florida", 50))
+        result = ds._database_row_to_rank(("Florida", 50))
 
         self.assertEqual(str(expected), str(result))
 
-    @patch("ProductionCode.datasource.DataSource.database_row_to_rank")
+    @patch("ProductionCode.datasource.DataSource._database_row_to_rank")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_database_row_list_to_rank_list(
         self, mock_connect, mock_database_row_to_rank
@@ -355,7 +355,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [Rank("Florida", 50), Rank("Florida", 50)]
 
-        result = ds.database_row_list_to_rank_list([("Florida", 50), ("Florida", 50)])
+        result = ds._database_row_list_to_rank_list([("Florida", 50), ("Florida", 50)])
 
         self.assertEqual(list(map(str, result)), list(map(str, expected)))
 

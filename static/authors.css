@@ -14,6 +14,7 @@ h3 {
   font-size: 1.75rem;
 }
 
+/* ─── Outer UL: three columns for all letter groups ─── */
 body > ul {
   list-style: none;
   margin: 0 auto 2em;
@@ -23,17 +24,18 @@ body > ul {
   column-gap: 2em;
 }
 
-body > ul li {
+/* ─── Each “letter-group” should not split across columns ─── */
+body > ul li.letter-group {
   break-inside: avoid;
-  margin-bottom: 0.75em;
+  margin-bottom: 1.5em; /* space between letter blocks */
 }
 
-/* ─── 2.1. Style for the “boxed” initial headers ─── */
+/* ─── The boxed letter header ─── */
 .initial-box {
-  /* Make sure no bullet appears */
+  /* Remove default bullet */
   list-style: none;
-  
-  /* Bold, slightly larger text */
+
+  /* Slightly larger, bold text */
   font-size: 1.25rem;
   font-weight: bold;
 
@@ -41,15 +43,26 @@ body > ul li {
   border: 2px solid var(--text);
   border-radius: 4px;
   padding: 0.25em 0.5em;
-  display: inline-block; /* So it only wraps the letter */
+  display: inline-block;
 
-  /* Spacing: a bit of separation from surrounding authors */
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  /* Add some spacing below for its sub-list */
+  margin-bottom: 0.5em;
 }
 
-/* ─── 2.2. Style each author entry ─── */
-.author-item a {
+/* ─── Nested UL for authors under each letter ─── */
+.authors-sublist {
+  list-style: none;
+  margin: 0.25em 0 0 0;
+  padding-left: 0;
+}
+
+/* ─── Individual author entries ─── */
+.authors-sublist li.author-item {
+  margin-bottom: 0.5em;
+}
+
+/* ─── Style the author link ─── */
+.authors-sublist li.author-item a {
   display: block;
   padding: 0.25em 0;
   color: inherit;
@@ -58,6 +71,6 @@ body > ul li {
   transition: border-color 0.2s;
 }
 
-.author-item a:hover {
+.authors-sublist li.author-item a:hover {
   border-color: var(--text);
 }

@@ -13,7 +13,6 @@
   <h3>Authors</h3>
 
   <ul>
-    {# 1. Build a deduplicated list of all authors (as before) #}
     {% set all_authors = [] %}
     {% for book in books %}
       {% for author in book.authors %}
@@ -22,24 +21,24 @@
         {% endif %}
       {% endfor %}
     {% endfor %}
-
-    {# 2. Sort them once, and track “previous initial” #}
     {% set sorted_authors = all_authors | sort %}
-    {% set prev_initial = None %}
 
-    {% for author in sorted_authors %}
-      {# Determine the uppercase first letter of the current author #}
-      {% set initial = author[0] | upper %}
-
-      {# If this initial is different from the one before, emit a “boxed” header #}
-      {% if initial != prev_initial %}
-        <li class="initial-box">{{ initial }}</li>
-        {% set prev_initial = initial %}
-      {% endif %}
-
-      {# Now emit the actual author link #}
-      <li class="author-item">
-        <a href="/author/{{ author }}">{{ author }}</a>
+    {% set letters = [
+      'A','B','C','D','E','F','G','H','I','J','K','L','M',
+      'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+    ] %}
+    {% for letter in letters %}
+      <li class="letter-group">
+        <div class="initial-box">{{ letter }}</div>
+        <ul class="authors-sublist">
+          {% for author in sorted_authors %}
+            {% if author[0] | upper == letter %}
+              <li class="author-item">
+                <a href="/author/{{ author }}">{{ author }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
       </li>
     {% endfor %}
   </ul>

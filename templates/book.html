@@ -1,90 +1,21 @@
-<!-- templates/book.html -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ book_isbn.title }}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='bookstyle.css') }}">
-</head>
-
-<body>
-  <!-- NAVBAR -->
-  {% include 'nav.html' %}
-  <div class="page">
-    <div class="book-details">
-      <!-- LEFT COLUMN -->
-      <div class="left">
-        <div class="cover">
-          <img src="{{url_for('static', filename='no-cover.png')}}" alt="Cover of {{ book_isbn.title }}" />
-        </div>
-        <div class="meta">
-          <p class="meta-title">{{ book_isbn.title }}</p>
-          <p class="meta-author">
-            {% for author in book_isbn.authors %}
-            <a href="{{ url_for('authors', author=author) }}" class="meta-author">{{ author }}</a>{% if not loop.last
-            %}, {% endif %}
-            {% endfor %}
-          </p>
-          <p class="meta-rating">Rating: {{ book_isbn.details.rating }}</p>
-        </div>
-
-        <section class="ban-records">
-          <h3>Banning Records</h3>
-          {% if ban_isbn %}
-          {% for ban in ban_isbn %}
-          <div class="ban-record">
-            <p><strong>Date:</strong> {{ ban.details.ban_month }}/{{ ban.details.ban_year }}</p>
-            <p><strong>State:</strong> {{ ban.location.state }}</p>
-            <p><strong>District:</strong> {{ ban.location.district }}</p>
-            <p><strong>Status:</strong> {{ ban.details.ban_status }}</p>
-            <p><strong>Origin:</strong> {{ ban.details.ban_origin }}</p>
-          </div>
-          {% endfor %}
-          {% else %}
-          <p>No banning records found.</p>
-          {% endif %}
-        </section>
-      </div>
-
-      <!-- RIGHT COLUMN -->
-      <div class="right">
-        <h2 class="right-title">{{ book_isbn.title }}</h2>
-        <p class="right-published">
-          Published: {{ book_isbn.details.publish_date }}
-        </p>
-
-        <section class="summary">
-          <h3>Summary</h3>
-          <p>{{ book_isbn.details.summary }}</p>
-        </section>
-
-        <section class="genres">
-
-          {% if book_isbn.details.genres %}
-          <h3>Genres</h3>
-          <div class="genre-list">
-            {% for genre in book_isbn.details.genres %}
-            <a href="/genre/{{ genre }}" class="genre-btn">{{ genre }}</a>
-            {% endfor %}
-
-          </div>
-          {% endif %}
-        </section>
-
-        <section class="map-section">
-          <meta name="isbn" content="{{book_isbn.isbn}}"/>
-          <div class="map" id="map">
-          </div>
-          <script type="module" src="{{url_for('static', filename='map-book.js')}}"></script>
-        </section>
-
-      </div>
+<section class="ban-records">
+  <button id="ban-toggle" class="ban-toggle-btn" type="button">
+    Show Banning Records
+  </button>
+  <div id="ban-records-content" class="ban-records-content" style="display: none;">
+    <h3>Banning Records</h3>
+    {% if ban_isbn %}
+    {% for ban in ban_isbn %}
+    <div class="ban-record">
+      <p><strong>Date:</strong> {{ ban.details.ban_month }}/{{ ban.details.ban_year }}</p>
+      <p><strong>State:</strong> {{ ban.location.state }}</p>
+      <p><strong>District:</strong> {{ ban.location.district }}</p>
+      <p><strong>Status:</strong> {{ ban.details.ban_status }}</p>
+      <p><strong>Origin:</strong> {{ ban.details.ban_origin }}</p>
     </div>
+    {% endfor %}
+    {% else %}
+    <p>No banning records found.</p>
+    {% endif %}
   </div>
-</body>
-
-</html>
+</section>

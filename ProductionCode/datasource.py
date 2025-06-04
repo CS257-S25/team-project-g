@@ -242,8 +242,7 @@ class DataSource:
             list (str): a list of authors that match the search term
         """
         query = (
-            "SELECT DISTINCT author FROM books, unnest(authors)"
-            " AS author WHERE author ILIKE %s;"
+            "SELECT DISTINCT author FROM books, unnest(authors) AS author WHERE author ILIKE %s;"
         )
         args = ("%" + search_term + "%",)
 
@@ -525,13 +524,11 @@ class DataSource:
             print("Error getting most banned books: ", e)
             sys.exit()
 
-        books = list(
-            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
-        )
+        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
 
         return books
 
-    def books_search_titles_to_sections(self, search_term) -> list[SearchSectionBook]:
+    def books_search_title_to_sections(self, search_term) -> list[SearchSectionBook]:
         """Searches books database for titles beginning with search term
         Args:
             search_term (str): the string being searched for
@@ -553,4 +550,74 @@ class DataSource:
 
         books = self._database_row_list_to_book_list(results)
         sections = self._books_to_sections(books)
+        return sections
+
+    def books_search_genre_to_sections(self, search_term) -> list[SearchSectionBook]:
+        """Searches books database for genres matching search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            (list[SearchSectionBook]): a list of SearchSectionBook objects where each section
+            begins with the letter in the alphabet
+        """
+        # query = "SELECT * FROM books WHERE title ILIKE %s ORDER BY title ASC"
+
+        query = (
+            "SELECT * FROM books "
+            "WHERE EXISTS ("
+            "SELECT 1 "
+            "FROM unnest(genres) AS genre "
+            "WHERE genre ILIKE %s"
+            ") "
+            "ORDER BY title ASC;"
+        )
+        args = (search_term,)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find a book with that title: ", e)
+            sys.exit()
+
+        books = self._database_row_list_to_book_list(results)
+        sections = self._books_to_sections(books)
+        print(sections)
+        return sections
+
+    def books_search_author_to_sections(self, search_term) -> list[SearchSectionBook]:
+        """Searches books database for authors matching search term
+        Args:
+            search_term (str): the string being searched for
+        Returns:
+            (list[SearchSectionBook]): a list of SearchSectionBook objects where each section
+            begins with the letter in the alphabet
+        """
+        # query = "SELECT * FROM books WHERE title ILIKE %s ORDER BY title ASC"
+
+        query = (
+            "SELECT * FROM books "
+            "WHERE EXISTS ("
+            "SELECT 1 "
+            "FROM unnest(authors) AS author "
+            "WHERE author ILIKE %s"
+            ") "
+            "ORDER BY title ASC;"
+        )
+        args = (search_term,)
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query, args)
+            results = cursor.fetchall()
+
+        except psycopg2.Error as e:
+            print("Couldn't find a book with that title: ", e)
+            sys.exit()
+
+        books = self._database_row_list_to_book_list(results)
+        sections = self._books_to_sections(books)
+        print(sections)
         return sections

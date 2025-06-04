@@ -1,29 +1,49 @@
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{author}}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='author.css') }}">
 </head>
-<body>
-        {% include 'nav.html' %}
-      <div class="header">
-        <h1>{{ author }}</h1>
-      </div>
-      <!-- Content -->
-       <div class="main">
-              {% for book in books[:300] %}
-              <a href="/details/{{book.isbn}}">
-      <div class="book">
-        <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}">
-        <div class="hover">
-            <p class="title">{{book.title}}</p>
-            <p class="author">{{book.authors_to_string()}}</p>
-        </div>
-      </div></a>
 
+<body>
+  {% include 'nav.html' %}
+  <div class="header">
+    <h1>{{ author }}</h1>
+  </div>
+  <!-- Content -->
+  <div class="main">
+       <div class="results">
+      {% for result_section in results %}
+      {% if result_section.results %}
+      <div class="result-section">
+        <div class="heading">
+          <h2>{{result_section.heading}}</h2>
+        </div>
+        {% for book in result_section.results %}
+        <div class="book">
+          <div class="cover-wrapper">
+            <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}" class="cover">
+          </div>
+          <div class="book-content">
+            <p class="book-title"><a href="/details/{{book.isbn}}">{{ book.title }} </a><span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
       {% endfor %}
+    </div>
+  </div>
 </body>
+
 </html>

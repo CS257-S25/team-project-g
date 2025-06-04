@@ -98,7 +98,7 @@ def books():
     """The endpoint for books page"""
     ds = DataSource()
     # replace later
-    sections = ds.books_search_titles_to_sections("")
+    sections = ds.books_search_title_to_sections("")
 
     return render_template("books.html", results=sections)
 
@@ -107,7 +107,7 @@ def books():
 def books_starts_with(letter):
     """The endpoint for books page"""
     ds = DataSource()
-    sections = ds.books_search_titles_to_sections(letter)
+    sections = ds.books_search_title_to_sections(letter)
     return render_template("books.html", results=sections)
 
 
@@ -115,8 +115,8 @@ def books_starts_with(letter):
 def genres(genre):
     """The endpoint for genre page"""
     ds = DataSource()
-    book_list = ds.books_search_genre(genre)
-    return render_template("genre.html", books=book_list, genre=genre)
+    book_list = ds.books_search_genre_to_sections(genre)
+    return render_template("genre.html", results=book_list, genre=genre)
 
 
 @app.route("/genres")
@@ -140,8 +140,8 @@ def genres_list():
 def authors(author):
     """The endpoint for author page"""
     ds = DataSource()
-    book_list = ds.books_search_author(author)
-    return render_template("author.html", books=book_list, author=author)
+    book_list = ds.books_search_author_to_sections(author)
+    return render_template("author.html", results=book_list, author=author)
 
 
 @app.route("/most-banned-authors")
@@ -209,4 +209,4 @@ def get_most_banned_states_with_isbn():
 
 
 if __name__ == "__main__":
-    app.run(port=5132)
+    app.run(port=5131)

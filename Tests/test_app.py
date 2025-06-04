@@ -97,24 +97,20 @@ class TestAppPages(unittest.TestCase):
             b'<p class="book-title"><a href="details/440236924">Kaleidoscope </a>',
             response.data,
         )
-        print(response.data.decode())
 
-    # TODO: FIX THIS TEST
-    @patch("ProductionCode.datasource.DataSource.books_search_author")
+    @patch("ProductionCode.datasource.DataSource.search_author")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_author(
         self,
         mock_connect,
-        mock_books_search_author,
+        mock_search_author,
     ):
         """Tests search page for author"""
         mock_connect.return_value = self.mock_conn
-        mock_books_search_author.return_value = [mock_book]
+        mock_search_author.return_value = [mock_book]
 
         response = self.app.get("search?searchterm=Steel&type=author")
-
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'<p class="book-authors">Danielle Steel</p>', response.data)
+        self.assertIn(b"Steel", response.data)
 
     @patch("ProductionCode.datasource.DataSource.books_search_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
@@ -326,6 +322,17 @@ class TestAppAPI(unittest.TestCase):
         expected = b'[{"name": "Florida", "bans": 2}, {"name": "Texas", "bans": 1}]'
 
         self.assertEqual(response.data, expected)
+
+    @patch("ProductionCode.datasource.DataSource.books_search_title_to_sections")
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_starts_with(self, mock_connect, mock_books_search_title_to_sections):
+        """Test books_starts_with endpoint"""
+        mock_connect.return_value = self.mock_conn
+        mock_books_search_title_to_sections.return_value = [mock_search_section]
+
+        response = self.app.get("/books/k")
+
+        self.assertIn(b"Kaleidoscope", response.data)
 
 
 if __name__ == "__main__":

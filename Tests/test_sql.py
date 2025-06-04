@@ -8,6 +8,7 @@ from ProductionCode.datasource import DataSource
 
 from ProductionCode.rank import Rank
 
+from ProductionCode.search_section import SearchSectionBook
 from Tests.mock_data import mock_book
 from Tests.mock_data import mock_ban
 
@@ -216,6 +217,18 @@ class TestSQLHelperMethods(unittest.TestCase):
         )
 
         self.assertEqual(str(results), str(expected))
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_to_sections(self, _mock_connect):
+        """Converting book to section test"""
+
+        ds = DataSource()
+
+        expected = [SearchSectionBook("K", "k", [mock_book])]
+
+        results = ds._books_to_sections([mock_book])
+
+        self.assertEqual(expected[0].results, results[0].results)
 
     @patch("ProductionCode.datasource.DataSource._database_row_to_book")
     @patch("ProductionCode.datasource.psycopg2.connect")
@@ -494,6 +507,24 @@ class TestSQLExceptionBranches(unittest.TestCase):
             ds.books_search_author("someone")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search_author_error(self, mock_connect):
+        """Trigger the except-clause in search_author"""
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("fail")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.search_author("someone")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_search_genre_error(self, mock_connect):
+        """Trigger the except-clause in search_genre"""
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("fail")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.search_genre("someone")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_genre_error(self, mock_connect):
         """Trigger the except-clause in books_search_genre"""
         mock_connect.return_value = self.mock_conn
@@ -573,6 +604,33 @@ class TestSQLExceptionBranches(unittest.TestCase):
         ds = DataSource()
         with self.assertRaises(SystemExit):
             ds.get_most_banned_genres(1)
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_search_title_to_sections(self, mock_connect):
+        """Trigger the except-clause in books_search_title_to_sections"""
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.books_search_title_to_sections("no")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_search_genre_to_sections(self, mock_connect):
+        """Trigger the except-clause in books_search_genre_to_sections"""
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.books_search_genre_to_sections("no")
+
+    @patch("ProductionCode.datasource.psycopg2.connect")
+    def test_books_search_author_to_sections(self, mock_connect):
+        """Trigger the except-clause in books_search_author_to_sections"""
+        mock_connect.return_value = self.mock_conn
+        self.mock_cursor.execute.side_effect = psycopg2.Error("err")
+        ds = DataSource()
+        with self.assertRaises(SystemExit):
+            ds.books_search_author_to_sections("no")
 
 
 class TestSingleton(unittest.TestCase):

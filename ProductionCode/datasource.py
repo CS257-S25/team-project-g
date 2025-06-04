@@ -242,7 +242,8 @@ class DataSource:
             list (str): a list of authors that match the search term
         """
         query = (
-            "SELECT DISTINCT author FROM books, unnest(authors) AS author WHERE author ILIKE %s;"
+            "SELECT DISTINCT author FROM books, unnest(authors) AS author "
+            "WHERE author ILIKE %s;"
         )
         args = ("%" + search_term + "%",)
 
@@ -524,7 +525,9 @@ class DataSource:
             print("Error getting most banned books: ", e)
             sys.exit()
 
-        books = list(map(lambda result: (result[1], self.book_from_isbn(result[0])), results))
+        books = list(
+            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
+        )
 
         return books
 

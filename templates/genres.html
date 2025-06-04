@@ -12,22 +12,24 @@
 
   <div class="main">
     <!-- Sidebar: Genre List -->
-    <div class="sidebar">
-      <h2>Genres</h2>
-      <ul>
-        {% set genres_seen = namespace(genres=[]) %}
-        {% for book in books %}
-          {% if book.details.genres %}
-            {% for genre in book.details.genres %}
-              {% if genre not in genres_seen.genres %}
-                {% set _ = genres_seen.genres.append(genre) %}
-                <li><a href="/genre/{{ genre }}">{{ genre }}</a></li>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
+  <div class="sidebar">
+    <h2>Genres</h2>
+    <ul>
+      {% set genres_seen = [] %}
+      {% for book in books %}
+        {% if book.details.genres %}
+          {% for genre in book.details.genres %}
+            {% if genre not in genres_seen %}
+              {% set _ = genres_seen.append(genre) %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      {% for genre in genres_seen | sort %}
+        <li><a href="/genre/{{ genre }}">{{ genre }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
 
     <!-- Content: Genre Sections -->
     <div class="content">

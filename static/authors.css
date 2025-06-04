@@ -14,7 +14,7 @@ h3 {
   font-size: 1.75rem;
 }
 
-body>ul {
+body > ul {
   list-style: none;
   margin: 0 auto 2em;
   padding: 0;
@@ -23,12 +23,33 @@ body>ul {
   column-gap: 2em;
 }
 
-body>ul li {
+body > ul li {
   break-inside: avoid;
   margin-bottom: 0.75em;
 }
 
-body>ul li a {
+/* ─── 2.1. Style for the “boxed” initial headers ─── */
+.initial-box {
+  /* Make sure no bullet appears */
+  list-style: none;
+  
+  /* Bold, slightly larger text */
+  font-size: 1.25rem;
+  font-weight: bold;
+
+  /* Box around the letter */
+  border: 2px solid var(--text);
+  border-radius: 4px;
+  padding: 0.25em 0.5em;
+  display: inline-block; /* So it only wraps the letter */
+
+  /* Spacing: a bit of separation from surrounding authors */
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ─── 2.2. Style each author entry ─── */
+.author-item a {
   display: block;
   padding: 0.25em 0;
   color: inherit;
@@ -37,6 +58,6 @@ body>ul li a {
   transition: border-color 0.2s;
 }
 
-body>ul li a:hover {
+.author-item a:hover {
   border-color: var(--text);
 }

@@ -150,3 +150,28 @@ p.book-bans span {
   font-weight: bolder;
   color: var(--accent)
 }
+
+
+
+
+.page-list {
+  padding:1em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.page-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--text);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.page-btn:hover {
+  background: var(--light)
+}

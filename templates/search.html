@@ -47,8 +47,10 @@
         </div>
         {% endfor %}
         {% elif result_section.__class__.__name__ == 'SearchSectionPage' %}
-        {% for page in result_section.results %}
-        <div class="book">
+        <div class="page-list">
+          {% for page in result_section.results %}
+          <a class="page-btn" href="{{result_section.search_type}}/{{page}}">{{ page}} </a>
+        <!-- <div class="book">
           <div class="cover-wrapper">
           </div>
           <div class="book-content">
@@ -56,8 +58,9 @@
           </div>
           <div class="ban-content">
           </div>
-        </div>
+        </div> -->
         {% endfor %}
+        </div>
         {% endif %}
       </div>
       {% endif %}

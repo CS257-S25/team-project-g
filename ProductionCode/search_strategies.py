@@ -68,9 +68,9 @@ class ConcreteSearchStrategyAll(SearchStrategy):  # pylint: disable=too-few-publ
             (list[SearchSection]) - search results, divided into sections
         """
         search_component = SearchConcreteDecoratorLimitResults(
-            SearchConcreteDecoratorGenre(
+            SearchConcreteDecoratorTitle(
                 SearchConcreteDecoratorAuthor(
-                    SearchConcreteDecoratorTitle(
+                    SearchConcreteDecoratorGenre(
                         SearchConcreteDecoratorISBN(SearchConcreteComponent())
                     )
                 )

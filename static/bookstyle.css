@@ -145,12 +145,13 @@ section.map-section {
   padding-top: 2em;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
 div.map {
   padding: 1em;
-  width: 70%;
+  width: 100%;
   background-color: var(--lighter);
   border: 1px solid var(--text);
   border-radius: 4px;

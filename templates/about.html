@@ -2,8 +2,13 @@
 <head>
     <meta charset="UTF-8">
     <title>About - Banned Books Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
 </head>
 <body>
+    <!-- NAVBAR -->
+  {% include 'nav.html' %}
     <h1>About This Project</h1>
 
     <p>
@@ -49,7 +54,7 @@
     </p>
 
     <footer>
-        <p>Built with 📖 and 🔥 by the Banned Books Project Team.</p>
+        <p>Built with 📖 and 🔥 by the Banned Books Project Team (Team G).</p>
     </footer>
 </body>
 </html>

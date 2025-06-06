@@ -3,13 +3,13 @@
 import json
 from flask import Flask, render_template, request
 from ProductionCode.datasource import DataSource
-from ProductionCode.search_section import SearchSection, SearchSectionBook
 from ProductionCode.search_strategies import (
     ConcreteSearchStrategyAll,
     ConcreteSearchStrategyAuthor,
     ConcreteSearchStrategyGenre,
     ConcreteSearchStrategyTitle,
     SearchContext,
+    SearchStrategy,
 )
 
 app = Flask(__name__)
@@ -77,14 +77,15 @@ def search():
     """The endpoint for the search page"""
     query = request.args.get("searchterm")
     search_type = request.args.get("type")
-    search_strategy = (
-        ConcreteSearchStrategyTitle()
-        if search_type == "title"
-        else ConcreteSearchStrategyAuthor()
-        if search_type == "author"
-        else ConcreteSearchStrategyGenre()
-        if search_type == "genre"
-        else ConcreteSearchStrategyAll()
+
+    strategy_map = {
+        "title": ConcreteSearchStrategyTitle(),
+        "author": ConcreteSearchStrategyAuthor(),
+        "genre": ConcreteSearchStrategyGenre(),
+    }
+
+    search_strategy: SearchStrategy = strategy_map.get(
+        search_type, ConcreteSearchStrategyAll()
     )
     search_context = SearchContext(search_strategy)
     results = search_context.search(query)

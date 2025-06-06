@@ -43,16 +43,20 @@ Made by Joe Borncamp, Cooper Evans, Devin Gulliver, Marco Pina
 
 ### Code Design
 
-#### Repeated Code
-- Originally in our books, genres, authors pages, we used the same book cover html and css. Now, we moved it into a separate template so we repeat our code less.
-#### Map
+#### Repeated Code - Map
 Design Pattern: Strategies
 - Originally we had repeated code for displaying different variations of our maps. Now, we refactored it to use use strategies so it is easy to specify with type of map we want to use for each page
 #### Search
+Code Smell - Inappropriate Intimacy
 Design Pattern: Decorators
+- Originally 
 - We added decorators to extend the functionality of searching, this has allowed the easy addition of new search types and modifications
+Code Smell - Switch Statement
 Design Pattern: Strategies
-- We added strategies for searching based on the search type
+- Originally, our search method used a long if, else statement to adjust how search results were displayed.
+Code Smell - Shotgun Surgery
+Design Improvement: Repeated Code
+- Originally our search results html page conditionally rendered sections based on multiple passed in parameters. Each section (isbn, author, title) was repeated, with minor changes. Now, after adding a SearchSection class (search_section.py) and having each type of section (Book vs. Page) inherit from this class, we were able to loop through a list of SearchSections to display the results. When adding a new search type, originally, we would have to copy and paste a new section in the HTML. After this code change, we do not have to repeat our code as much in the HTML
 ### Front End Design
 #### Accessiblity
 Improved link color for visibility

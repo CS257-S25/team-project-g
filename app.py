@@ -184,6 +184,10 @@ def authors_list():
     book_list = ds.books_search_title("")
     return render_template("authors.html", books=book_list)
 
+@app.route("/about")
+def about():
+    """The endpoint for the about page"""
+    return render_template("about.html")
 
 # API ENDPOINTS
 
@@ -195,6 +199,7 @@ def get_most_banned_states():
     most_banned = ds.get_most_banned_states(99)
     ban_json = json.dumps(most_banned, default=lambda obj: obj.__dict__)
     return ban_json
+
 
 
 @app.route("/get-most-banned-states-with-isbn")

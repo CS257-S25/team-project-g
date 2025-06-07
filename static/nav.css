@@ -41,6 +41,7 @@ nav div ul li {
   height: 100%;
   padding-left: 1em;
   padding-right: 1em;
+  color: var(--text)
 }
 
 nav li a {

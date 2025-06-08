@@ -61,3 +61,6 @@ Improved link color for visibility
 Improved Search Functionality
 - Originally, our search feature only displayed books that matched a searched title, author, or isbn number. Now, when the user searches for an author, a result for the authors page shows up rather than the books they wrote. The same functionality was added for genres.
 - Another improvement we made to the search feature was adding a dropdown to access a search type from the search bar.
+-Another added improvement was adding a more specific placeholder in the search box for users. This makes it easier for users to know what to search.
+Improved Navigation Bar Functionality
+- User's were struggling to click the menu buttons in the nav bar. We made the boxes easier to click for ease of access.

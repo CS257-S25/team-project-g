@@ -280,6 +280,7 @@ class TestAppError(unittest.TestCase):
         self.assertIn(b"500", response.data)
 
     def test_about(self):
+        """Tests about page"""
         response = self.app.get("/about")
         self.assertIn(b"About This Project", response.data)
 

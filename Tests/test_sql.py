@@ -12,6 +12,9 @@ from ProductionCode.search_section import SearchSectionBook
 from Tests.mock_data import mock_book
 from Tests.mock_data import mock_ban
 
+# Note: pylint's protected-access warning has been disabled
+# in some method calls due to testing purposed
+
 
 class TestSQLSearchMethods(unittest.TestCase):
     """This class tests search methods for SQL queries"""
@@ -203,7 +206,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = mock_book
 
-        results = ds._database_row_to_book(
+        results = ds._database_row_to_book(  # pylint: disable=protected-access
             (
                 "440236924",
                 "Kaleidoscope",
@@ -226,7 +229,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [SearchSectionBook("K", "k", [mock_book])]
 
-        results = ds._books_to_sections([mock_book])
+        results = ds._books_to_sections([mock_book])  # pylint: disable=protected-access
 
         self.assertEqual(expected[0].results, results[0].results)
 
@@ -244,7 +247,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [mock_book, mock_book]
 
-        results = ds._database_row_list_to_book_list(
+        results = ds._database_row_list_to_book_list(  # pylint: disable=protected-access
             [
                 (
                     "440236924",
@@ -286,7 +289,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             " banned in Martin County Schools, Florida as of 3, 2023"
         )
 
-        result = ds._database_row_to_bookban(
+        result = ds._database_row_to_bookban(  # pylint: disable=protected-access
             (
                 "440236924",
                 "Florida",
@@ -319,7 +322,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             " banned in Martin County Schools, Florida as of 3, 2023",
         ]
 
-        result = ds._database_row_list_to_bookban_list(
+        result = ds._database_row_list_to_bookban_list(  # pylint: disable=protected-access
             [
                 (
                     "440236924",
@@ -351,7 +354,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = Rank("Florida", 50)
 
-        result = ds._database_row_to_rank(("Florida", 50))
+        result = ds._database_row_to_rank(("Florida", 50))  # pylint: disable=protected-access
 
         self.assertEqual(str(expected), str(result))
 
@@ -368,7 +371,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [Rank("Florida", 50), Rank("Florida", 50)]
 
-        result = ds._database_row_list_to_rank_list([("Florida", 50), ("Florida", 50)])
+        result = ds._database_row_list_to_rank_list([("Florida", 50), ("Florida", 50)])  # pylint: disable=protected-access
 
         self.assertEqual(list(map(str, result)), list(map(str, expected)))
 

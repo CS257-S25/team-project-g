@@ -1,7 +1,7 @@
 /**
  * Module for creating a simple map plot for one book
  */
-import { BanMap, OneBookContent, DetailedRender, SimpleRender } from "./map.js";
+import { BanMap, OneBookContent, DetailedRender} from "./map.js";
 
 window.addEventListener("DOMContentLoaded", async (_evt) => {
   const isbn = document.getElementsByName("isbn")[0].content

@@ -42,17 +42,17 @@ class DataSource:
             sys.exit()
         return connection
 
-    def _database_row_list_to_book_list(self, row_list) -> list[Book]:
+    def _create_books_from_rows(self, row_list) -> list[Book]:
         """Helper method for converting database results to a list of Book objects
         Args:
             row_list (list[Tuple]): a list of rows from an sql query
         Returns:
             (list[Book]): a list of Book objects
         """
-        books = list(map(self._database_row_to_book, row_list))
+        books = list(map(self._create_book_from_row, row_list))
         return books
 
-    def _database_row_to_book(self, row) -> Book:
+    def _create_book_from_row(self, row) -> Book:
         """Helper method for converting a database row to a Book object
         Args:
             row (Tuple): a row from the sql query
@@ -69,16 +69,16 @@ class DataSource:
         book = Book(isbn=row[0], title=row[1], authors=row[2], details=details)
         return book
 
-    def _database_row_list_to_bookban_list(self, row_list) -> list[Bookban]:
+    def _create_bookbans_from_rows(self, row_list) -> list[Bookban]:
         """Helper method for converting database results to a list of Bookban objects
         Args:
             row_list (list[Tuple]): a list of rows from an sql query
         Returns:
             (list[Bookban]): a list of Bookban objects
         """
-        return list(map(self._database_row_to_bookban, row_list))
+        list(map(self._create_bookban_from_row, row_list))
 
-    def _database_row_to_bookban(self, row) -> Bookban:
+    def _create_bookban_from_row(self, row) -> Bookban:
         """Helper method for converting a database row to a Bookban object
         Args:
             row (Tuple): a row from the sql query
@@ -86,7 +86,7 @@ class DataSource:
             (Bookban): a Bookban object
         """
         isbn = row[0]
-        book = self.book_from_isbn(isbn)
+        book = self.get_book_from_isbn(isbn)
         bookban = Bookban(
             book=book,
             location={
@@ -102,16 +102,16 @@ class DataSource:
         )
         return bookban
 
-    def _database_row_list_to_rank_list(self, row_list) -> list[Rank]:
+    def _create_ranks_from_rows(self, row_list) -> list[Rank]:
         """Helper method for converting a list of rank tuple to a list of Ranks
         Args:
             row (str,int): a name and the number of associated bans
         Returns:
             (Rank): a Rank object
         """
-        return list(map(self._database_row_to_rank, row_list))
+        return list(map(self._create_rank_from_row, row_list))
 
-    def _database_row_to_rank(self, row) -> Rank:
+    def _create_rank_from_row(self, row) -> Rank:
         """Helper method for converting a rank tuple to a Rank object
         Args:
             row (str,int): a name and the number of associated bans
@@ -121,7 +121,7 @@ class DataSource:
         rank = Rank(name=row[0], bans=row[1])
         return rank
 
-    def _books_to_sections(self, books) -> list[SearchSectionBook]:
+    def _create_sections_from_books(self, books) -> list[SearchSectionBook]:
         """Helper method to convert a list of books into a list of sections for each letter
         Args:
             books (list[Book]): a list of books
@@ -138,7 +138,7 @@ class DataSource:
         sections_list = list(sections.values())
         return sections_list
 
-    def book_from_isbn(self, isbn):
+    def get_book_from_isbn(self, isbn):
         """Queries book database based on ISBN
         Args:
             isbn (str): a book's isbn number
@@ -157,11 +157,11 @@ class DataSource:
             print("Couldn't find a book with that ISBN: ", e)
             sys.exit()
         if results:
-            book = self._database_row_to_book(results)
+            book = self._create_book_from_row(results)
             return book
         return None
 
-    def bans_from_isbn(self, isbn) -> list[Bookban]:
+    def get_bookbans_from_isbn(self, isbn) -> list[Bookban]:
         """Queries book database based on ISBN
         Args:
             isbn (str): a book's isbn number
@@ -180,10 +180,10 @@ class DataSource:
             print("Couldn't find banned book from that ISBN ", e)
             sys.exit()
 
-        bans = self._database_row_list_to_bookban_list(results)
+        bans = self._create_bookbans_from_rows(results)
         return bans
 
-    def books_search_title(self, search_term) -> list[Book]:
+    def get_books_by_title(self, search_term) -> list[Book]:
         """Searches books database for titles containing search term
         Args:
             search_term (str): the string being searched for
@@ -202,10 +202,10 @@ class DataSource:
             print("Couldn't find a book with that title: ", e)
             sys.exit()
 
-        books = self._database_row_list_to_book_list(results)
+        books = self._create_books_from_rows(results)
         return books
 
-    def books_search_author(self, search_term) -> list[Book]:
+    def get_books_by_author(self, search_term) -> list[Book]:
         """Searches books database for authors that match search term
         Args:
             search_term (str): the author being searched for
@@ -231,7 +231,7 @@ class DataSource:
             print("Couldn't find book with that author: ", e)
             sys.exit()
 
-        books = self._database_row_list_to_book_list(results)
+        books = self._create_books_from_rows(results)
         return books
 
     def search_author(self, search_term) -> list[str]:
@@ -281,7 +281,7 @@ class DataSource:
         genres = list(map(lambda result: result[0], results))
         return genres
 
-    def books_search_genre(self, search_term) -> list[Book]:
+    def get_books_by_genre(self, search_term) -> list[Book]:
         """Searches books database for authors that match search term
         Args:
             search_term (str): the author being searched for
@@ -307,30 +307,8 @@ class DataSource:
             print("Couldn't find book with that author: ", e)
             sys.exit()
 
-        books = self._database_row_list_to_book_list(results)
+        books = self._create_books_from_rows(results)
         return books
-
-    # def books_search_genre(self, search_term) -> list[Book]:
-    #     """Searches books database for genres that match search term
-    #     Args:
-    #         search_term (str): the genre being searched for
-    #     Returns:
-    #         (list[Book]): a list of Book objects where search_term is in genres
-    #     """
-    #     query = "SELECT * FROM books WHERE genres @> ARRAY[%s];"
-    #     args = (search_term,)
-
-    #     try:
-    #         cursor = self.connection.cursor()
-    #         cursor.execute(query, args)
-    #         results = cursor.fetchall()
-
-    #     except psycopg2.Error as e:
-    #         print("Couldn't find book with that genre: ", e)
-    #         sys.exit()
-
-    #     books = self.database_row_list_to_book_list(results)
-    #     return books
 
     def get_most_banned_authors(self, max_results):
         """Returns the 5 authors with the most bans."""
@@ -360,7 +338,7 @@ class DataSource:
             print("Error getting most banned authors: ", e)
             sys.exit()
 
-        ranks = self._database_row_list_to_rank_list(results)
+        ranks = self._create_ranks_from_rows(results)
 
         return ranks
 
@@ -385,7 +363,7 @@ class DataSource:
             print("Error getting most banned districts: ", e)
             sys.exit()
 
-        ranks = self._database_row_list_to_rank_list(results)
+        ranks = self._create_ranks_from_rows(results)
 
         return ranks
 
@@ -410,7 +388,7 @@ class DataSource:
             print("Error getting most banned states: ", e)
             sys.exit()
 
-        ranks = self._database_row_list_to_rank_list(results)
+        ranks = self._create_ranks_from_rows(results)
         return ranks
 
     def get_most_banned_states_with_isbn(self, max_results, isbn):
@@ -436,7 +414,7 @@ class DataSource:
             print("Error getting most banned states: ", e)
             sys.exit()
 
-        ranks = self._database_row_list_to_rank_list(results)
+        ranks = self._create_ranks_from_rows(results)
         return ranks
 
     def get_most_banned_titles(self, max_results):
@@ -461,7 +439,7 @@ class DataSource:
             print("Error getting most banned titles: ", e)
             sys.exit()
 
-        ranks = self._database_row_list_to_rank_list(results)
+        ranks = self._create_ranks_from_rows(results)
 
         return ranks
 
@@ -498,7 +476,7 @@ class DataSource:
             print("Error getting most banned genres: ", e)
             sys.exit()
 
-        ranks = self._database_row_list_to_rank_list(results)
+        ranks = self._create_ranks_from_rows(results)
 
         return ranks
 
@@ -526,12 +504,12 @@ class DataSource:
             sys.exit()
 
         books = list(
-            map(lambda result: (result[1], self.book_from_isbn(result[0])), results)
+            map(lambda result: (result[1], self.get_book_from_isbn(result[0])), results)
         )
 
         return books
 
-    def books_search_title_to_sections(self, search_term) -> list[SearchSectionBook]:
+    def get_book_section_by_title(self, search_term) -> list[SearchSectionBook]:
         """Searches books database for titles beginning with search term
         Args:
             search_term (str): the string being searched for
@@ -551,11 +529,11 @@ class DataSource:
             print("Couldn't find a book with that title: ", e)
             sys.exit()
 
-        books = self._database_row_list_to_book_list(results)
-        sections = self._books_to_sections(books)
+        books = self._create_books_from_rows(results)
+        sections = self._create_sections_from_books(books)
         return sections
 
-    def books_search_genre_to_sections(self, search_term) -> list[SearchSectionBook]:
+    def get_book_section_by_genre(self, search_term) -> list[SearchSectionBook]:
         """Searches books database for genres matching search term
         Args:
             search_term (str): the string being searched for
@@ -585,12 +563,12 @@ class DataSource:
             print("Couldn't find a book with that title: ", e)
             sys.exit()
 
-        books = self._database_row_list_to_book_list(results)
-        sections = self._books_to_sections(books)
+        books = self._create_books_from_rows(results)
+        sections = self._create_sections_from_books(books)
         print(sections)
         return sections
 
-    def books_search_author_to_sections(self, search_term) -> list[SearchSectionBook]:
+    def get_book_section_by_author(self, search_term) -> list[SearchSectionBook]:
         """Searches books database for authors matching search term
         Args:
             search_term (str): the string being searched for
@@ -620,7 +598,7 @@ class DataSource:
             print("Couldn't find a book with that title: ", e)
             sys.exit()
 
-        books = self._database_row_list_to_book_list(results)
-        sections = self._books_to_sections(books)
+        books = self._create_books_from_rows(results)
+        sections = self._create_sections_from_books(books)
         print(sections)
         return sections

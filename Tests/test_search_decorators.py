@@ -114,7 +114,7 @@ class SearchConcreteDecoratorISBNTest(unittest.TestCase):
         result = self.search_concrete_decorator.operation("")
         self.assertIn(mock_book, result)
 
-    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.DataSource.get_book_from_isbn")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_isbn(self, mock_connect, mock_search_isbn):
         """Test for operation method"""

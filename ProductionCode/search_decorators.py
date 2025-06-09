@@ -1,7 +1,11 @@
 """Decorators for modifying search functionality"""
 
 from ProductionCode.datasource import DataSource
-from ProductionCode.search_section import SearchSection, SearchSectionBook, SearchSectionPage
+from ProductionCode.search_section import (
+    SearchSection,
+    SearchSectionBook,
+    SearchSectionPage,
+)
 
 
 class SearchComponent:  # pylint: disable=too-few-public-methods
@@ -143,7 +147,7 @@ class SearchConcreteDecoratorISBN(SearchDecorator):
             (SearchSection) - isbn search section
         """
         ds = DataSource()
-        results = ds.book_from_isbn(query)
+        results = ds.get_book_from_isbn(query)
         if results:
             return SearchSectionBook("ISBN", "isbn", [results])
         return SearchSectionBook("ISBN", "isbn", [])
@@ -174,7 +178,7 @@ class SearchConcreteDecoratorTitle(SearchDecorator):
             (SearchSection) - title search section
         """
         ds = DataSource()
-        results = ds.books_search_title(query)
+        results = ds.get_books_by_title(query)
         section = SearchSectionBook("Title", "title", results)
         return section
 

@@ -3,6 +3,7 @@
 import json
 from flask import Flask, render_template, request
 from ProductionCode.datasource import DataSource
+
 # from ProductionCode.search_section import SearchSection, SearchSectionBook
 from ProductionCode.search_strategies import (
     ConcreteSearchStrategyAll,
@@ -37,7 +38,9 @@ def details(isbn):
     """
     ds = DataSource()
     return render_template(
-        "book.html", ban_isbn=ds.bans_from_isbn(isbn), book_isbn=ds.book_from_isbn(isbn)
+        "book.html",
+        ban_isbn=ds.get_bookbans_from_isbn(isbn),
+        book_isbn=ds.get_book_from_isbn(isbn),
     )
 
 
@@ -98,7 +101,7 @@ def books():
     """The endpoint for books page"""
     ds = DataSource()
     # replace later
-    sections = ds.books_search_title_to_sections("")
+    sections = ds.get_book_section_by_title("")
 
     return render_template("books.html", results=sections)
 
@@ -107,7 +110,7 @@ def books():
 def books_starts_with(letter):
     """The endpoint for books page"""
     ds = DataSource()
-    sections = ds.books_search_title_to_sections(letter)
+    sections = ds.get_book_section_by_title(letter)
     return render_template("books.html", results=sections)
 
 
@@ -115,7 +118,7 @@ def books_starts_with(letter):
 def genres(genre):
     """The endpoint for genre page"""
     ds = DataSource()
-    book_list = ds.books_search_genre_to_sections(genre)
+    book_list = ds.get_book_section_by_genre(genre)
     return render_template("genre.html", results=book_list, genre=genre)
 
 
@@ -123,10 +126,10 @@ def genres(genre):
 def genres_list():
     """The endpoint for the overall genres page"""
     ds = DataSource()
-    fiction = ds.books_search_genre("Fiction")
-    romance = ds.books_search_genre("Romance")
-    childrens = ds.books_search_genre("Childrens")
-    book_list = ds.books_search_title("")
+    fiction = ds.get_books_by_genre("Fiction")
+    romance = ds.get_books_by_genre("Romance")
+    childrens = ds.get_books_by_genre("Childrens")
+    book_list = ds.get_books_by_title("")
     return render_template(
         "genres.html",
         fiction=fiction,
@@ -140,7 +143,7 @@ def genres_list():
 def authors(author):
     """The endpoint for author page"""
     ds = DataSource()
-    book_list = ds.books_search_author_to_sections(author)
+    book_list = ds.get_book_section_by_author(author)
     return render_template("author.html", results=book_list, author=author)
 
 
@@ -181,13 +184,15 @@ def most_banned_books():
 def authors_list():
     """The endpoint for the overall authors page"""
     ds = DataSource()
-    book_list = ds.books_search_title("")
+    book_list = ds.get_books_by_title("")
     return render_template("authors.html", books=book_list)
+
 
 @app.route("/about")
 def about():
     """The endpoint for the about page"""
     return render_template("about.html")
+
 
 # API ENDPOINTS
 
@@ -199,7 +204,6 @@ def get_most_banned_states():
     most_banned = ds.get_most_banned_states(99)
     ban_json = json.dumps(most_banned, default=lambda obj: obj.__dict__)
     return ban_json
-
 
 
 @app.route("/get-most-banned-states-with-isbn")

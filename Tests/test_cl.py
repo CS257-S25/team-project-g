@@ -21,7 +21,7 @@ class TestCommandLine(unittest.TestCase):
         self.mock_conn = MagicMock()
         self.mock_cursor = self.mock_conn.cursor.return_value
 
-    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_title(self, mock_connect, mock_books_search_title):
         """
@@ -36,7 +36,7 @@ class TestCommandLine(unittest.TestCase):
         printed = sys.stdout.getvalue()
         self.assertEqual(printed, "Kaleidoscope by Danielle Steel (ISBN: 440236924)\n")
 
-    @patch("ProductionCode.datasource.DataSource.books_search_author")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_author")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_author(self, mock_connect, mock_books_search_author):
         """
@@ -51,7 +51,7 @@ class TestCommandLine(unittest.TestCase):
         printed = sys.stdout.getvalue()
         self.assertEqual(printed, "Kaleidoscope by Danielle Steel (ISBN: 440236924)\n")
 
-    @patch("ProductionCode.datasource.DataSource.books_search_genre")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_genre")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_genre(self, mock_connect, mock_books_search_genre):
         """
@@ -66,7 +66,7 @@ class TestCommandLine(unittest.TestCase):
         printed = sys.stdout.getvalue()
         self.assertEqual(printed, "Kaleidoscope by Danielle Steel (ISBN: 440236924)\n")
 
-    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_title_no_results(self, mock_connect, mock_books_search_title):
         """

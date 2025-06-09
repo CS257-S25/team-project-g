@@ -48,7 +48,7 @@ class TestSQLSearchMethods(unittest.TestCase):
 
         self.mock_cursor.fetchall.return_value = response
 
-        results = ds.books_search_title("Kaleidoscope")
+        results = ds.get_books_by_title("Kaleidoscope")
 
         self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
@@ -76,7 +76,7 @@ class TestSQLSearchMethods(unittest.TestCase):
 
         self.mock_cursor.fetchall.return_value = response
 
-        results = ds.books_search_author("Danielle Steel")
+        results = ds.get_books_by_author("Danielle Steel")
 
         self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
@@ -105,7 +105,7 @@ class TestSQLSearchMethods(unittest.TestCase):
 
         self.mock_cursor.fetchall.return_value = response
 
-        results = ds.books_search_genre("Mystery")
+        results = ds.get_books_by_genre("Mystery")
 
         self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
@@ -140,7 +140,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
 
         self.mock_cursor.fetchone.return_value = response
 
-        results = ds.book_from_isbn("440236924")
+        results = ds.get_book_from_isbn("440236924")
 
         self.assertEqual(str(results), str(expected))
 
@@ -156,11 +156,11 @@ class TestSQLFromISBNMethods(unittest.TestCase):
         expected = None
         self.mock_cursor.fetchone.return_value = response
 
-        results = ds.book_from_isbn("440236924")
+        results = ds.get_book_from_isbn("440236924")
 
         self.assertEqual(str(results), str(expected))
 
-    @patch("ProductionCode.datasource.DataSource._database_row_list_to_bookban_list")
+    @patch("ProductionCode.datasource.DataSource._create_bookbans_from_rows")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_bans_from_isbn(self, mock_connect, mock_database_row_list_to_bookban_list):
         """Tests search book bans by isbn method for bookbans database"""
@@ -185,7 +185,7 @@ class TestSQLFromISBNMethods(unittest.TestCase):
         expected = [mock_ban]
         self.mock_cursor.fetchall.return_value = response
 
-        results = ds.bans_from_isbn("440236924")
+        results = ds.get_bookbans_from_isbn("440236924")
 
         self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
@@ -206,7 +206,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = mock_book
 
-        results = ds._database_row_to_book(  # pylint: disable=protected-access
+        results = ds._create_book_from_row(  # pylint: disable=protected-access
             (
                 "440236924",
                 "Kaleidoscope",
@@ -229,11 +229,11 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [SearchSectionBook("K", "k", [mock_book])]
 
-        results = ds._books_to_sections([mock_book])  # pylint: disable=protected-access
+        results = ds._create_sections_from_books([mock_book])  # pylint: disable=protected-access
 
         self.assertEqual(expected[0].results, results[0].results)
 
-    @patch("ProductionCode.datasource.DataSource._database_row_to_book")
+    @patch("ProductionCode.datasource.DataSource._create_book_from_row")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_database_row_list_to_book_list(
         self, mock_connect, mock_database_row_to_book
@@ -247,7 +247,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [mock_book, mock_book]
 
-        results = ds._database_row_list_to_book_list(  # pylint: disable=protected-access
+        results = ds._create_books_from_rows(  # pylint: disable=protected-access
             [
                 (
                     "440236924",
@@ -274,7 +274,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
-    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.DataSource.get_book_from_isbn")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_database_row_to_bookban(self, mock_connect, mock_book_from_isbn):
         """Test for helper method converting database row to bookban"""
@@ -289,7 +289,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             " banned in Martin County Schools, Florida as of 3, 2023"
         )
 
-        result = ds._database_row_to_bookban(  # pylint: disable=protected-access
+        result = ds._create_bookban_from_row(  # pylint: disable=protected-access
             (
                 "440236924",
                 "Florida",
@@ -303,7 +303,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         self.assertEqual(str(result), expected)
 
-    @patch("ProductionCode.datasource.DataSource._database_row_to_bookban")
+    @patch("ProductionCode.datasource.DataSource._create_bookbans_from_rows")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_database_row_list_to_bookban_list(
         self, mock_connect, mock_database_row_to_bookban
@@ -311,7 +311,7 @@ class TestSQLHelperMethods(unittest.TestCase):
         """Test for helper method converting database row to bookban"""
         mock_connect.return_value = self.mock_conn
 
-        mock_database_row_to_bookban.return_value = mock_ban
+        mock_database_row_to_bookban.return_value = [mock_ban, mock_ban]
 
         ds = DataSource()
 
@@ -322,7 +322,7 @@ class TestSQLHelperMethods(unittest.TestCase):
             " banned in Martin County Schools, Florida as of 3, 2023",
         ]
 
-        result = ds._database_row_list_to_bookban_list(  # pylint: disable=protected-access
+        result = ds._create_bookbans_from_rows(  # pylint: disable=protected-access
             [
                 (
                     "440236924",
@@ -354,11 +354,11 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = Rank("Florida", 50)
 
-        result = ds._database_row_to_rank(("Florida", 50))  # pylint: disable=protected-access
+        result = ds._create_rank_from_row(("Florida", 50))  # pylint: disable=protected-access
 
         self.assertEqual(str(expected), str(result))
 
-    @patch("ProductionCode.datasource.DataSource._database_row_to_rank")
+    @patch("ProductionCode.datasource.DataSource._create_rank_from_row")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_database_row_list_to_rank_list(
         self, mock_connect, mock_database_row_to_rank
@@ -371,7 +371,7 @@ class TestSQLHelperMethods(unittest.TestCase):
 
         expected = [Rank("Florida", 50), Rank("Florida", 50)]
 
-        result = ds._database_row_list_to_rank_list([("Florida", 50), ("Florida", 50)])  # pylint: disable=protected-access
+        result = ds._create_ranks_from_rows([("Florida", 50), ("Florida", 50)])  # pylint: disable=protected-access
 
         self.assertEqual(list(map(str, result)), list(map(str, expected)))
 
@@ -439,7 +439,7 @@ class TestSQLMostBannedMethods(unittest.TestCase):
         results = ds.get_most_banned_titles(1)
         self.assertEqual(list(map(str, results)), list(map(str, expected)))
 
-    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.DataSource.get_book_from_isbn")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_books(self, mock_connect, mock_book_from_isbn):
         """Test get_most_banned_books with a limit of 1."""
@@ -489,7 +489,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("boom")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.book_from_isbn("12345")
+            ds.get_book_from_isbn("12345")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_title_error(self, mock_connect):
@@ -498,7 +498,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("oh no")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.books_search_title("anything")
+            ds.get_books_by_title("anything")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_author_error(self, mock_connect):
@@ -507,7 +507,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("fail")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.books_search_author("someone")
+            ds.get_books_by_author("someone")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_author_error(self, mock_connect):
@@ -534,7 +534,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("oops")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.books_search_genre("fantasy")
+            ds.get_books_by_genre("fantasy")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_bans_from_isbn_error(self, mock_connect):
@@ -543,7 +543,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("nope")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.bans_from_isbn("440236924")
+            ds.get_bookbans_from_isbn("440236924")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_get_most_banned_author_error(self, mock_connect):
@@ -615,7 +615,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.books_search_title_to_sections("no")
+            ds.get_book_section_by_title("no")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_genre_to_sections(self, mock_connect):
@@ -624,7 +624,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.books_search_genre_to_sections("no")
+            ds.get_book_section_by_genre("no")
 
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_search_author_to_sections(self, mock_connect):
@@ -633,7 +633,7 @@ class TestSQLExceptionBranches(unittest.TestCase):
         self.mock_cursor.execute.side_effect = psycopg2.Error("err")
         ds = DataSource()
         with self.assertRaises(SystemExit):
-            ds.books_search_author_to_sections("no")
+            ds.get_book_section_by_author("no")
 
 
 class TestSingleton(unittest.TestCase):

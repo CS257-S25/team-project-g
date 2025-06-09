@@ -33,8 +33,8 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>The Forbidden Library</h1>", response.data)
 
-    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
-    @patch("ProductionCode.datasource.DataSource.bans_from_isbn")
+    @patch("ProductionCode.datasource.DataSource.get_book_from_isbn")
+    @patch("ProductionCode.datasource.DataSource.get_bookbans_from_isbn")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_details(self, mock_connect, mock_bans_from_isbn, mock_book_from_isbn):
         """Tests details page"""
@@ -57,9 +57,9 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Banned Books in the United States</h1>", response.data)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_author")
-    @patch("ProductionCode.datasource.DataSource.books_search_title")
-    @patch("ProductionCode.datasource.DataSource.book_from_isbn")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_author")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_title")
+    @patch("ProductionCode.datasource.DataSource.get_book_from_isbn")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search(
         self,
@@ -79,7 +79,7 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'<h1>Search Results for "a":</h1>', response.data)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_search_title(
         self,
@@ -112,7 +112,7 @@ class TestAppPages(unittest.TestCase):
         response = self.app.get("search?searchterm=Steel&type=author")
         self.assertIn(b"Steel", response.data)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books(
         self,
@@ -128,7 +128,7 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Banned Books</h1>", response.data)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_genre")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_genre")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_genres(
         self,
@@ -144,8 +144,8 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Fiction</h1>", response.data)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_genre")
-    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_genre")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_genres_list(
         self, mock_connect, mock_books_search_title, mock_books_search_genre
@@ -160,7 +160,7 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h2>Genres</h2>", response.data)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_author")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_author")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_authors(
         self,
@@ -176,7 +176,7 @@ class TestAppPages(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"<h1>Danielle Steel</h1>", response.data)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_title")
+    @patch("ProductionCode.datasource.DataSource.get_books_by_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_authors_list(
         self,
@@ -328,7 +328,7 @@ class TestAppAPI(unittest.TestCase):
 
         self.assertEqual(response.data, expected)
 
-    @patch("ProductionCode.datasource.DataSource.books_search_title_to_sections")
+    @patch("ProductionCode.datasource.DataSource.get_book_section_by_title")
     @patch("ProductionCode.datasource.psycopg2.connect")
     def test_books_starts_with(self, mock_connect, mock_books_search_title_to_sections):
         """Test books_starts_with endpoint"""

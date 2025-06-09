@@ -79,9 +79,9 @@ def main():
     ds = DataSource()
 
     cl_map = {
-        "search_title": ds.books_search_title,
-        "search_author": ds.books_search_author,
-        "search_genre": ds.books_search_genre,
+        "search_title": ds.get_books_by_title,
+        "search_author": ds.get_books_by_author,
+        "search_genre": ds.get_books_by_genre,
         "most_banned_districts": ds.get_most_banned_districts,
         "most_banned_authors": ds.get_most_banned_authors,
         "most_banned_states": ds.get_most_banned_states,

@@ -53,6 +53,15 @@ Design Pattern: Decorators
 - We added decorators to extend the functionality of searching, this has allowed the easy addition of new search types and modifications
 Design Pattern: Strategies
 - We added strategies for searching based on the search type
+#### DataSource method names
+Originally, the method names of our DataSource class were inconsistent. Some used verb phrases, some did not. Some referred to Bookban objects as bans while others referred to them as bookbans. Here are a few examples of lines were methods were changed to adhere to good naming principles:
+- 72: _database_row_list_to_bookban_list > _create_bookbans_from_rows
+  - Before, the method name was very wordy and had gratuitous context (the method is in the datasource class, of course the row is for a database)
+  - Type was also encoded in a clunky and unnecessary way as we now explicitly type the return values of these methods
+  - Similar changes were made to other methods that created objects from database rows.
+-  141: book_from_isbn > get_book_from_isbn
+  - Adding the get prefix, emphasizes that the method is retrieving the data from somewhere.
+  - This also turns the method name into a verb phrase
 ### Front End Design
 #### Accessiblity
 Improved link color for visibility

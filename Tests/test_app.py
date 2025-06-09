@@ -94,7 +94,7 @@ class TestAppPages(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            b'<p class="book-title"><a href="details/440236924">Kaleidoscope </a>',
+            b'<p class="book-title"><a href="/details/440236924">Kaleidoscope </a>',
             response.data,
         )
 
@@ -278,6 +278,10 @@ class TestAppError(unittest.TestCase):
         """Tests 500 page"""
         response = self.app.get("/mock-error")
         self.assertIn(b"500", response.data)
+
+    def test_about(self):
+        response = self.app.get("/about")
+        self.assertIn(b"About This Project", response.data)
 
 
 class TestAppAPI(unittest.TestCase):

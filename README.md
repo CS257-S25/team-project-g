@@ -77,6 +77,7 @@ Improved Search Functionality
 Improved Navigation Bar Functionality
 - `templates/nav.html`
 - User's were struggling to click the menu buttons in the nav bar. We made the boxes easier to click for ease of access.
+
 About page
 - `templates/about.html`
 - We added an about page to give the user some background on what we see on our webpage, improving usability

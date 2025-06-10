@@ -43,33 +43,40 @@ Made by Joe Borncamp, Cooper Evans, Devin Gulliver, Marco Pina
 
 ### Code Design
 
-#### Repeated Code
-- Originally in our books, genres, authors pages, we used the same book cover html and css. Now, we moved it into a separate template so we repeat our code less.
 #### Map
 Design Pattern: Strategies
 - Originally we had repeated code for displaying different variations of our maps. Now, we refactored it to use use strategies so it is easy to specify with type of map we want to use for each page
+- `static/map.js`
 #### Search
 Design Pattern: Decorators
 - We added decorators to extend the functionality of searching, this has allowed the easy addition of new search types and modifications
+- `ProductionCode.search_decorators.py`
 Design Pattern: Strategies
-- We added strategies for searching based on the search type
+- Originally, the search method was tightly coupled with endpoint function, making it difficult to make changes. We added strategies for searching based on the search type. This makes the code much simpler and adheres to the principle of one layer of abstracion.
+- `ProductionCode.search_strategies.py`
 #### DataSource method names
 Originally, the method names of our DataSource class were inconsistent. Some used verb phrases, some did not. Some referred to Bookban objects as bans while others referred to them as bookbans. Here are a few examples of lines were methods were changed to adhere to good naming principles:
-- 72: _database_row_list_to_bookban_list > _create_bookbans_from_rows
+- `ProductionCode.datasource.py:72` : `_database_row_list_to_bookban_list` -> `_create_bookbans_from_rows`
   - Before, the method name was very wordy and had gratuitous context (the method is in the datasource class, of course the row is for a database)
   - Type was also encoded in a clunky and unnecessary way as we now explicitly type the return values of these methods
   - Similar changes were made to other methods that created objects from database rows.
--  141: book_from_isbn > get_book_from_isbn
+-  `ProductionCode.datasource.py:141` : `book_from_isbn` -> `get_book_from_isbn`
   - Adding the get prefix, emphasizes that the method is retrieving the data from somewhere.
   - This also turns the method name into a verb phrase
 ### Front End Design
 #### Accessiblity
 Improved link color for visibility
+- `static/global.css`
 - Our link colors previously used a dark blue, we changed to a light blue to increase readability on dark background
 #### Usability
 Improved Search Functionality
+- `app.py:78`
 - Originally, our search feature only displayed books that matched a searched title, author, or isbn number. Now, when the user searches for an author, a result for the authors page shows up rather than the books they wrote. The same functionality was added for genres.
 - Another improvement we made to the search feature was adding a dropdown to access a search type from the search bar.
 -Another added improvement was adding a more specific placeholder in the search box for users. This makes it easier for users to know what to search.
 Improved Navigation Bar Functionality
+- `templates/nav.html`
 - User's were struggling to click the menu buttons in the nav bar. We made the boxes easier to click for ease of access.
+About page
+- `templates/about.html`
+- We added an about page to give the user some background on what we see on our webpage, improving usability

@@ -1,0 +1,36 @@
+<html lang="en">
+
+<head>
+  <title>Map</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='map.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+  {% include 'nav.html' %}
+  <!-- Header -->
+  <div class="header">
+    <h1>Banned Books in the United States</h1>
+  </div>
+  <div class="main">
+    <div class="map" id="map">
+    </div>
+    <script type="module" src="{{url_for('static', filename='map-detailed.js')}}"></script>
+    <div class="map-info">
+      <h2>Most Banned States</h2>
+      <ol>
+        {% for state in most_banned_states %}
+        <li>
+          <p>{{state.name}}: {{state.bans}}</p>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

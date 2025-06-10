@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text)
+}
+
+div.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.main {
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+div.most-banned {
+  padding: 1em;
+  background-color: var(--lighter);
+  margin-left: 1em;
+  border: 1px solid var(--text);
+  border-radius: 4px;
+}
+
+div.most-banned ol {
+  column-count: 3;
+}
+
+div.most-banned li {
+  margin-bottom: 1em;
+  padding-right: 2em;
+}
+
+div.most-banned p {
+  font-weight: bold;
+  margin: 0
+}
+
+div.most-banned a {
+  font-weight: normal;
+  color: inherit;
+  text-decoration: none;
+}
+
+div.most-banned a:hover {
+  text-decoration: underline;
+}

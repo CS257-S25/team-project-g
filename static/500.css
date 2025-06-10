@@ -1,0 +1,21 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #7f1d1d;
+    text-align: center;
+    padding: 60px;
+}
+
+.error-container {
+    background: #d6d3d1;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: inline-block;
+    padding: 40px 60px;
+}
+
+h1 {
+    font-size: 3em;
+    color: #1c1917;
+    margin-bottom: 0.2em;
+}

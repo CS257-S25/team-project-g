@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+  <Title>Search: {{query}}</Title>
+  <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='search.css') }}">
+  <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+  {% include 'nav.html' %}
+  <!-- Content -->
+  <div class="main">
+    <div class="results">
+      <h1>Search Results for "{{query}}":</h1>
+
+      {% set no_results = false %}
+
+      {% for result_section in results %}
+      {% if result_section.results %}
+      {% set no_results = true %}
+      <div class="result-section">
+        <div class="heading">
+
+          <h2>{{result_section.heading}}</h2>
+          {% if type == 'all'%}
+          <div class="a-wrapper"><a href="/search?searchterm={{query}}&type={{result_section.search_type}}">Search only
+              {{result_section.heading}}s</a></div>
+          {% endif %}
+        </div>
+        {% if result_section.__class__.__name__ == 'SearchSectionBook' %}
+        {% for book in result_section.results %}
+        <div class="book">
+          <div class="cover-wrapper">
+            <img src="{{url_for('static', filename='no-cover.png')}}" alt="{{book.title}}" class="cover">
+          </div>
+          <div class="book-content">
+            <p class="book-title"><a href="/details/{{book.isbn}}">{{ book.title }} </a><span
+                style="font-size:1em;font-weight: lighter">({{book.isbn}})</span></p>
+            <p class="book-authors">{{ book.authors_to_string() }}</p>
+            <p class="book-publish_date">{{ book.details.publish_date}}</p>
+            <p class="book-genres">{{ book.genres_to_string() }}</p>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div>
+        {% endfor %}
+        {% elif result_section.__class__.__name__ == 'SearchSectionPage' %}
+        <div class="page-list">
+          {% for page in result_section.results %}
+          <a class="page-btn" href="{{result_section.search_type}}/{{page}}">{{ page}} </a>
+        <!-- <div class="book">
+          <div class="cover-wrapper">
+          </div>
+          <div class="book-content">
+            <p class="book-title"><a href="{{result_section.search_type}}/{{page}}">{{ page}} </a>
+          </div>
+          <div class="ban-content">
+          </div>
+        </div> -->
+        {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+
+      {% if no_results %}
+      <p>No results found</p>
+      {% endif %}
+
+    </div>
+  </div>
+</body>
+
+</html>

@@ -76,7 +76,7 @@ class DataSource:
         Returns:
             (list[Bookban]): a list of Bookban objects
         """
-        list(map(self._create_bookban_from_row, row_list))
+        return list(map(self._create_bookban_from_row, row_list))
 
     def _create_bookban_from_row(self, row) -> Bookban:
         """Helper method for converting a database row to a Bookban object

@@ -1,0 +1,43 @@
+<html lang="en">
+
+<head>
+    <title>Error: {{code}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='global.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='nav.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='error.css') }}">
+</head>
+
+<body>
+    {% include "nav.html" %}
+    <div class="error-container">
+        <h1>{{code}}</h1>
+        <p>{{error}}</p>
+        <p>
+            <a href="/">Return to Home</a>
+        </p>
+    </div>
+    <div class="error-container">
+        <h3> Try one of these pages</h3>
+
+        <ul>
+            <li>
+                <a href="/most-banned-books">Most Banned Books</a>
+            </li>
+            <li>
+                <a href="/most-banned-authors">Most Banned Authors</a>
+            </li>
+            <li>
+                <a href="/most-banned-states">Most Banned States</a>
+            </li>
+            <li>
+                <a href="/most-banned-districts">Most Banned Districts</a>
+            </li>
+        </ul>
+        <h3> Or Try Searching Again</h3>
+        <div class="search-container">
+            {% include "search-bar.html" %}
+        </div>
+    </div>
+</body>
+
+</html>

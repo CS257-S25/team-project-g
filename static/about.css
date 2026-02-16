@@ -1,0 +1,67 @@
+body {
+    font-family: var(font-family);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+div.main {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+h1, h2 {
+    color: var(--text);
+    margin-bottom: 0.5em;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    margin-top: 1em;
+}
+
+h2 {
+    font-size: 1.75em;
+    margin-top: 1.5em;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.2em;
+}
+
+p {
+    max-width: 800px;
+    margin: 0.5em auto;
+    padding: 0 1em;
+    font-size: 1.1em;
+}
+
+ul {
+    max-width: 800px;
+    margin: 0.5em auto 1.5em auto;
+    padding-left: 2em;
+    list-style: square;
+}
+
+li {
+    margin-bottom: 0.5em;
+    font-size: 1.05em;
+}
+
+footer {
+    background-color: var(--bg);
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    margin-top: 2em;
+    font-size: 0.95em;
+}
+
+code {
+    background-color: black;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.95em;
+}
